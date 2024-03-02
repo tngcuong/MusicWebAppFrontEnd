@@ -18,14 +18,28 @@ const createNewUserService = (data) => {
     })
 }
 
-const deleteUserService = (id) =>{
+const deleteUserService = (id) => {
     const token = JSON.parse(localStorage.getItem("persist:account"))
-    return axios.delete(`api/User/DeleteUserById?id=${id}`,{
+    return axios.delete(`api/User/DeleteUserById?id=${id}`, {
         "headers": {
             "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
         },
     })
 }
 
+const editUser = (user) => {
+    console.log(user);
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.put(`api/User/UpdateUserById?id=${user.Id}`, user, {
+        "headers": {
+            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+        },
+    })
+}
 
-export { getAllUsers, createNewUserService,deleteUserService }
+export {
+    getAllUsers,
+    createNewUserService,
+    deleteUserService,
+    editUser
+}
