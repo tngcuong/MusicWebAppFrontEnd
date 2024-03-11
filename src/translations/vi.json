@@ -1,4 +1,17 @@
 {
+    "home-header": {
+        "explore": "Khám phá",
+        "explore-title": "Bài hát mới nhất,...",
+        "artist": "Nghệ sĩ",
+        "fav-artist": "Nghệ sĩ yêu thích của bạn",
+        "music-charts": "Bảng xếp hạng âm nhạc",
+        "top-music": "Những bài hát hay nhất",
+        "library": "Thư viện",
+        "vi": "Tiếng Việt",
+        "en": "Tiếng Anh",
+        "free-service": "Nghe và tải nhạc miễn phí",
+        "search-plh": "Tìm kiếm nhạc, nghệ sĩ, album,..."
+    },
     "common": {
         "add": "Thêm",
         "edit": "Sửa",
@@ -31,8 +44,7 @@
             "system-administrator": {
                 "header": "Quản trị hệ thống",
                 "user-manage": "Quản lý người sử dụng",
-                "product-manage": "Quản lý gói",
-                "register-package-group-or-account": "Đăng ký gói dịch vụ cho nhóm/tài khoản"
+                "song-manage": "Quản lý nhạc"
             },
             "system-parameter": {
                 "header": "Tham số hệ thống"

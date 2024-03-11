@@ -1,4 +1,17 @@
 {
+    "home-header": {
+        "explore": "Explore",
+        "explore-title": "Newest songs,...",
+        "artist": "Artist",
+        "fav-artist": "Your favoutire artist",
+        "music-charts": "Music charts",
+        "top-music": "Top music",
+        "library": "Library",
+        "vi": "Vietnamese",
+        "en": "English",
+        "free-service": "Listen and download free",
+        "search-plh":"Search"
+    },
     "common": {
         "add": "Add",
         "edit": "Edit",
@@ -31,8 +44,7 @@
             "system-administrator": {
                 "header": "System Administrator",
                 "user-manage": "User manage",
-                "product-manage": "Package manage",
-                "register-package-group-or-account": "Register service package for group/account"
+                "song-manage": "Song manage"
             },
             "system-parameter": {
                 "header": "System-parameter"

@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import ModalEditUser from './ModalEditUser';
 import ModalUser from './ModalUser';
-import { getAllUsers,editUser, deleteUserService, createNewUserService } from '../../services/userService';
+import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../services/userService';
 import { emitter } from '../../utils/emitter';
-
+import Paging from '../../components/Paging/Paging';
 
 import "./UserManage.scss";
 class UserManage extends Component {
@@ -17,17 +17,33 @@ class UserManage extends Component {
             arrUsers: [],
             isOpenModal: false,
             isOpenEditModal: false,
-            userEdit: {}
+            userEdit: {},
+            currentPage: 1,
+            pageSize: 5,
+            pageCount: 1
         }
     }
 
     getAllUserFromManage = async () => {
-        let res = await getAllUsers(1, 100);
-        if (res && res.errorCode === 200) {
-            this.setState({
-                arrUsers: res.content.data
-            })
+        try {
+            let res = await getAllUsers(this.state.currentPage, this.state.pageSize);
+            if (res && res.errorCode === 200) {
+                this.setState({
+                    arrUsers: res.content.data,
+                    pageCount: res.content.totalPages
+                });
+            }
+        } catch (error) {
+            console.log(error);
         }
+
+    }
+
+    handleChangePage = async (pageIndex) => {
+        this.setState({
+            currentPage: pageIndex
+        })
+        await this.getAllUserFromManage()
     }
 
     async componentDidMount() {
@@ -77,10 +93,10 @@ class UserManage extends Component {
         try {
             let res = await editUser(user)
             this.setState({
-                isOpenEditModal:false
+                isOpenEditModal: false
             })
 
-            await this.getAllUserFromManage(1,100)
+            await this.getAllUserFromManage(1, 100)
         } catch (error) {
             alert(error.response.data.message)
         }
@@ -103,6 +119,7 @@ class UserManage extends Component {
     render() {
         let { arrUsers } = this.state
         return (
+
             <div className="user-container">
                 <ModalUser
                     toggleFromParent={this.toggleUsersModal}
@@ -165,6 +182,13 @@ class UserManage extends Component {
                             }
                         </tbody>
                     </table>
+                    {arrUsers.length > 0 && <Paging
+                        pageIndex={this.state.currentPage}
+                        pageSize={this.state.pageSize}
+                        pageCount={this.state.pageCount}
+                        changePage={this.handleChangePage}
+                    ></Paging>
+                    }
                 </div>
             </div>
 

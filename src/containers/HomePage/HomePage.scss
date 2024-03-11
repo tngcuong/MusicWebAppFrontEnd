@@ -1,0 +1,114 @@
+.slick-prev {
+    left      : -10 !important;
+    z-index   : 999 !important;
+    height    : 48px !important;
+    width     : 44px !important;
+    background: #fff !important;
+    border    : 2px solid #d7d7d7 !important;
+
+    &:hover {
+        background: #d7d7d7 !important;
+    }
+}
+
+.slick-prev,
+.slick-next :before {
+    font-family: FontAwesome !important;
+    color      : red !important;
+}
+
+.slick-next {
+    right     : -10 !important;
+    height    : 48px !important;
+    width     : 44px !important;
+    background: #fff !important;
+    border    : 2px solid #d7d7d7 !important;
+
+    &:hover {
+        background: #d7d7d7 !important;
+    }
+}
+
+.section-share {
+    &.section-slider {
+        background: #f5f5f5;
+
+    }
+
+    border: 1px solid red;
+
+    .section-content {
+        text-align: -webkit-center;
+
+        .section-customize {
+            .bg-image {
+                width : 150px;
+                height: 150px;
+
+                background-color   : white;
+                background-position: center center;
+                background-size    : cover;
+                background-repeat  : no-repeat;
+
+                &.section-slider {
+                    background-image: url('../../assets/Slider/portfolio-1.jpg');
+                }
+
+                &.section-carousel {
+                    background-image: url('../../assets/Slider/portfolio-2.jpg');
+                }
+            }
+        }
+    }
+}
+
+
+.section-share {
+    background: #f5f5f5;
+
+
+    .section-container {
+        margin        : 0 50px;
+        display       : flex;
+        flex-direction: column;
+
+        .section-header {
+            height       : 60px;
+            padding-top  : 30px;
+            margin-bottom: 30px;
+
+            .title-section {
+                font-weight: 400;
+                font-size  : 22px;
+            }
+
+            .btn-section {
+                display       : block;
+                float         : right;
+                padding       : 10px 15px;
+                border        : none;
+                outline       : none;
+                background    : #ebebeb;
+                color         : black;
+                cursor        : pointer;
+                text-transform: uppercase;
+
+                &:hover {
+                    color     : white;
+                    background: #f7d800;
+                }
+            }
+        }
+
+
+    }
+}
+
+.home-footer{
+    text-align: center;
+    padding-top: 8px;
+    
+    a{
+        text-decoration: none;
+    }
+}
