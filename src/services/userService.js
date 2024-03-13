@@ -1,4 +1,5 @@
 import axios from "../axios";
+import { jwtDecode } from 'jwt-decode';
 
 const getAllUsers = (pageIndex, pageSize) => {
     const token = JSON.parse(localStorage.getItem("persist:account"))
@@ -37,9 +38,22 @@ const editUser = (user) => {
     })
 }
 
+const getCurrentUser = () =>{
+    const localSto = JSON.parse(localStorage.getItem("persist:account"))
+    if(!localSto && localSto.accountInfo == null ){
+        return null
+    }
+    const token = localSto.accountInfo.replace(/"/g, '')
+    var data = jwtDecode(token);
+    console.log(data);
+    return data
+}
+
+
 export {
     getAllUsers,
     createNewUserService,
     deleteUserService,
-    editUser
+    editUser,
+    getCurrentUser
 }
