@@ -10,7 +10,8 @@
         "vi": "Vietnamese",
         "en": "English",
         "free-service": "Listen and download free",
-        "search-plh":"Search"
+        "search-plh":"Search",
+        "welcome":"Welcome"
     },
     "common": {
         "add": "Add",

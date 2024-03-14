@@ -45,7 +45,6 @@ const getCurrentUser = () =>{
     }
     const token = localSto.accountInfo.replace(/"/g, '')
     var data = jwtDecode(token);
-    console.log(data);
     return data
 }
 

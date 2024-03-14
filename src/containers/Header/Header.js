@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-
 import * as actions from "../../store/actions";
 import Navigator from '../../components/Navigator';
 import { adminMenu } from './menuApp';
@@ -14,14 +13,16 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser : {}
+            currentUser: {}
         }
     }
 
-    getCurrentUser = async () =>{
-        let currentUser =  await getCurrentUser()
-        if(currentUser){
-            
+    getCurrentUser = async () => {
+        let data = await getCurrentUser()
+        if (data) {
+            this.setState({
+                currentUser: data
+            })
         }
     }
 
@@ -29,13 +30,13 @@ class Header extends Component {
         this.props.handleChangeLanguage(language)
     }
 
-    componentDidMount =  async() =>{
+    componentDidMount = async () => {
         await this.getCurrentUser()
     }
 
     render() {
         const { processLogout, language } = this.props;
-
+        const { currentUser } = this.state;
         return (
             <div className="header-container">
                 {/* thanh navigator */}
@@ -44,6 +45,7 @@ class Header extends Component {
                 </div>
 
                 <div className='languages'>
+                    <span className='welcome'><FormattedMessage id="home-header.welcome" />, {currentUser ? currentUser.unique_name : ""} </span>
                     <span className={language === LANGUAGES.VI ? 'language-vi active' : 'language-vi'} onClick={() => { this.handleChangeLanguage(LANGUAGES.VI) }}><FormattedMessage id="home-header.vi" /></span>
                     <span className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'} onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span>
                     <div className="btn btn-logout" onClick={processLogout} title='Log out'>
