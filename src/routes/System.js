@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Redirect, Route, Switch } from 'react-router-dom';
-import UserManage from '../containers/System/UserManage';
-import SongManage from '../containers/System/SongManage';
+import UserManage from '../containers/System/Admin/UserManage';
+import SongManage from '../containers/System/Admin/SongManage';
 import Header from '../containers/Header/Header';
 
 class System extends Component {

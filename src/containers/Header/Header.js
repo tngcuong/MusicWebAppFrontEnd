@@ -45,7 +45,7 @@ class Header extends Component {
                 </div>
 
                 <div className='languages'>
-                    <span className='welcome'><FormattedMessage id="home-header.welcome" />, {currentUser ? currentUser.unique_name : ""} </span>
+                    <span className='welcome'><FormattedMessage id="home-header.welcome" /> {currentUser && currentUser.username ? currentUser.username : ""} </span>
                     <span className={language === LANGUAGES.VI ? 'language-vi active' : 'language-vi'} onClick={() => { this.handleChangeLanguage(LANGUAGES.VI) }}><FormattedMessage id="home-header.vi" /></span>
                     <span className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'} onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span>
                     <div className="btn btn-logout" onClick={processLogout} title='Log out'>

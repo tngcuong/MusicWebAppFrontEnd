@@ -1,6 +1,7 @@
 export const adminMenu = [
     { //hệ thống
-        name: 'menu.system.header', menus: [
+        name: 'menu.system.header',
+        menus: [
             {
                 name: 'menu.system.system-administrator.header',
                 subMenus: [
@@ -9,6 +10,13 @@ export const adminMenu = [
                 ]
             },
             // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },
+            {
+                name: 'menu.system.staticst.header',
+                subMenus: [
+                    { name: 'menu.system.staticst.staticst-by-user', link: '/system/staticst/user' },
+                    { name: 'menu.system.staticst.staticst-by-listen', link: '/system/staticst/listen' },
+                ]
+            }
         ]
     },
 ];

@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import ModalEditUser from './ModalEditUser';
-import ModalUser from './ModalUser';
-import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../services/userService';
-import { emitter } from '../../utils/emitter';
-import Paging from '../../components/Paging/Paging';
+import ModalEditUser from '../ModalEditUser';
+import ModalUser from '../ModalUser';
+import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../../services/userService';
+import { emitter } from '../../../utils/emitter';
+import Paging from '../../../components/Paging/Paging';
 
 import "./UserManage.scss";
 class UserManage extends Component {
@@ -140,7 +140,7 @@ class UserManage extends Component {
                     </ModalEditUser>
                 }
 
-                <div className='title text-center'></div>
+                <div className='title text-center'>Quản lý người dùng</div>
                 <div className='mx-1'>
                     <button
                         onClick={() => { this.handleAddNewUser() }}
