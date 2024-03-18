@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { emitter } from '../../utils/emitter';
+import * as actions from '../../store/actions';
 
 class ModalUser extends Component {
 
@@ -14,19 +14,8 @@ class ModalUser extends Component {
             Email: '',
             Role: 'User'
         }
-        this.listenToEmitter()
     }
 
-    listenToEmitter() {
-        emitter.on('EVENT_CLEAR_MODAL_DATA', () => {
-            this.setState({
-                Username: '',
-                Password: '',
-                Email: '',
-                Role: 'User'
-            })
-        })
-    }
 
     handleChangeInput = (event, id) => {
 
@@ -65,6 +54,8 @@ class ModalUser extends Component {
     }
 
     render() {
+        let roleArr =  [...this.props.arrRoles]
+        console.log(roleArr);
         return (
             <Modal isOpen={this.props.isOpen} toggle={() => { this.toggle() }} className='modalUserContainer'>
                 <ModalHeader toggle={() => { this.toggle() }}>Create a new user</ModalHeader>
@@ -85,8 +76,13 @@ class ModalUser extends Component {
                         <div className='input-container'>
                             <label>Role</label>
                             <select value={this.state.Role} onChange={(e) => { this.handleChangeInput(e, "Role") }}>
-                                <option value='User'>User</option>
-                                <option value='Admin'>Admin</option>
+                                {roleArr && roleArr.length > 0 &&
+                                    roleArr.map((item, index) => {
+                                        return (
+                                            <option key={item.id} value={item.name}>{item.name}</option>
+                                        )
+                                    })
+                                }
                             </select>
                         </div>
                     </div>

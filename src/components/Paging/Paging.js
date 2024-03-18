@@ -20,7 +20,6 @@ class Paging extends Component {
     }
 
     componentDidMount = () => {
-        console.log('mount',this.props);
         this.setState = ({
             pageSize: this.props.pageSize,
             pageCount: this.props.pageCount

@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import * as actions from '../../../store/actions';
 import ModalEditUser from '../ModalEditUser';
 import ModalUser from '../ModalUser';
 import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../../services/userService';
-import { emitter } from '../../../utils/emitter';
 import Paging from '../../../components/Paging/Paging';
+import { getAllRoles } from '../../../services/roleService';
+
 
 import "./UserManage.scss";
 class UserManage extends Component {
@@ -20,7 +22,8 @@ class UserManage extends Component {
             userEdit: {},
             currentPage: 1,
             pageSize: 5,
-            pageCount: 1
+            pageCount: 1,
+            arrRoles: []
         }
     }
 
@@ -48,6 +51,7 @@ class UserManage extends Component {
 
     async componentDidMount() {
         await this.getAllUserFromManage()
+        this.props.getRoleStart()
     }
 
     handleAddNewUser = () => {
@@ -75,7 +79,6 @@ class UserManage extends Component {
             this.setState({
                 isOpenModal: false
             })
-            emitter.emit('EVENT_CLEAR_MODAL_DATA', { 'id': 'your id' })
 
         } catch (error) {
             alert(error.response.data.message)
@@ -103,6 +106,14 @@ class UserManage extends Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.role !== this.props.role) {
+            this.setState({
+                arrRoles: this.props.role
+            })
+        }
+    }
+
     handleDeleteUser = async (user) => {
         try {
             let data = await deleteUserService(user.id)
@@ -117,17 +128,18 @@ class UserManage extends Component {
     }
 
     render() {
-        let { arrUsers } = this.state
+        let { arrUsers, arrRoles } = this.state
         return (
 
             <div className="user-container">
-                <ModalUser
+                {this.state.isOpenModal && <ModalUser
+                    arrRoles = {arrRoles}
                     toggleFromParent={this.toggleUsersModal}
                     isOpen={this.state.isOpenModal}
                     size="xl"
                     createUser={this.createNewUser}
                     centered
-                ></ModalUser>
+                ></ModalUser>}
                 {this.state.isOpenEditModal &&
                     <ModalEditUser
                         toggleFromParent={this.toggleEditUsersModal}
@@ -199,11 +211,13 @@ class UserManage extends Component {
 
 const mapStateToProps = state => {
     return {
+        role: state.user.roles,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getRoleStart: () => dispatch(actions.fetchRoleStart())
     };
 };
 

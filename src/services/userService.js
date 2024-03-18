@@ -29,7 +29,6 @@ const deleteUserService = (id) => {
 }
 
 const editUser = (user) => {
-    console.log(user);
     const token = JSON.parse(localStorage.getItem("persist:account"))
     return axios.put(`api/User/UpdateUserById?id=${user.Id}`, user, {
         "headers": {
