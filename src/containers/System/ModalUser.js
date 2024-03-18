@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import * as actions from '../../store/actions';
+import { LANGUAGES } from '../../utils';
 
 class ModalUser extends Component {
 
@@ -54,11 +55,12 @@ class ModalUser extends Component {
     }
 
     render() {
-        let roleArr =  [...this.props.arrRoles]
-        console.log(roleArr);
+        let { language ,isLoading} = this.props
+        let roleArr = [...this.props.arrRoles]
         return (
             <Modal isOpen={this.props.isOpen} toggle={() => { this.toggle() }} className='modalUserContainer'>
                 <ModalHeader toggle={() => { this.toggle() }}>Create a new user</ModalHeader>
+                <div>{isLoading === true ? "loading" : ''}</div>
                 <ModalBody>
                     <div className='modal-user-body'>
                         <div className='input-container'>
@@ -79,7 +81,7 @@ class ModalUser extends Component {
                                 {roleArr && roleArr.length > 0 &&
                                     roleArr.map((item, index) => {
                                         return (
-                                            <option key={item.id} value={item.name}>{item.name}</option>
+                                            <option key={item.id} value={item.name}>{language === LANGUAGES.VI ? item.viName : item.enName}</option>
                                         )
                                     })
                                 }
@@ -106,6 +108,8 @@ class ModalUser extends Component {
 
 const mapStateToProps = state => {
     return {
+        language: state.app.language,
+        isLoading: state.user.isLoading
     };
 };
 

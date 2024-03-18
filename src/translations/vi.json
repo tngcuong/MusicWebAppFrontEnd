@@ -60,5 +60,19 @@
         "name": "Tên",
         "action": "Thao tác",
         "title": "Quản lý bài hát"
+    },
+    "user-song": {
+        "add-title": "Thêm mới người dùng",
+        "add": "Thêm",
+        "edit": "Cập nhật thông tin người dùng",
+        "save": "Lưu thay đổi",
+        "cancel": "Thoát",
+        "avatar": "ẢNh đại diện",
+        "name": "Tên",
+        "username": "Tên tài khoản",
+        "email": "Email",
+        "role": "Quyền",
+        "action": "Thao tác",
+        "title": "QUản lý người dùng"
     }
 }

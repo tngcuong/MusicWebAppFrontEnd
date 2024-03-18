@@ -63,5 +63,19 @@
         "name": "Name",
         "action": "Actions",
         "title": "Song manage"
+    },
+    "manage-user": {
+        "add-title": "Create a new user",
+        "add": "Add",
+        "edit": "Update info a user",
+        "save": "Save changes",
+        "cancel": "Cancel",
+        "avatar": "Avatar",
+        "name": "Name",
+        "username": "UserName",
+        "email": "Email",
+        "role": "Role",
+        "action": "Actions",
+        "title": "User manage"
     }
 }

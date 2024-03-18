@@ -1,25 +1,30 @@
 import actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    roles: []
+    roles: [],
+    isLoading: false
 }
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_ROLE_START:
-            console.log("start",action);
+            state.isLoading = true
+            console.log("start", state);
             return {
                 ...state
             }
         case actionTypes.FETCH_ROLE_FAILED:
-            console.log("failed",action);
+            state.roles = [];
+            state.isLoading = false
+            console.log("failed", state);
             return {
                 ...state
             }
         case actionTypes.FETCH_ROLE_SUCCESS:
-            let copyState = {...state}
+            let copyState = { ...state }
             copyState.roles = action.data;
-            console.log("success",copyState);
+            copyState.isLoading = false
+            console.log("success", copyState);
             return {
                 ...copyState
             }

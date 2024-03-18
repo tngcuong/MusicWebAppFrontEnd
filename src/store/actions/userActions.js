@@ -22,7 +22,10 @@ export const fetchRoleFailed = () => ({
 export const fetchRoleStart = () => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.FETCH_ROLE_START })
+
             let data = await getAllRoles()
+            console.log(data);
             if (data && data.errorCode === 200) {
                 dispatch(fetchRoleSuccess(data.content))
             } else {
