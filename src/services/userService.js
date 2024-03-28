@@ -30,14 +30,14 @@ const deleteUserService = (id) => {
 
 const editUser = (user) => {
     const token = JSON.parse(localStorage.getItem("persist:account"))
-    return axios.put(`api/User/UpdateUserById?id=${user.Id}`, user, {
+    return axios.put(`api/User/UpdateUserById?id=${user.id}`, user, {
         "headers": {
             "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
         },
     })
 }
 
-const getCurrentUser = () =>{
+const getCurrentUser = async () =>{
     const localSto = JSON.parse(localStorage.getItem("persist:account"))
     if(!localSto && localSto.accountInfo == null ){
         return null

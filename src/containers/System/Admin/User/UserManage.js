@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import * as actions from '../../../store/actions';
-import ModalEditUser from '../ModalEditUser';
-import ModalUser from '../ModalUser';
-import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../../services/userService';
-import Paging from '../../../components/Paging/Paging';
-import { getAllRoles } from '../../../services/roleService';
+import * as actions from '../../../../store/actions';
+import ModalEditUser from './ModalEditUser';
+import ModalUser from './ModalUser';
+import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../../../services/userService';
+import Paging from '../../../../components/Paging/Paging';
 
 
 import "./UserManage.scss";
@@ -31,7 +30,7 @@ class UserManage extends Component {
         try {
             let res = await getAllUsers(this.state.currentPage, this.state.pageSize);
             if (res && res.errorCode === 200) {
-                this.setState({
+                await this.setState({
                     arrUsers: res.content.data,
                     pageCount: res.content.totalPages
                 });
@@ -43,7 +42,7 @@ class UserManage extends Component {
     }
 
     handleChangePage = async (pageIndex) => {
-        this.setState({
+        await this.setState({
             currentPage: pageIndex
         })
         await this.getAllUserFromManage()
@@ -93,17 +92,11 @@ class UserManage extends Component {
     }
 
     doEditUser = async (user) => {
-        try {
-            let res = await editUser(user)
-            this.setState({
-                isOpenEditModal: false
-            })
-
-            await this.getAllUserFromManage(1, 100)
-        } catch (error) {
-            alert(error.response.data.message)
-        }
-
+        this.props.updateUser(user)
+        await this.getAllUserFromManage()
+        this.setState({
+            isOpenEditModal: false
+        })
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -112,6 +105,7 @@ class UserManage extends Component {
                 arrRoles: this.props.role
             })
         }
+
     }
 
     handleDeleteUser = async (user) => {
@@ -133,7 +127,7 @@ class UserManage extends Component {
 
             <div className="user-container">
                 {this.state.isOpenModal && <ModalUser
-                    arrRoles = {arrRoles}
+                    arrRoles={arrRoles}
                     toggleFromParent={this.toggleUsersModal}
                     isOpen={this.state.isOpenModal}
                     size="xl"
@@ -142,6 +136,7 @@ class UserManage extends Component {
                 ></ModalUser>}
                 {this.state.isOpenEditModal &&
                     <ModalEditUser
+                        arrRoles={arrRoles}
                         toggleFromParent={this.toggleEditUsersModal}
                         isOpen={this.state.isOpenEditModal}
                         currentUser={this.state.userEdit}
@@ -217,7 +212,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRoleStart: () => dispatch(actions.fetchRoleStart())
+        getRoleStart: () => dispatch(actions.fetchRoleStart()),
+        updateUser: (user) => dispatch(actions.updateUserStart(user))
     };
 };
 

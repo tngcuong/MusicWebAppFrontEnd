@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
 class HomeFooter extends Component {
-
     render() {
 
         return (

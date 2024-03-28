@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import About from './Section/About';
 import HomeFooter from './HomeFooter';
+import MusicPlayer from '../Partial/MusicPlayer';
 
 class HomePage extends Component {
 
@@ -32,6 +33,7 @@ class HomePage extends Component {
                 <Carousel settings={settings} />
                 <About />
                 <HomeFooter />
+                <MusicPlayer/>
             </div>
         );
     }

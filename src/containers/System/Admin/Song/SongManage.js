@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { getAllSongs } from '../../../services/songService';
 import { connect } from 'react-redux';
+
+import { FormattedMessage } from 'react-intl';
+import { getAllSongs } from '../../../../services/songService';
+
+import * as actions from '../../../../store/actions';
+import ModalAddSong from './ModalAddSong';
 class SongManage extends Component {
 
     constructor(props) {
@@ -10,34 +14,65 @@ class SongManage extends Component {
             arrSongs: [],
             isOpenModal: false,
             isOpenEditModal: false,
-            userEdit: {},
+            songEdit: {},
             currentPage: 1,
             pageSize: 5,
             pageCount: 1
         }
     }
 
+    toggleSongModal = () => {
+        this.setState({
+            isOpenModal: !this.state.isOpenModal
+        })
+    }
+
+    handleAddNewSong = () => {
+        this.setState({
+            isOpenModal: true
+        })
+    }
+
     async componentDidMount() {
-        try {
-            let data = await getAllSongs(this.state.currentPage, this.state.pageSize)
-            if (data && data.errorCode === 200 && data.content && data.content.data) {
-                this.setState({
-                    arrSongs: data.content.data
-                })
-            }
-        } catch (error) {
-            console.log(error);
+        this.props.getSongStart(this.state.currentPage, this.state.pageSize)
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.songs !== this.props.songs) {
+            this.setState({
+                arrSongs: [...this.props.songs]
+            })
         }
+    }
+
+    handleDeleteSong = (id) => {
+        this.props.deleteSongStart(id, this.state.currentPage, this.state.pageSize)
+    }
+
+    createNewSong = (data) => {
+        this.props.createASong(data, this.state.currentPage, this.state.pageSize)
+        this.setState({
+            isOpenModal: false
+        })
     }
 
     render() {
         let { arrSongs } = this.state
+
         return (
             <div className='song-container'>
+                {this.state.isOpenModal && <ModalAddSong
+                    toggleFromParent={this.toggleSongModal}
+                    isOpen={this.state.isOpenModal}
+                    size="xl"
+                    createSong={this.createNewSong}
+                    centered
+                ></ModalAddSong>}
                 <div className='title text-center'><FormattedMessage id="manage-song.title" /></div>
                 <div className='mx-1'>
                     <button
-                        className='btn btn-primary px-3'><i class="fas fa-plus-circle"></i></button>
+                        onClick={() => { this.handleAddNewSong() }}
+                        className='btn btn-primary px-3'><i className="fas fa-user-plus"></i></button>
                 </div>
                 <div className='users-table mt-3 mx-1'>
                     <table id="customers">
@@ -57,10 +92,10 @@ class SongManage extends Component {
                                         <td>{item.name}</td>
                                         <td>
                                             <button
-                                                onClick={() => { this.handleEditUser(item) }}
-                                                className='btn-edit'><i className="fas fa-user-edit"></i></button>
+                                                onClick={() => { this.handleEditSong(item) }}
+                                                className='btn-edit'><i className="fas fa-pen-square"></i></button>
                                             <button
-                                                onClick={() => { this.handleDeleteUser(item) }}
+                                                onClick={() => { this.handleDeleteSong(item.id) }}
                                                 className='btn-delete'><i className="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -80,12 +115,15 @@ class SongManage extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-        account : state.account._persist,
+        songs: state.song.songs,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getSongStart: (pageIndex, pageSize) => dispatch(actions.fetchSongStart(pageIndex, pageSize)),
+        deleteSongStart: (id, pageIndex, pageSize) => dispatch(actions.deleteSongStart(id, pageIndex, pageSize)),
+        createASong: (data, pageIndex, pageSize) => dispatch(actions.addSongStart(data, pageIndex, pageSize)),
     };
 };
 

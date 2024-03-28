@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes';
 import { getAllRoles } from '../../services/roleService';
+import { getCurrentUser, editUser } from '../../services/userService';
 
 
 export const addUserSuccess = () => ({
@@ -38,3 +39,60 @@ export const fetchRoleStart = () => {
     }
 
 }
+
+
+export const getCurrentUserStart = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_CURRENT_USER_START })
+
+            let data = await getCurrentUser()
+            console.log(data);
+            if (data && data.id) {
+                dispatch(getCurrentUserSuccess(data.id))
+            } else {
+                dispatch(getCurrentUserFailded())
+            }
+        } catch (error) {
+            dispatch(getCurrentUserFailded())
+            console.log(error);
+        }
+    }
+}
+
+export const getCurrentUserSuccess = (currentUser) => ({
+    type: actionTypes.GET_CURRENT_USER_SUCCESS,
+    data: currentUser
+})
+
+export const getCurrentUserFailded = () => ({
+    type: actionTypes.GET_CURRENT_USER_FAILD
+})
+
+export const updateUserStart = (user) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.UPDATE_USER_START })
+
+            let data = await editUser(user)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(updateUserSuccess())
+                
+            } else {
+                dispatch(updateUserFailed())
+            }
+        } catch (error) {
+            dispatch(updateUserFailed())
+            console.log(error);
+        }
+    }
+}
+
+export const updateUserSuccess = () => ({
+    type: actionTypes.UPDATE_USER_SUCCESS
+})
+
+export const updateUserFailed = () => ({
+    type: actionTypes.UPDATE_USER_FAILED
+})

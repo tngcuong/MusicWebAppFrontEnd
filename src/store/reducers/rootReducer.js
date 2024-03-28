@@ -5,6 +5,8 @@ import { connectRouter } from 'connected-react-router';
 import appReducer from "./appReducer";
 import userReducer from "./userReducer";
 import accountReducer from "./accountReducer";
+import songReducer from "./songReducer";
+
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
@@ -33,11 +35,18 @@ const appPersistConfig = {
     whitelist: ['language',]
 };
 
+const songPersistConfig = {
+    ...persistCommonConfig,
+    key: 'song',
+    whitelist: ['currentSong', "currentListSong"]
+};
+
 
 
 export default (history) => combineReducers({
     router: connectRouter(history),
     account: persistReducer(accountPersistConfig, accountReducer),
     app: persistReducer(appPersistConfig, appReducer),
-    user: userReducer
+    user: userReducer,
+    song: persistReducer(songPersistConfig, songReducer)
 })

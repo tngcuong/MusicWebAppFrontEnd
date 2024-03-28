@@ -6,4 +6,15 @@ const handleLogin = (userName, password) => {
     })
 }
 
-export { handleLogin } 
+const handleRegister = (data) => {
+    return axios.post('api/Account/Register', data, {
+    })
+}
+
+const handleVerify = (data) => {
+    return axios.post('api/Account/VerifyEmail', data, {
+    })
+}
+
+
+export { handleLogin, handleRegister, handleVerify } 

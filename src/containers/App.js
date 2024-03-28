@@ -12,6 +12,7 @@ import { path } from '../utils'
 
 import Home from '../routes/Home';
 import Login from './Auth/Login';
+import SingUp from './Auth/SignUp.js';
 
 import System from '../routes/System';
 
@@ -50,18 +51,33 @@ class App extends Component {
                                 <Switch >
                                     <Route path={path.HOME} exact component={(Home)} />
                                     <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
+                                    <Route path={path.SIGNUP} component={userIsNotAuthenticated(SingUp)} />
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                 </Switch>
                             </CustomScrollbars>
                         </div>
 
-                        <ToastContainer
+                        {/* <ToastContainer
                             className="toast-container" toastClassName="toast-item" bodyClassName="toast-item-body"
                             autoClose={false} hideProgressBar={true} pauseOnHover={false}
                             pauseOnFocusLoss={true} closeOnClick={false} draggable={false}
                             closeButton={<CustomToastCloseButton />}
+                        /> */}
+
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                            theme="light"
                         />
+
 
                     </div>
                 </Router>

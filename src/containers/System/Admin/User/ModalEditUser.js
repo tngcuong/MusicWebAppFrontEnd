@@ -2,21 +2,22 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import * as actions from '../../store/actions';
-import { LANGUAGES } from '../../utils';
+import { LANGUAGES } from '../../../../utils';
+import _ from 'lodash'
 
-class ModalUser extends Component {
+class ModalEditUser extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            Id: '',
             Username: '',
             Password: '',
             Email: '',
-            Role: 'User'
+            Role: '',
+            Roles: [],
         }
     }
-
 
     handleChangeInput = (event, id) => {
 
@@ -24,6 +25,8 @@ class ModalUser extends Component {
         copyState[id] = event.target.value
         this.setState({
             ...copyState,
+        }, () => {
+            console.log(this.state)
         })
     }
 
@@ -40,14 +43,31 @@ class ModalUser extends Component {
         return isValid;
     }
 
-    handleAddNewUser = () => {
+    handleUpdateUser = () => {
         let isValid = this.checkValidateInput()
         if (isValid) {
-            this.props.createUser(this.state)
+            this.props.editUser({
+                "id": this.state.Id,
+                "username": this.state.Username,
+                "password": this.state.Password,
+                "email": this.state.Email,
+                "role": this.state.Role
+            })
         }
     }
 
     componentDidMount() {
+        let { currentUser } = this.props
+        if (currentUser && !_.isEmpty(currentUser)) {
+            this.setState({
+                Id: currentUser.id,
+                Username: currentUser.username,
+                Password: 'ResetPassword@1',
+                Email: currentUser.email,
+                Role: currentUser.role,
+                Roles: [...this.props.arrRoles],
+            }, () => { })
+        }
     }
 
     toggle = () => {
@@ -55,25 +75,24 @@ class ModalUser extends Component {
     }
 
     render() {
-        let { language ,isLoading} = this.props
-        let roleArr = [...this.props.arrRoles]
+        let { language } = this.props
+        let roleArr = this.state.Roles
         return (
             <Modal isOpen={this.props.isOpen} toggle={() => { this.toggle() }} className='modalUserContainer'>
-                <ModalHeader toggle={() => { this.toggle() }}>Create a new user</ModalHeader>
-                <div>{isLoading === true ? "loading" : ''}</div>
+                <ModalHeader toggle={() => { this.toggle() }}>Edit a user</ModalHeader>
                 <ModalBody>
                     <div className='modal-user-body'>
                         <div className='input-container'>
                             <label>Username</label>
-                            <input value={this.state.Username} type='text' onChange={(e) => { this.handleChangeInput(e, "Username") }} />
+                            <input disabled value={this.state.Username} type='text' onChange={(e) => { this.handleChangeInput(e, "Username") }} />
                         </div>
                         <div className='input-container'>
                             <label>Password</label>
-                            <input value={this.state.Password} type='password' onChange={(e) => { this.handleChangeInput(e, "Password") }} />
+                            <input disabled value={this.state.Password} type='password' onChange={(e) => { this.handleChangeInput(e, "Password") }} />
                         </div>
                         <div className='input-container'>
                             <label>Email</label>
-                            <input value={this.state.Email} type='email' onChange={(e) => { this.handleChangeInput(e, "Email") }} />
+                            <input disabled value={this.state.Email} type='email' onChange={(e) => { this.handleChangeInput(e, "Email") }} />
                         </div>
                         <div className='input-container'>
                             <label>Role</label>
@@ -93,9 +112,9 @@ class ModalUser extends Component {
                     <Button
                         className='px-3'
                         color="primary"
-                        onClick={() => { this.handleAddNewUser() }}>
-                        Add
-                    </Button>{' '}
+                        onClick={() => { this.handleUpdateUser() }}>
+                        Save changes
+                    </Button>
                     <Button className='px-3' color="secondary" onClick={() => { this.toggle() }}>
                         Cancel
                     </Button>
@@ -109,7 +128,6 @@ class ModalUser extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-        isLoading: state.user.isLoading
     };
 };
 
@@ -118,4 +136,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ModalEditUser);

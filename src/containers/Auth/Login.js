@@ -35,26 +35,7 @@ class Login extends Component {
         this.setState({
             errMessage: ''
         })
-        try {
-            let data = await handleLogin(this.state.username, this.state.password)
-            console.log(data);
-            if (data && data.errorCode !== 200) {
-                this.setState({
-                    errMessage: data.message
-                })
-            }
-            if (data && data.errorCode === 200) {
-                this.props.accountLoginSuccess(data.content.token)
-            }
-        } catch (error) {
-            if (error.response) {
-                if (error.response.data) {
-                    this.setState({
-                        errMessage: error.response.data.message
-                    })
-                }
-            }
-        }
+        this.props.accountLogin(this.state.username, this.state.password)
 
     }
 
@@ -99,7 +80,7 @@ class Login extends Component {
                                 <button onClick={() => { this.handleOnclickLogin() }} className='btn-login'>Login</button>
                             </div>
                             <div className='col-12'>
-                                <span className='forgot-password '>Forgot your password</span>
+                                <span className='forgot-password '>Forgot your password?</span>
                             </div>
                             <div className='col-12 text-center mt-3 '>
                                 <span className='text-other-login'>Or login with:</span>
@@ -126,8 +107,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        accountLoginFail: () => dispatch(actions.accountLoginFail()),
-        accountLoginSuccess: (accountInfo) => dispatch(actions.accountLoginSuccess(accountInfo))
+        accountLogin: (username, password) => dispatch(actions.accountLoginStart(username, password))
     };
 };
 

@@ -1,0 +1,27 @@
+.modal-user-body {
+    .input-container {
+        .label-upload {
+            padding      : 5px;
+            border-radius: 3px;
+            background   : #ddd;
+            cursor       : pointer;
+
+
+            &:hover {
+                opacity: 0.9;
+
+            }
+        }
+    }
+}
+
+.preview-img {
+    height         : 50px;
+    width          : 100%;
+    background     : center center no-repeat;
+    background-size: contain;
+    cursor         : pointer;
+}
+.ReactModal__Overlay {
+    z-index: 9999 !important;
+}

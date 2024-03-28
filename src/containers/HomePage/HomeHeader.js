@@ -5,23 +5,47 @@ import './HomeHeader.scss';
 import logo from '../../assets/logo.svg'
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../utils/constant';
-
+import ModalNav from './Section/ModalNav';
 import { changeLanguageApp } from '../../store/actions/appActions';
 
 class HomeHeader extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            isOpenModal: false
+        }
+    }
     handleChangeLanguage = (language) => {
         this.props.changeLanguageApp(language)
     }
 
+    handleOpenNav = () => {
+        this.toggleSignupModal()
+    }
+
+    toggleSignupModal = () => {
+        this.setState({
+            isOpenModal: !this.state.isOpenModal
+        })
+    }
+
     render() {
         let language = this.props.language
+        let isLogin = this.props.isLoggedIn
         return (
             <>
+                {this.state.isOpenModal &&
+                    <ModalNav
+                        toggleFromParent={this.toggleSignupModal}
+                        size="xl"
+                        isOpen={this.state.isOpenModal}
+                        vertical="sm"
+                    />
+                }
                 <div className='home-header-container'>
                     <div className='home-header-content'>
                         <div className='left-content'>
-                            <i className="fa fa-bars"></i>
+                            <i className="fas fa-bars" onClick={() => { this.handleOpenNav() }}></i>
                             <img className='header-logo' src={logo} />
                             {/* <div className='header-logo'></div> */}
                         </div>
@@ -46,7 +70,13 @@ class HomeHeader extends Component {
                         <div className='right-content'>
                             <div className={language === LANGUAGES.VI ? 'language-vn active' : 'language-vn'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.VI) }}><FormattedMessage id="home-header.vi" /></span></div>
                             <div className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span></div>
-                            <div className='avatar'>
+                            <div className='login-logout'>
+                                {isLogin && isLogin === true ?
+                                    <FormattedMessage id="home-header.logout" />
+
+                                    :
+                                    <FormattedMessage id="home-header.login" />
+                                }
                             </div>
                         </div>
                     </div>

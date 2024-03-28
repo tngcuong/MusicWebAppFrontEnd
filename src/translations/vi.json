@@ -11,7 +11,9 @@
         "en": "Tiếng Anh",
         "free-service": "Nghe và tải nhạc miễn phí",
         "search-plh": "Tìm kiếm nhạc, nghệ sĩ, album,...",
-        "welcome": "Xin chào, "
+        "welcome": "Xin chào, ",
+        "login": "Đăng nhập",
+        "logout": "Đăng xuất"
     },
     "common": {
         "add": "Thêm",
@@ -55,13 +57,17 @@
         }
     },
     "manage-song": {
-        "add": "Thêm bài hát mới",
+        "add-title": "Thêm bài hát mới",
+        "add": "Thêm",
         "image": "Ảnh",
         "name": "Tên",
+        "source": "File nhạc",
         "action": "Thao tác",
-        "title": "Quản lý bài hát"
+        "title": "Quản lý bài hát",
+        "cancel": "Thoát",
+        "upload-img": "Tải ảnh lên"
     },
-    "user-song": {
+    "manage-user": {
         "add-title": "Thêm mới người dùng",
         "add": "Thêm",
         "edit": "Cập nhật thông tin người dùng",
@@ -74,5 +80,12 @@
         "role": "Quyền",
         "action": "Thao tác",
         "title": "QUản lý người dùng"
+    },
+    "nav": {
+        "profile": "Hồ sơ cá nhân",
+        "home": "Trang chủ",
+        "liked": "Bài hát yêu thích",
+        "playlists": "Kho nhạc",
+        "search": "Tìm kiếm"
     }
 }

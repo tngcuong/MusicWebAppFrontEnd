@@ -70,7 +70,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         processLogout: () => dispatch(actions.processLogout()),
-        handleChangeLanguage: (language) => dispatch(actions.changeLanguageApp(language))
+        handleChangeLanguage: (language) => dispatch(actions.changeLanguageApp(language)),
+        getCurrentUser : (data) => dispatch(actions.getCurrentUserStart(data))
     };
 };
 
