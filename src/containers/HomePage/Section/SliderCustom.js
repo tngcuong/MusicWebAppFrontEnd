@@ -29,13 +29,13 @@ class SliderCustom extends Component {
         }
     }
 
-    playSong = (song) => {
-        this.props.setCurrentSong(song)
+    playSong = async (song) => {
+      await  this.props.setCurrentSong(song)
+      await  this.props.playSong(true)
     }
 
     render() {
         let { arrSongs } = this.state
-        console.log(arrSongs);
         return (
             <div className='section-share section-slider'>
                 <div className='section-container'>
@@ -102,7 +102,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getSongStart: (pageIndex, pageSize) => dispatch(actions.fetchSongStart(pageIndex, pageSize)),
-        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song))
+        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
+        playSong: (flag) => dispatch(actions.playMusic(flag))
     };
 };
 

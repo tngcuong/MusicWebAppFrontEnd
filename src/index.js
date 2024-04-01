@@ -7,16 +7,19 @@ import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import IntlProviderWrapper from "./hoc/IntlProviderWrapper";
 
-
+import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import reduxStore, { persistor } from './redux';
+import Loader from './components/Loader';
 
 const renderApp = () => {
     ReactDOM.render(
         <Provider store={reduxStore}>
+             <PersistGate loading={<Loader/>} persistor={persistor}>
             <IntlProviderWrapper>
                 <App persistor={persistor}/>
             </IntlProviderWrapper>
+            </PersistGate>
         </Provider>,
         document.getElementById('root')
     );

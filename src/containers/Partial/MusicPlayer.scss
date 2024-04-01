@@ -1,0 +1,81 @@
+.player-container {
+    display        : flex;
+    justify-content: space-between;
+    height         : 100%;
+    width          : 100%;
+    padding-left   : 1.25rem;
+    padding-right  : 1.25rem;
+
+    .player-left {
+        border     : 1px solid red;
+        margin-top : auto;
+        align-items: center;
+        width      : 30%;
+        flex       : 1 1 auto;
+        display    : flex;
+
+        .info {
+            display       : flex; // Hiển thị các phần tử con theo hướng ngang
+            flex-direction: column;
+
+            .song-name {
+                font-weight: 700;
+            }
+
+            .song-username {
+                font-weight: 500;
+            }
+
+            span {
+                margin-left: 10px; // Tạo khoảng cách giữa các phần tử
+            }
+        }
+
+        i {
+            font-size   : 16px;
+            padding-left: 8px;
+        }
+
+        img {
+            padding  : 16px 0px 16px 4px;
+            max-width: 104px; // Điều chỉnh kích thước ảnh theo nhu cầu
+        }
+    }
+
+    .player-center {
+        align-items    : center;
+        display        : flex;
+        flex           : 1 1 auto;
+        flex-direction : column;
+        justify-content: center;
+        width          : 40%;
+        border         : 1px solid red;
+        gap            : 4px;
+
+        .player-action {
+            display      : flex;
+            gap          : 50px;
+            align-items  : center;
+            justify-items: center;
+
+            span {
+                opacity: 0.7;
+                cursor : pointer;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            .play-btn {
+                font-size: 32px;
+
+            }
+        }
+    }
+
+    .player-right {
+        width : 30%;
+        border: 1px solid red;
+    }
+}

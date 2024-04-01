@@ -41,6 +41,7 @@ const actionTypes = Object.freeze({
     DELETE_SONG_FAILED: 'DELETE_SONG_FAILED',
     DELETE_SONG_START: 'DELETE_SONG_START',
     GET_CURRENT_SONG: 'GET_CURRENT_SONG',
+    PLAY_SONG: 'PLAY_SONG'
 })
 
 export default actionTypes;

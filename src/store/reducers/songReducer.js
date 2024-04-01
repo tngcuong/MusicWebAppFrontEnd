@@ -5,7 +5,8 @@ const initialState = {
     isLoading: false,
     currentSong: {},
     currentListSong: [],
-    songs: []
+    songs: [],
+    isPlaying: false,
 }
 
 const appReducer = (state = initialState, action) => {
@@ -75,6 +76,11 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.GET_CURRENT_SONG:
             state.currentSong = action.song
+            return {
+                ...state
+            }
+        case actionTypes.PLAY_SONG:
+            state.isPlaying = action.flag
             return {
                 ...state
             }

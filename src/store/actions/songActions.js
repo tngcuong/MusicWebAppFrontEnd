@@ -66,9 +66,13 @@ export const deleteSongFailed = () => ({
 
 export const getCurrentSong = (song) => ({
     type: actionTypes.GET_CURRENT_SONG,
-    song: song
+    song: song,
 })
 
+export const playMusic = (flag) => ({
+    type: actionTypes.PLAY_SONG,
+    flag: flag
+})
 
 export const deleteSongStart = (id, pageIndex, pageSize) => {
     return async (dispatch, getState) => {
