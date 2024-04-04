@@ -10,6 +10,7 @@ const createASong = (song) => {
     formData.append("Img", song.Img);
     formData.append("Name", song.Name);
     formData.append("Source", song.Source);
+    formData.append("DurationTime", song.Duration);
     return axios.post('/api/Song/Insert', formData)
 }
 

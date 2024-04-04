@@ -72,6 +72,42 @@
 
             }
         }
+
+        .progress {
+            width           : 100%;
+            background-color: white;
+            display         : flex;
+            justify-content : center;
+            gap             : 5px;
+            justify-items   : center;
+
+            .time-left {}
+
+            .time-right {}
+
+            .progress-down {
+                background   : rgba(0, 0, 0, 0.1);
+                height       : 4px;
+                width        : 75%;
+                position     : relative;
+                border-radius: 10px 10px 10px 10px;
+                cursor       : pointer;
+
+                &:hover {
+                    cursor: pointer;
+                    height: 8px;
+                }
+
+                .progress-up {
+                    border-radius: 10px 10px 10px 10px;
+                    position     : absolute;
+                    left         : 0;
+                    background   : #0e8080;
+                    top          : 0;
+                    bottom       : 0;
+                }
+            }
+        }
     }
 
     .player-right {

@@ -7,6 +7,7 @@ import { LANGUAGES } from '../../../../utils';
 import "./ModalAddSong.scss";
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import Loader from '../../../../components/Loader';
 
 class ModalAddSong extends Component {
 
@@ -18,8 +19,10 @@ class ModalAddSong extends Component {
             Source: null,
             previewImg: "",
             isOpenPreview: false,
-            currentUser: ""
-        }
+            currentUser: "",
+            duration: 0
+        };
+        this.audioElement = React.createRef();
     }
 
     handleChangeInput = (event, id) => {
@@ -50,8 +53,15 @@ class ModalAddSong extends Component {
             this.setState({
                 Source: file,
             })
+            this.audioElement.current.src = objUrl;
+            this.handleLoadedMetadata()
         }
     }
+
+    handleLoadedMetadata = () => {
+        this.setState({ duration: this.audioElement.current.duration });
+    };
+
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.currentUser !== this.props.currentUser) {
@@ -88,11 +98,11 @@ class ModalAddSong extends Component {
                 UserId: this.state.currentUser,
                 Img: this.state.Image,
                 Name: this.state.Name,
-                Source: this.state.Source
+                Source: this.state.Source,
+                Duration: this.state.duration
             }
             )
         }
-
     }
 
     componentDidMount() {
@@ -110,7 +120,6 @@ class ModalAddSong extends Component {
             <>
                 <Modal isOpen={this.props.isOpen} toggle={() => { this.toggle() }} className='modalUserContainer'>
                     <ModalHeader toggle={() => { this.toggle() }}><FormattedMessage id="manage-song.add-title"></FormattedMessage></ModalHeader>
-                    <div>{isLoading === true ? "loading" : ''}</div>
                     <ModalBody>
                         <div className='modal-user-body'>
                             <div className='input-container'>
@@ -139,6 +148,7 @@ class ModalAddSong extends Component {
                                 onCloseRequest={() => this.setState({ isOpenPreview: false })}
                             />
                         }
+                        <audio ref={this.audioElement} onLoadedMetadata={this.handleLoadedMetadata} controls hidden />
                     </ModalBody>
                     <ModalFooter>
                         <Button

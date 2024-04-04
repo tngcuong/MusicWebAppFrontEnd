@@ -37,6 +37,7 @@ export const addSongStart = (song, pageIndex, pageSize) => {
             if (data && data.errorCode === 200) {
 
                 dispatch(addSongSuccess(data.content))
+                console.log(data);
                 dispatch(fetchSongStart(pageIndex, pageSize))
             } else {
                 dispatch(addSongFailed())

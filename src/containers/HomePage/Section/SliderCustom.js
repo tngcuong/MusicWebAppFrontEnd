@@ -30,8 +30,10 @@ class SliderCustom extends Component {
     }
 
     playSong = async (song) => {
-      await  this.props.setCurrentSong(song)
-      await  this.props.playSong(true)
+        let { isPlaying } = this.props
+        await this.props.setCurrentSong(song)
+        await this.props.playSong(!isPlaying)
+        console.log(this.props);
     }
 
     render() {
@@ -96,6 +98,7 @@ const mapStateToProps = state => {
         isLoggedIn: state.account.isLoggedIn,
         language: state.app.language,
         songs: state.song.songs,
+        isPlaying: state.song.isPlaying,
     };
 };
 

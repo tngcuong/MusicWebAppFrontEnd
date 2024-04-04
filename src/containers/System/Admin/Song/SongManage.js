@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { FormattedMessage } from 'react-intl';
 import { getAllSongs } from '../../../../services/songService';
+import Loader from '../../../../components/Loader';
 
 import * as actions from '../../../../store/actions';
 import ModalAddSong from './ModalAddSong';
@@ -61,6 +62,7 @@ class SongManage extends Component {
 
         return (
             <div className='song-container'>
+                <div>{this.props.isLoading === true && <Loader></Loader>}</div>
                 {this.state.isOpenModal && <ModalAddSong
                     toggleFromParent={this.toggleSongModal}
                     isOpen={this.state.isOpenModal}
@@ -116,6 +118,7 @@ const mapStateToProps = state => {
     return {
         language: state.app.language,
         songs: state.song.songs,
+        isLoading: state.song.isLoading,
     };
 };
 
