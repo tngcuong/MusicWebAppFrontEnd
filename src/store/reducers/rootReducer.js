@@ -6,7 +6,7 @@ import appReducer from "./appReducer";
 import userReducer from "./userReducer";
 import accountReducer from "./accountReducer";
 import songReducer from "./songReducer";
-
+import albumReducer from "./albumReducer";
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
@@ -48,5 +48,6 @@ export default (history) => combineReducers({
     account: persistReducer(accountPersistConfig, accountReducer),
     app: persistReducer(appPersistConfig, appReducer),
     user: userReducer,
-    song: persistReducer(songPersistConfig, songReducer)
+    song: persistReducer(songPersistConfig, songReducer),
+    album: albumReducer
 })
