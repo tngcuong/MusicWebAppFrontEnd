@@ -38,8 +38,15 @@ const appPersistConfig = {
 const songPersistConfig = {
     ...persistCommonConfig,
     key: 'song',
-    whitelist: ['currentSong', "currentListSong"]
+    whitelist: ['currentSong']
 };
+
+const ablumPersistConfig = {
+    ...persistCommonConfig,
+    key: 'album',
+    whitelist: ['currentAlbum']
+};
+
 
 
 
@@ -49,5 +56,5 @@ export default (history) => combineReducers({
     app: persistReducer(appPersistConfig, appReducer),
     user: userReducer,
     song: persistReducer(songPersistConfig, songReducer),
-    album: albumReducer
+    album: persistReducer(ablumPersistConfig, albumReducer)
 })

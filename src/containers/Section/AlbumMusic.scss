@@ -1,17 +1,121 @@
-.album-container{
-    display: flex;
-    gap: 8;
-    width: 100%;
-    padding: 50px 0px 50px 0px;
+.album-container {
+    position: relative;
+    top     : 20px;
+    display : flex;
+    gap     : 8;
+    width   : 100%;
+    padding : 50px 0px 50px 0px;
 
-    .album-content-left{
-        .thumbnail{
+    .album-content-left {
+        display       : flex;
+        flex-direction: column;
+        align-items   : center;
+        gap           : 2;
+        width         : 25%;
+        flex-grow     : 0;
+        flex-shrink   : 0;
+        border        : 1px solid rebeccapurple;
 
+        .thumbnail {
+            width        : 100%;
+            object-fit   : contain;
+            border-radius: 4px;
+            box-shadow   : 0 4px 4px rgba(0, 0, 0, 0.15);
         }
-        .info{
-            .name{
 
+        .info {
+            display       : flex;
+            flex-direction: column;
+            align-items   : center;
+
+            .name {
+                font-size: 20px;
+                color    : #2D3748;
+                font     : bold;
+            }
+
+            .create {
+                display    : flex;
+                gap        : 2;
+                align-items: center;
+                color      : #2D3748;
+                font-size  : 0.75rem;
+            }
+
+            .artist,
+            .liked {
+                display    : flex;
+                gap        : 2;
+                align-items: center;
+                color      : #808080;
+                font-size  : 0.75rem;
             }
         }
     }
+
+    .album-content-right {
+        flex-grow: 1;
+        flex     : 1 1 auto;
+        border   : 1px solid yellowgreen;
+
+        .album-list-song {
+            .album-list-title {
+                font-size: 0.75rem;
+            }
+
+            .list-song-container {
+                .list-song {
+                    display        : flex;
+                    justify-content: space-between;
+                    align-items    : center;
+                    padding        : 10px;
+                }
+
+                .col-1 {
+                    display    : flex;
+                    align-items: center;
+                    gap        : 3;
+                    flex       : 1 1 auto;
+
+                    .img-music {
+                        width        : 10rem;
+                        height       : 10rem;
+                        object-fit   : cover;
+                        border-radius: 4px;
+
+                    }
+
+                    .artist-music {
+                        display       : flex;
+                        flex-direction: column;
+                        width         : 100%;
+                    }
+
+                    .artist-name {
+                        font-size  : 0.75rem;
+                        font-weight: 600;
+                    }
+                }
+
+                .col-2 {
+                    display        : flex;
+                    flex           : 1 1 auto;
+                    align-items    : center;
+                    justify-content: center;
+                }
+
+                .col-3 {
+                    display        : flex;
+                    flex           : 1 1 auto;
+                    justify-content: flex-end;
+                }
+            }
+        }
+
+    }
+}
+
+.album-player {
+    position: sticky;
+    bottom  : 0;
 }

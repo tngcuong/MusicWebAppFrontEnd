@@ -81,42 +81,45 @@ class HomeHeader extends Component {
                         </div>
                     </div>
                 </div>
-                <div className='home-header-banner'>
-                    <div className='content-up'>
-                        <div className='header-banner-title1'>
-                            Museek
+                {this.props.isShowBanner === true &&
+                    <div className='home-header-banner'>
+                        <div className='content-up'>
+                            <div className='header-banner-title1'>
+                                Museek
+                            </div>
+                            <div className='header-banner-title2'>
+                                <FormattedMessage id="home-header.free-service" />
+                            </div>
+                            <div className='search'>
+                                <i className="fas fa-search"></i>
+                                <FormattedMessage id="home-header.search-plh" > {placeholder =>
+                                    <input type='text' placeholder={placeholder} />
+                                }</FormattedMessage>
+                            </div>
                         </div>
-                        <div className='header-banner-title2'>
-                            <FormattedMessage id="home-header.free-service" />
-                        </div>
-                        <div className='search'>
-                            <i className="fas fa-search"></i>
-                            <FormattedMessage id="home-header.search-plh" > {placeholder =>
-                                <input type='text' placeholder={placeholder} />
-                            }</FormattedMessage>
+                        <div className='content-down'>
+                            <div className='options'>
+                                <div className='option-child'>
+                                    <div className='icon-child'><i className="fas fa-music"></i></div>
+                                    <div className='text-child'>EDM</div>
+                                </div>
+                                <div className='option-child'>
+                                    <div className='icon-child'><i className="fas fa-music"></i></div>
+                                    <div className='text-child'>JAZZ</div>
+                                </div>
+                                <div className='option-child'>
+                                    <div className='icon-child'><i className="fas fa-music"></i></div>
+                                    <div className='text-child'>POP</div>
+                                </div>
+                                <div className='option-child'>
+                                    <div className='icon-child'><i className="fas fa-music"></i></div>
+                                    <div className='text-child'>ROCK</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className='content-down'>
-                        <div className='options'>
-                            <div className='option-child'>
-                                <div className='icon-child'><i className="fas fa-music"></i></div>
-                                <div className='text-child'>EDM</div>
-                            </div>
-                            <div className='option-child'>
-                                <div className='icon-child'><i className="fas fa-music"></i></div>
-                                <div className='text-child'>JAZZ</div>
-                            </div>
-                            <div className='option-child'>
-                                <div className='icon-child'><i className="fas fa-music"></i></div>
-                                <div className='text-child'>POP</div>
-                            </div>
-                            <div className='option-child'>
-                                <div className='icon-child'><i className="fas fa-music"></i></div>
-                                <div className='text-child'>ROCK</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+
             </>
         );
     }

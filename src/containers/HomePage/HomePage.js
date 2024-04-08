@@ -28,7 +28,7 @@ class HomePage extends Component {
 
         return (
             <div>
-                <HomeHeader />
+                <HomeHeader isShowBanner ={true} />
                 <Slider settings={settings} />
                 <Carousel settings={settings} />
                 <About />

@@ -18,8 +18,9 @@ import System from '../routes/System';
 
 import { CustomToastCloseButton } from '../components/CustomToast';
 import HomePage from './HomePage/HomePage.js';
-
+import Carousel from './HomePage/Section/Carousel.js';
 import CustomScrollbars from '../components/CustomScrollbars.js';
+import AlbumMusic from './Section/AlbumMusic.js';
 
 class App extends Component {
 
@@ -54,6 +55,7 @@ class App extends Component {
                                     <Route path={path.SIGNUP} component={userIsNotAuthenticated(SingUp)} />
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={path.HOMEPAGE} component={HomePage} />
+                                    <Route path={path.DETAIL_ALBUM} component={AlbumMusic} />
                                 </Switch>
                             </CustomScrollbars>
                         </div>

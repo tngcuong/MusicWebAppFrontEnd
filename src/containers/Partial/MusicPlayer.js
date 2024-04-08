@@ -35,7 +35,7 @@ class MusicPlayer extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    async componentDidUpdate(prevProps, prevState) {
         if (this.props.song != prevProps.song) {
             this.state.sourceMusic.pause()
             this.setState({
@@ -63,7 +63,7 @@ class MusicPlayer extends Component {
     }
 
 
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({
             currentSong: { ...this.props.song },
             sourceMusic: new Audio(this.props.song.source)
@@ -71,7 +71,6 @@ class MusicPlayer extends Component {
             this.state.sourceMusic.load()
             this.props.playSong(false)
         })
-
     }
 
     checkToPlay() {
@@ -123,12 +122,22 @@ class MusicPlayer extends Component {
     render() {
         const { currentSong } = this.state;
         const { isPlaying } = this.props;
+
         return (
             <>
                 {currentSong &&
                     <div className='player-container'>
                         <div className='player-left'>
-                            <img src={currentSong?.image} alt={currentSong?.name}></img>
+                            <div className='bg-image section-slider' style={{
+                                width: "5rem",
+                                height: "5rem",
+                                backgroundImage: `url("${currentSong?.image}")`,
+                                backgroundPosition: 'center center',
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat'
+                            }}>
+                            </div>
+                            {/* <img src={currentSong?.image} alt={currentSong?.name}></img> */}
                             <div className='info'>
                                 <span className='song-name'>{currentSong?.name}</span>
                                 <span className='song-username'>{currentSong?.userId}</span>
@@ -176,7 +185,7 @@ class MusicPlayer extends Component {
                         <div className='player-right'>
 
                         </div>
-                    </div>
+                    </div >
                 }
             </>
         );
@@ -192,7 +201,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        playSong: (flag) => dispatch(actions.playMusic(flag))
+        playSong: (flag) => dispatch(actions.playMusic(flag)),
     };
 };
 

@@ -3,7 +3,8 @@ import actionTypes from '../actions/actionTypes';
 const initialState = {
     roles: [],
     isLoading: false,
-    currentUser: ""
+    currentUser: "",
+    user: {}
 }
 
 const userReducer = (state = initialState, action) => {
@@ -56,6 +57,23 @@ const userReducer = (state = initialState, action) => {
             }
         case actionTypes.UPDATE_SONG_FAILED:
             state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.GET_USER_ID_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_USER_ID_SUCCESS:
+            state.isLoading = false
+            state.user = { ...action.data }
+            return {
+                ...state
+            }
+        case actionTypes.GET_USER_ID_FAILED:
+            state.isLoading = false
+            state.user = {}
             return {
                 ...state
             }

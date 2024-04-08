@@ -37,9 +37,9 @@ const editUser = (user) => {
     })
 }
 
-const getCurrentUser = async () =>{
+const getCurrentUser = async () => {
     const localSto = JSON.parse(localStorage.getItem("persist:account"))
-    if(!localSto && localSto.accountInfo == null ){
+    if (!localSto && localSto.accountInfo == null) {
         return null
     }
     const token = localSto.accountInfo.replace(/"/g, '')
@@ -47,11 +47,17 @@ const getCurrentUser = async () =>{
     return data
 }
 
+const getUserById = async (id) => {
+    return axios.get(`api/User/GetUserById?id=${id}`)
+}
+
+
 
 export {
     getAllUsers,
     createNewUserService,
     deleteUserService,
     editUser,
-    getCurrentUser
+    getCurrentUser,
+    getUserById
 }

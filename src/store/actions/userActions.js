@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
 import { getAllRoles } from '../../services/roleService';
-import { getCurrentUser, editUser } from '../../services/userService';
+import { getCurrentUser, editUser, getUserById } from '../../services/userService';
 
 
 export const addUserSuccess = () => ({
@@ -78,7 +78,7 @@ export const updateUserStart = (user) => {
             console.log(data);
             if (data && data.errorCode === 200) {
                 dispatch(updateUserSuccess())
-                
+
             } else {
                 dispatch(updateUserFailed())
             }
@@ -95,4 +95,32 @@ export const updateUserSuccess = () => ({
 
 export const updateUserFailed = () => ({
     type: actionTypes.UPDATE_USER_FAILED
+})
+
+export const getUserIdStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_USER_ID_START })
+
+            let data = await getUserById(id)
+            console.log(data);
+            if (data && data.content) {
+                dispatch(getUserIdSuccess(data.content))
+            } else {
+                dispatch(getUserIdFailed())
+            }
+        } catch (error) {
+            dispatch(getUserIdFailed())
+            console.log(error);
+        }
+    }
+}
+
+export const getUserIdSuccess = (currentUser) => ({
+    type: actionTypes.GET_USER_ID_SUCCESS,
+    data: currentUser
+})
+
+export const getUserIdFailed = () => ({
+    type: actionTypes.GET_USER_ID_FAILED
 })
