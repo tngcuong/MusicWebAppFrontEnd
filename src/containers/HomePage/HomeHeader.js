@@ -2,72 +2,96 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './HomeHeader.scss';
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/Mlogo2.svg'
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../utils/constant';
-import ModalNav from './Section/ModalNav';
 import { changeLanguageApp } from '../../store/actions/appActions';
+import * as actions from '../../store/actions';
+import { withRouter } from 'react-router';
 
 class HomeHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpenModal: false
+            currentUser: {}
         }
     }
     handleChangeLanguage = (language) => {
         this.props.changeLanguageApp(language)
     }
 
-    handleOpenNav = () => {
-        this.toggleSignupModal()
+    componentDidMount() {
+        this.props.getCurrentUser()
+        this.setState(
+            { currentUser: { ...this.props.currentUser } }
+        )
     }
 
-    toggleSignupModal = () => {
-        this.setState({
-            isOpenModal: !this.state.isOpenModal
-        })
+    componentDidUpdate(preProps, prevState) {
+        if (this.props.currentUser != preProps.currentUser) {
+            this.setState(
+                { currentUser: { ...this.props.currentUser } }
+            )
+        }
+    }
+
+    HandleToPersonalPage = () =>{
+        this.props.history.push(`/user/${this.state.currentUser.id}`)
     }
 
     render() {
         let language = this.props.language
         let isLogin = this.props.isLoggedIn
+        const { currentUser } = this.state
+        console.log(this.props);
         return (
             <>
-                {this.state.isOpenModal &&
-                    <ModalNav
-                        toggleFromParent={this.toggleSignupModal}
-                        size="xl"
-                        isOpen={this.state.isOpenModal}
-                        vertical="sm"
-                    />
-                }
                 <div className='home-header-container'>
                     <div className='home-header-content'>
                         <div className='left-content'>
-                            <i className="fas fa-bars" onClick={() => { this.handleOpenNav() }}></i>
-                            <img className='header-logo' src={logo} />
-                            {/* <div className='header-logo'></div> */}
-                        </div>
-                        <div className='center-content'>
+                            {/* <img className='header-logo' src={logo} /> */}
+                            <div className='header-logo' style={{
+                                width: "5rem",
+                                height: "60px",
+                                backgroundImage: `url("${logo}")`,
+                                backgroundPosition: 'center center',
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat'
+                            }}></div>
+
                             <div className='child-content'>
                                 <div><b><FormattedMessage id="home-header.explore" /></b></div>
-                                <div className='subs-title'><FormattedMessage id="home-header.explore-title" /></div>
+                                {/* <div className='subs-title'><FormattedMessage id="home-header.explore-title" /></div> */}
                             </div>
                             <div className='child-content'>
                                 <div><b><FormattedMessage id="home-header.artist" /></b></div>
-                                <div className='subs-title'><FormattedMessage id="home-header.fav-artist" /></div>
+                                {/* <div className='subs-title'><FormattedMessage id="home-header.fav-artist" /></div> */}
                             </div>
                             <div className='child-content'>
                                 <div><b><FormattedMessage id="home-header.music-charts" /></b></div>
-                                <div className='subs-title'><FormattedMessage id="home-header.top-music" /></div>
+                                {/* <div className='subs-title'><FormattedMessage id="home-header.top-music" /></div> */}
                             </div>
-                            <div className='child-content'>
-                                <div><b><FormattedMessage id="home-header.library" /></b></div>
-                                <div className='subs-title'></div>
+                            {isLogin && isLogin === true &&
+                                <div className='child-content'>
+                                    <div><b><FormattedMessage id="home-header.library" /></b></div>
+                                    {/* <div className='subs-title'></div> */}
+                                </div>
+                            }
+
+                        </div>
+                        <div className='center-content'>
+                            <div className='search-header'>
+                                <input type='text' />
+                                <i className="fas fa-search"></i>
                             </div>
                         </div>
                         <div className='right-content'>
+                            {isLogin && isLogin === true &&
+                                <div className='child-content' onClick={() => { this.HandleToPersonalPage() }}>
+                                    <div><b><FormattedMessage id="home-header.profile" /></b></div>
+                                    {/* <div className='subs-title'></div> */}
+                                </div>
+                            }
                             <div className={language === LANGUAGES.VI ? 'language-vn active' : 'language-vn'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.VI) }}><FormattedMessage id="home-header.vi" /></span></div>
                             <div className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span></div>
                             <div className='login-logout'>
@@ -77,11 +101,15 @@ class HomeHeader extends Component {
                                     :
                                     <FormattedMessage id="home-header.login" />
                                 }
+                                {isLogin && isLogin === false &&
+                                    <FormattedMessage id="home-header.register" />
+                                }
                             </div>
                         </div>
                     </div>
-                </div>
-                {this.props.isShowBanner === true &&
+                </div >
+                {
+                    this.props.isShowBanner === true &&
                     <div className='home-header-banner'>
                         <div className='content-up'>
                             <div className='header-banner-title1'>
@@ -128,14 +156,16 @@ class HomeHeader extends Component {
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.account.isLoggedIn,
-        language: state.app.language
+        language: state.app.language,
+        currentUser: state.user.currentUser,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        getCurrentUser: () => dispatch(actions.getCurrentUserStart()),
         changeLanguageApp: (language) => dispatch(changeLanguageApp(language))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeHeader));

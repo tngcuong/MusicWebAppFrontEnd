@@ -53,11 +53,12 @@ class MusicPlayer extends Component {
         if (this.props.isPlaying != prevProps.isPlaying) {
             this.props.playSong(this.props.isPlaying)
             const { isPlaying } = this.props;
-            if (isPlaying) {
+            if (isPlaying === true) {
                 this.state.sourceMusic.play()
                 this.getCurrentTime()
             } else {
                 this.state.sourceMusic.pause()
+                clearInterval(intervalId)
             }
         }
     }
@@ -140,7 +141,7 @@ class MusicPlayer extends Component {
                             {/* <img src={currentSong?.image} alt={currentSong?.name}></img> */}
                             <div className='info'>
                                 <span className='song-name'>{currentSong?.name}</span>
-                                <span className='song-username'>{currentSong?.userId}</span>
+                                <span className='song-username'>{currentSong.user && currentSong.user.name}</span>
                             </div>
                             <div>
                                 <span>

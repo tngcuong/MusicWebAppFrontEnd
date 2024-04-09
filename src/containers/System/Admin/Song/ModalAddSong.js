@@ -19,7 +19,7 @@ class ModalAddSong extends Component {
             Source: null,
             previewImg: "",
             isOpenPreview: false,
-            currentUser: "",
+            currentUser: {},
             duration: 0
         };
         this.audioElement = React.createRef();
@@ -66,7 +66,7 @@ class ModalAddSong extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.currentUser !== this.props.currentUser) {
             this.setState({
-                currentUser: this.props.currentUser
+                currentUser: {...this.props.currentUser}
             }, () => { console.log(this.state) })
         }
     }
@@ -95,7 +95,7 @@ class ModalAddSong extends Component {
         let isValid = this.checkValidateInput()
         if (isValid) {
             this.props.createSong({
-                UserId: this.state.currentUser,
+                UserId: this.state.currentUser.id,
                 Img: this.state.Image,
                 Name: this.state.Name,
                 Source: this.state.Source,

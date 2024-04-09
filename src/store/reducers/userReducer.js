@@ -3,7 +3,7 @@ import actionTypes from '../actions/actionTypes';
 const initialState = {
     roles: [],
     isLoading: false,
-    currentUser: "",
+    currentUser: {},
     user: {}
 }
 
@@ -33,14 +33,14 @@ const userReducer = (state = initialState, action) => {
                 ...state
             }
         case actionTypes.GET_CURRENT_USER_FAILD:
-            state.currentUser = "";
+            state.currentUser = {};
             state.isLoading = false
             return {
                 ...state
             }
         case actionTypes.GET_CURRENT_USER_SUCCESS:
             let copyStateGetCurrentUser = { ...state }
-            copyStateGetCurrentUser.currentUser = action.data;
+            copyStateGetCurrentUser.currentUser = {...action.data};
             copyStateGetCurrentUser.isLoading = false
             return {
                 ...copyStateGetCurrentUser

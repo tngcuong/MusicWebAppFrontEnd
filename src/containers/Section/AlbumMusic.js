@@ -34,7 +34,6 @@ class AlbumMusic extends Component {
             this.setState({
                 detailAlbum: { ...this.props.detailAlbum }
             })
-            await this.props.getUserById(this.props.detailAlbum.createBy)
         }
     }
 
@@ -78,7 +77,7 @@ class AlbumMusic extends Component {
                                                         <img src={item.image} alt='thumbnail' className='img-music'></img>
                                                         <span className='artist-music'>
                                                             <span className='artist-name'>{item.name}</span>
-                                                            <span>{}</span>
+                                                            <span>{item.user && item.user.name}</span>
                                                         </span>
                                                     </div>
                                                     <div className='col-2'>
@@ -109,14 +108,12 @@ class AlbumMusic extends Component {
 const mapStateToProps = state => {
     return {
         detailAlbum: state.album.detailAlbum,
-        user: state.user.user
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getDetailSong: (id) => dispatch(actions.getDetailAlbumStart(id)),
-        getUserById: (id) => dispatch(actions.getUserIdStart(id))
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AlbumMusic));

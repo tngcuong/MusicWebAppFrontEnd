@@ -4,7 +4,7 @@
         "explore-title": "Bài hát mới nhất,...",
         "artist": "Nghệ sĩ",
         "fav-artist": "Nghệ sĩ yêu thích của bạn",
-        "music-charts": "Bảng xếp hạng âm nhạc",
+        "music-charts": "Bảng xếp hạng",
         "top-music": "Những bài hát hay nhất",
         "library": "Thư viện",
         "vi": "Tiếng Việt",
@@ -13,7 +13,9 @@
         "search-plh": "Tìm kiếm nhạc, nghệ sĩ, album,...",
         "welcome": "Xin chào, ",
         "login": "Đăng nhập",
-        "logout": "Đăng xuất"
+        "logout": "Đăng xuất",
+        "register": "Tạo tài khoản mới",
+        "profile": "Cá nhân"
     },
     "common": {
         "add": "Thêm",

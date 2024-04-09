@@ -2,7 +2,7 @@
     "home-header": {
         "explore": "Explore",
         "explore-title": "Newest songs,...",
-        "artist": "Artist",
+        "artist": "Artists",
         "fav-artist": "Your favoutire artist",
         "music-charts": "Music charts",
         "top-music": "Top music",
@@ -13,7 +13,9 @@
         "search-plh": "Search",
         "welcome": "Welcome, ",
         "login":"Login",
-        "logout":"Logout"
+        "logout":"Logout",
+        "register":"Create account",
+        "profile":"Profile"
     },
     "common": {
         "add": "Add",

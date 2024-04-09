@@ -59,8 +59,18 @@
         border   : 1px solid yellowgreen;
 
         .album-list-song {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            font-size: 0.75rem;
+            font-weight: 600;
+
             .album-list-title {
                 font-size: 0.75rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
             }
 
             .list-song-container {

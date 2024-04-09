@@ -49,7 +49,7 @@ export const getCurrentUserStart = () => {
             let data = await getCurrentUser()
             console.log(data);
             if (data && data.id) {
-                dispatch(getCurrentUserSuccess(data.id))
+                dispatch(getCurrentUserSuccess(data))
             } else {
                 dispatch(getCurrentUserFailded())
             }
