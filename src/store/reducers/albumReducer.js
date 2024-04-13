@@ -3,8 +3,10 @@ import { toast } from 'react-toastify';
 
 const initialState = {
     isLoading: false,
+    isPlaying: false,
     albums: [],
-    detailAlbum: {}
+    detailAlbum: {},
+
 }
 
 const albumReducer = (state = initialState, action) => {

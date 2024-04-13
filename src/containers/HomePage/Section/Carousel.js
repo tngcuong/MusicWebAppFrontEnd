@@ -41,6 +41,7 @@ class Carousel extends Component {
 
     render() {
         let { arrAlbums } = this.state
+        console.log(arrAlbums);
         return (
             <div className='section-share section-carousel'>
                 <div className='section-container'>
