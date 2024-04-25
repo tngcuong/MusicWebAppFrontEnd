@@ -6,7 +6,9 @@ const initialState = {
     isPlaying: false,
     albums: [],
     detailAlbum: {},
-
+    userAlbums: [],
+    isAlbum: true,
+    currentAlbum: [],
 }
 
 const albumReducer = (state = initialState, action) => {
@@ -35,13 +37,36 @@ const albumReducer = (state = initialState, action) => {
             }
         case actionTypes.GET_DETAIL_ALBUM_SUCCESS:
             state.isLoading = false;
-            state.detailAlbum ={...action.data}
+            state.detailAlbum = { ...action.data }
             return {
                 ...state,
             }
         case actionTypes.GET_DETAIL_ALBUM_FAILED:
             state.isLoading = false;
             toast.error(action.error)
+            return {
+                ...state,
+            }
+
+        case actionTypes.GET_ALBUM_START_BY_ID:
+            state.isLoading = true;
+            return {
+                ...state,
+            }
+        case actionTypes.GET_ALBUM_SUCCESS_BY_ID:
+            state.isLoading = false;
+            state.userAlbums = [...action.data]
+            return {
+                ...state,
+            }
+        case actionTypes.GET_ALBUM_FAILED_BY_ID:
+            state.isLoading = false;
+            toast.error(action.error)
+            return {
+                ...state,
+            }
+        case actionTypes.SET_CURRENT_ALBUM:
+            state.currentAlbum = [...action.data]
             return {
                 ...state,
             }

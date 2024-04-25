@@ -39,9 +39,18 @@ class Carousel extends Component {
         this.props.history.push(`/details-album/${item.id}`)
     }
 
+
+
+    setAlbum = async (item) => {
+        this.props.setCurrentAlbum(item)
+        if( item.length > 0){
+           await this.props.setCurrentSong(item[0])
+           await this.props.playSong(true)
+        }
+    }
+
     render() {
         let { arrAlbums } = this.state
-        console.log(arrAlbums);
         return (
             <div className='section-share section-carousel'>
                 <div className='section-container'>
@@ -63,8 +72,8 @@ class Carousel extends Component {
                                             backgroundSize: 'cover',
                                             backgroundRepeat: 'no-repeat'
                                         }}
-                                            onClick={() => { this.handleToDetailAlbum(item) }} />
-                                        <div>{item.name}</div>
+                                            onClick={() => { this.setAlbum(item.songList) }} />
+                                        <div className='album-name' onClick={() => { this.handleToDetailAlbum(item) }}>{item.name}</div>
                                     </div>
                                 )
                             })}
@@ -103,12 +112,18 @@ const mapStateToProps = state => {
         isLoggedIn: state.account.isLoggedIn,
         language: state.app.language,
         albums: state.album.albums,
+        currentAlbum: state.album.currentAlbum,
+        songs: state.song.songs,
+        isPlaying: state.song.isPlaying,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        setCurrentAlbum: (album) => dispatch(actions.setCurrentAlbum(album)),
         getAlbumStart: (pageIndex, pageSize) => dispatch(actions.fetchAlbumStart(pageIndex, pageSize)),
+        playSong: (flag) => dispatch(actions.playMusic(flag)),
+        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
     };
 };
 

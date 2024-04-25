@@ -18,7 +18,13 @@ const deleteASongById = (id) => {
     return axios.delete(`api/Song/DeleteASongById?id=${id}`)
 }
 
+const getLikedSong = (id) => {
+    return axios.delete(`api/LikedSong/GetLikedSongById?id=${id}`)
+}
+
+
 export {
+    getLikedSong,
     getAllSongs,
     createASong,
     deleteASongById

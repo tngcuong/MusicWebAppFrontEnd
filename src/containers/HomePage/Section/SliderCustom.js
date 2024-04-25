@@ -33,7 +33,7 @@ class SliderCustom extends Component {
         let { isPlaying } = this.props
         await this.props.setCurrentSong(song)
         await this.props.playSong(!isPlaying)
-        console.log(this.props);
+
     }
 
     render() {
@@ -60,7 +60,7 @@ class SliderCustom extends Component {
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                             onClick={() => { this.playSong(item) }} />
-                                        <div>{item.name}</div>
+                                        <div onClick={() => { this.playSong(item) }} className='album-name' >{item.name}</div>
                                     </div>
                                 )
                             })}

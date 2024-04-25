@@ -47,9 +47,8 @@ export const getCurrentUserStart = () => {
             dispatch({ type: actionTypes.GET_CURRENT_USER_START })
 
             let data = await getCurrentUser()
-            console.log(data);
-            if (data && data.id) {
-                dispatch(getCurrentUserSuccess(data))
+            if (data && data.content) {
+                dispatch(getCurrentUserSuccess(data.content))
             } else {
                 dispatch(getCurrentUserFailded())
             }

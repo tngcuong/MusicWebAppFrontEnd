@@ -89,5 +89,19 @@
         "liked": "Bài hát yêu thích",
         "playlists": "Kho nhạc",
         "search": "Tìm kiếm"
+    },
+    "player": {
+        "random": "Phát ngẫu nhiên",
+        "back": "Bài trước",
+        "next": "Bài tiếp theo",
+        "play": "Chơi nhạc",
+        "pause": "Tạm dùng",
+        "repeat": {
+            "song": "Phát một bài",
+            "playList": "Phát lại danh sách",
+            "repeat": "Lặp lại"
+        },
+        "like": "Yêu thích",
+        "liked": "Đã thích"
     }
 }

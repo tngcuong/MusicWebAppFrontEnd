@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import './Header.scss';
 import { LANGUAGES } from '../../utils';
 import { getCurrentUser } from '../../services/userService';
+import { withRouter } from 'react-router';
 
 class Header extends Component {
     constructor(props) {
@@ -17,13 +18,8 @@ class Header extends Component {
         }
     }
 
-    getCurrentUser = async () => {
-        let data = await getCurrentUser()
-        if (data) {
-            this.setState({
-                currentUser: data
-            })
-        }
+    goHome = () => {
+        this.props.history.push("/home");
     }
 
     handleChangeLanguage = (language) => {
@@ -31,7 +27,7 @@ class Header extends Component {
     }
 
     componentDidMount = async () => {
-        await this.getCurrentUser()
+        await this.props.getCurrentUser()
     }
 
     render() {
@@ -71,8 +67,8 @@ const mapDispatchToProps = dispatch => {
     return {
         processLogout: () => dispatch(actions.processLogout()),
         handleChangeLanguage: (language) => dispatch(actions.changeLanguageApp(language)),
-        getCurrentUser : (data) => dispatch(actions.getCurrentUserStart(data))
+        getCurrentUser: () => dispatch(actions.getCurrentUserStart())
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

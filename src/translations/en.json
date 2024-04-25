@@ -12,10 +12,10 @@
         "free-service": "Listen and download for free",
         "search-plh": "Search",
         "welcome": "Welcome, ",
-        "login":"Login",
-        "logout":"Logout",
-        "register":"Create account",
-        "profile":"Profile"
+        "login": "Login",
+        "logout": "Logout",
+        "register": "Create account",
+        "profile": "Profile"
     },
     "common": {
         "add": "Add",
@@ -70,7 +70,7 @@
         "action": "Actions",
         "title": "Song manage",
         "cancel": "Cancel",
-        "upload-img":"Upload image"
+        "upload-img": "Upload image"
     },
     "manage-user": {
         "add-title": "Create a new user",
@@ -86,11 +86,27 @@
         "action": "Actions",
         "title": "User manage"
     },
-    "nav":{
-        "profile":"Profile",
-        "home":"Home",
-        "liked":"Liked",
-        "playlists":"Play lists",
-        "search":"Search"
+    "nav": {
+        "profile": "Profile",
+        "home": "Home",
+        "liked": "Liked",
+        "playlists": "Play lists",
+        "search": "Search"
+    },
+    "player": {
+        "random": "Shuffle",
+        "back": "Previous",
+        "next": "Next",
+        "play": "Play",
+        "pause": "Pause",
+        "repeat": {
+            "song": "Repeat song",
+            "playList": "Repeat playList",
+            "repeat": "Repeat"
+        },
+        "like": "Like",
+        "liked": "Liked",
+        "volume": "Volume",
+        "mute": "Mute"
     }
 }

@@ -1,0 +1,194 @@
+.feature-container {
+    margin     : 0 2rem;
+    font-family: Inter, sans-serif;
+
+    .container-up {
+        /* ... */
+
+        .container-up-header {
+            display        : flex;
+            justify-content: space-between;
+            align-items    : center;
+            height         : 54px;
+            border-bottom  : 1px solid #f2f2f2;
+            font-weight    : 100;
+            color          : #999;
+
+            .header-icon {
+                display    : flex;
+                align-items: center;
+
+                i {
+                    margin-right: 4px;
+                }
+            }
+
+            .btn-refresh {
+                display    : flex;
+                align-items: center;
+
+                i {
+                    margin-right: 4px;
+                }
+
+                &:hover {
+                    cursor     : pointer;
+                    color      : black;
+                    font-weight: 100;
+                }
+            }
+        }
+
+        .container-up-content {
+
+            padding    : 1rem 0;
+            display    : flex;
+            align-items: center;
+
+            .avatar {
+                width              : 50px;
+                height             : 50px;
+                border-radius      : 50%;
+                background-position: center center;
+                background-size    : cover;
+                background-repeat  : no-repeat;
+            }
+
+            .name {
+                margin-left: 10px;
+                font-weight: 100;
+            }
+
+            .info-song {
+                .info {
+                    display    : flex;
+                    align-items: center;
+                    margin-left: 10px;
+
+                    .follower,
+                    .tracks {
+                        display     : flex;
+                        align-items : center;
+                        margin-right: 10px;
+                        font-weight : 100;
+                        color       : #999;
+
+                        i {
+                            margin-right: 4px;
+                        }
+                    }
+
+                    .tracks {
+                        a {
+                            width : 14.5px;
+                            height: 17px;
+                        }
+
+                    }
+
+
+                }
+            }
+
+            .btn-follow {
+                display        : flex;
+                justify-content: flex-start;
+                width          : 62%;
+                gap            : 5px;
+                gap            : -18px;
+                padding-left   : 162px;
+                font-weight    : 100;
+                opacity        : 0.5;
+
+                .icon-follow {
+                    width : 17px;
+                    height: 17px;
+                }
+
+                &:hover {
+                    cursor     : pointer;
+                    opacity    : 1;
+                    font-weight: 100;
+                }
+            }
+
+        }
+    }
+
+    .container-down {
+        padding: 2rem 0;
+
+        .container-down-header {
+            font-weight    : 100;
+            color          : #999;
+            display        : flex;
+            align-items    : center;
+            justify-content: space-between;
+            padding-bottom : 0.5rem;
+            border-bottom  : 1px solid #f2f2f2;
+
+            div:first-child {
+                display    : flex;
+                align-items: center;
+
+                i {
+                    margin-right: 4px;
+                }
+            }
+
+            .view-all {
+                &:hover {
+                    color      : #333;
+                    font-weight: 100;
+                }
+            }
+        }
+
+        .container-down-content {
+            margin-top : 1.5rem;
+            display    : flex;
+            align-items: center;
+
+
+            .track-avatar {
+                width              : 50px;
+                height             : 50px;
+                background-position: center center;
+                background-size    : cover;
+                background-repeat  : no-repeat;
+            }
+
+            .artist-info {
+                margin-left: 10px;
+                line-height: 16px;
+
+                .name {
+                    font-weight: 100;
+                    color      : #999;
+                    font-weight: 100;
+                }
+
+                .name-song {
+                    overflow     : hidden;
+                    white-space  : nowrap;
+                    text-overflow: ellipsis;
+                    word-break   : normal;
+                    color        : #333;
+                    font-size    : 14px;
+                    font-weight  : 100;
+                }
+
+                .like {
+                    color      : #999;
+                    display    : flex;
+                    align-items: center;
+                    margin-top : 4px;
+
+                    i {
+                        margin-right: 4px;
+                    }
+                }
+            }
+        }
+    }
+}

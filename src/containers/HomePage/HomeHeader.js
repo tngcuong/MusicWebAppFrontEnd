@@ -20,6 +20,11 @@ class HomeHeader extends Component {
         this.props.changeLanguageApp(language)
     }
 
+
+    goHome = () => {
+        this.props.history.push("/home");
+    }
+
     componentDidMount() {
         this.props.getCurrentUser()
         this.setState(
@@ -35,7 +40,7 @@ class HomeHeader extends Component {
         }
     }
 
-    HandleToPersonalPage = () =>{
+    HandleToPersonalPage = () => {
         this.props.history.push(`/user/${this.state.currentUser.id}`)
     }
 
@@ -50,14 +55,16 @@ class HomeHeader extends Component {
                     <div className='home-header-content'>
                         <div className='left-content'>
                             {/* <img className='header-logo' src={logo} /> */}
-                            <div className='header-logo' style={{
-                                width: "5rem",
-                                height: "60px",
-                                backgroundImage: `url("${logo}")`,
-                                backgroundPosition: 'center center',
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat'
-                            }}></div>
+                            <div className='header-logo'
+                                onClick={() => this.goHome()}
+                                style={{
+                                    width: "5rem",
+                                    height: "60px",
+                                    backgroundImage: `url("${logo}")`,
+                                    backgroundPosition: 'center center',
+                                    backgroundSize: 'cover',
+                                    backgroundRepeat: 'no-repeat'
+                                }}></div>
 
                             <div className='child-content'>
                                 <div><b><FormattedMessage id="home-header.explore" /></b></div>

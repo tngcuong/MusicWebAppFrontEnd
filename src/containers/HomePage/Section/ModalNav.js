@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'react
 import "./ModalNav.scss";
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import logo from "../../../assets/logo.svg";
+
 
 class ModalNav extends Component {
     constructor(props) {
@@ -22,13 +22,12 @@ class ModalNav extends Component {
 
     render() {
         let isLogin = this.props.isLoggedIn
-        console.log(isLogin);
         return (
             <>
                 <div className='Nav-Container'>
                     <div className='logo-nav'
                         style={{
-                            backgroundImage: `url("${logo}")`,
+                            backgroundImage: `url("")`,
                             backgroundPosition: 'center',
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat'

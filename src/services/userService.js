@@ -38,13 +38,12 @@ const editUser = (user) => {
 }
 
 const getCurrentUser = async () => {
-    const localSto = JSON.parse(localStorage.getItem("persist:account"))
-    if (!localSto && localSto.accountInfo == null) {
-        return null
-    }
-    const token = localSto.accountInfo.replace(/"/g, '')
-    var data = jwtDecode(token);
-    return data
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.get("api/User/GetCurrentUser", {
+        "headers": {
+            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+        },
+    })
 }
 
 const getUserById = async (id) => {

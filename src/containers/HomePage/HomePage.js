@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import * as actions from "../../store/actions"
 import HomeHeader from './HomeHeader';
 import Slider from './Section/SliderCustom';
 import './HomePage.scss';
@@ -11,8 +11,20 @@ import "slick-carousel/slick/slick-theme.css";
 import About from './Section/About';
 import HomeFooter from './HomeFooter';
 import MusicPlayer from '../Partial/MusicPlayer';
+import Feature from './Section/Feature';
 
 class HomePage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
+    componentDidMount() {
+        this.props.showPlayer(true)
+    }
+
 
     render() {
         let settings = {
@@ -24,16 +36,20 @@ class HomePage extends Component {
 
         };
         const { isLoggedIn } = this.props;
-        let linkToRedirect = isLoggedIn ? '/system/user-manage' : '/home';
+        let linkToRedirect = isLoggedIn ? '/home' : '/home';
 
         return (
-            <div>
-                <HomeHeader isShowBanner ={true} />
-                <Slider settings={settings} />
-                <Carousel settings={settings} />
-                <About />
-                <HomeFooter />
-                <MusicPlayer/>
+            <div className='home-container'>
+                <HomeHeader isShowBanner={true} />
+                <div className='main-content'>
+                    <div className='content-left'>
+                        <Slider settings={settings} />
+                        <Carousel settings={settings} />
+                    </div>
+                    <div className='content-right'>
+                        <Feature />
+                    </div>
+                </div>
             </div>
         );
     }
@@ -48,6 +64,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag))
     };
 };
 

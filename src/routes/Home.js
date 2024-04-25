@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import MusicPlayer from '../containers/Partial/MusicPlayer';
 
 class Home extends Component {
 
@@ -9,7 +10,11 @@ class Home extends Component {
         let linkToRedirect = isLoggedIn ? '/system/song-manage' : '/home';
 
         return (
-            <Redirect to={linkToRedirect} />
+            <>
+                <Redirect to={linkToRedirect} />
+                
+            </>
+
         );
     }
 

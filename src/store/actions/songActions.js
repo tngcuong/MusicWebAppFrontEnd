@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getAllSongs, createASong, deleteASongById } from '../../services/songService';
+import { getAllSongs, createASong, deleteASongById, getLikedSong } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
     type: actionTypes.FETCH_SONG_SUCCESS,
@@ -56,6 +56,14 @@ export const addSongFailed = () => ({
     type: actionTypes.ADD_SONG_FAILED
 })
 
+export const firstMount = () => ({
+    type: actionTypes.FIRST_MOUNT,
+})
+
+export const showPlayer = (flag) => ({
+    type: actionTypes.SHOW_PLAYER,
+    data: flag
+})
 
 export const deleteSongSuccess = () => ({
     type: actionTypes.DELETE_SONG_SUCCESS,
@@ -94,4 +102,31 @@ export const deleteSongStart = (id, pageIndex, pageSize) => {
     }
 
 }
+
+export const getLikedSongStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_LIKED_SONG_START })
+            let data = await getLikedSong(id)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                getLikedSongSuccess(data.content)
+            } else {
+                dispatch(getLikedSongFailed(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const getLikedSongSuccess = (list) => ({
+    type: actionTypes.GET_LIKED_SONG_SUCCESS,
+    song: list,
+})
+
+export const getLikedSongFailed = (error) => ({
+    type: actionTypes.GET_LIKED_SONG_FAILED,
+    flag: error
+})
 

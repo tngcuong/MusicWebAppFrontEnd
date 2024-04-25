@@ -4,9 +4,12 @@ import { toast } from 'react-toastify';
 const initialState = {
     isLoading: false,
     currentSong: {},
-    currentListSong: [],
     songs: [],
     isPlaying: false,
+    isSong: true,
+    firstMount: false,
+    isShowPlayer: false,
+    likedSong: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -75,12 +78,39 @@ const appReducer = (state = initialState, action) => {
                 ...state
             }
         case actionTypes.GET_CURRENT_SONG:
-            state.currentSong = action.song
+            state.currentSong = { ...action.song }
             return {
                 ...state
             }
         case actionTypes.PLAY_SONG:
             state.isPlaying = action.flag
+            return {
+                ...state
+            }
+        case actionTypes.FIRST_MOUNT:
+            state.firstMount = true
+            return {
+                ...state
+            }
+        case actionTypes.SHOW_PLAYER:
+            state.isShowPlayer = action.data
+            return {
+                ...state
+            }
+        case actionTypes.GET_DETAIL_ALBUM_SUCCESS:
+            state.isLoading = false
+            state.likedSong = [...action.list]
+            return {
+                ...state
+            }
+        case actionTypes.GET_DETAIL_ALBUM_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_DETAIL_ALBUM_FAILED:
+            state.isLoading = false
+            toast.success(action.error)
             return {
                 ...state
             }

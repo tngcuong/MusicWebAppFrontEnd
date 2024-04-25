@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 import moment from 'moment';
 
 import HomeHeader from '../HomePage/HomeHeader';
-
+import CustomScrollbars from '../../components/CustomScrollbars';
 import HomeFooter from '../HomePage/HomeFooter';
 import MusicPlayer from '../Partial/MusicPlayer';
 import { getRandomColor, totalTime, calcuDate } from '../../components/HOC/RandomColor';
@@ -21,19 +21,13 @@ class AlbumMusic extends Component {
             bg: "",
             totalSong: 0,
             totalTime: 0,
-            createAt: ""
+            createAt: "",
+            userAlbums: []
         }
     }
 
     componentDidMount() {
-        this.props.getDetailSong(this.props.match.params.album)
-        this.setState({
-            bg: getRandomColor(),
-            totalSong: this.props.detailAlbum.songList ? this.props.detailAlbum.songList.length : 0,
-            totalTime: totalTime(this.props.detailAlbum.songList),
-            createAt: calcuDate(this.props.detailAlbum.createAt)
-        })
-
+        this.props.getDetailAlbum(this.props.match.params.album)
     }
 
     componentDidUpdate(preProps, prevState) {
@@ -44,12 +38,20 @@ class AlbumMusic extends Component {
                 totalSong: this.props.detailAlbum.songList ? this.props.detailAlbum.songList.length : 0,
                 totalTime: totalTime(this.props.detailAlbum.songList),
                 createAt: calcuDate(this.props.detailAlbum.createAt)
+            }, () => {
+                this.props.getAlbumByUserId(this.state.detailAlbum?.createById)
+
+            })
+        }
+
+        if (this.props.userAlbums != preProps.userAlbums) {
+            this.setState({
+                userAlbums: [...this.props.userAlbums]
             })
         }
     }
 
     render() {
-        console.log(this.state);
         let { detailAlbum } = this.state
 
         return (
@@ -73,8 +75,8 @@ class AlbumMusic extends Component {
                                         <i className="fas fa-pause-circle"></i>
                                 }</div>
                                 <div className='title-artist'>
-                                    <div className='title'>{detailAlbum.name}</div>
-                                    <div className='artist'>By {detailAlbum.createBy && detailAlbum.createBy.name}</div>
+                                    <div className='title'>&ensp;{detailAlbum.name}</div>
+                                    <div className='artist'>&ensp; By {detailAlbum.createBy && detailAlbum.createBy.name} &ensp;</div>
                                 </div>
                             </div>
                             <div className='album-info-down'>
@@ -108,98 +110,128 @@ class AlbumMusic extends Component {
                         </div>
                     </div >
                     <div className='album-content'>
-                        <div className='album-action'>
-                            <div className='like'> <span><i className="far fa-heart"></i></span>Like</div>
-                            <div className='liked'> <span><i className="fas fa-heart"></i></span>10</div>
+                        <div className='left'>
+                            <div className='album-action'>
+                                <div className='like'> <span><i className="far fa-heart"></i></span>Like</div>
+                                <div className='liked'> <span><i className="fas fa-heart"></i></span>10</div>
+                            </div>
+                            <div className='album-info'>
+                                <div className='album-content-left'>
+                                    <div className='album-info-avatar' style={{
+                                        backgroundImage: `url("${detailAlbum.createBy && detailAlbum.createBy.avatar}")`,
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        backgroundRepeat: 'no-repeat'
+                                    }}>
+
+                                    </div>
+                                    <div className='album-info-name'>
+                                        {detailAlbum.createBy && detailAlbum.createBy.name}
+                                    </div>
+                                    <div className='album-info-quantity'>
+                                        <i className="fas fa-user-friends"></i> 100
+                                    </div>
+                                    <div className='album-info-btn-follow'>
+                                        <button className='btn-follow'>Follow</button>
+                                    </div>
+                                </div>
+                                <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
+                                    <div className='album-content-center'>
+                                        {
+
+                                            detailAlbum?.songList &&
+                                            detailAlbum.songList?.map((item, index) => {
+                                                return (
+                                                    <div className='list-song' key={item.id}>
+                                                        <div className='track-avatar' style={{
+                                                            backgroundImage: `url("${item.image}")`,
+                                                            backgroundPosition: 'center center',
+                                                            backgroundSize: 'cover',
+                                                            backgroundRepeat: 'no-repeat'
+                                                        }}></div>
+                                                        <div className='track-number'>{index + 1}</div>
+                                                        <div className='artist-info'>
+                                                            <span className='track-artist'>{item.user?.name}</span>
+                                                            <span> - </span>
+                                                            <span className='track-name'>{item.name}</span>
+                                                        </div>
+
+                                                        <div className='track-play'><i className="fas fa-play"></i></div>
+                                                        <div></div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+
+                                    </div>
+                                </CustomScrollbars>
+                            </div>
                         </div>
-                        <div className='album-info'>
-                            <div className='album-content-left'>
-                                <div className='album-info-avatar' style={{
-                                    backgroundImage: `url("${detailAlbum.createBy && detailAlbum.createBy.avatar}")`,
-                                    backgroundPosition: 'center center',
-                                    backgroundSize: 'cover',
-                                    backgroundRepeat: 'no-repeat'
-                                }}>
+
+                        <div className='album-content-right'>
+                            <div className='relative-album'>
+                                <div className='title-relative'>
+                                    <div className='icon' style={{
+                                        backgroundImage: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMThweCIgaGVpZ2h0PSIxOHB4IiB2aWV3Qm94PSIwIDAgMTggMTgiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQzLjEgKDM5MDEyKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5pY19wbGF5bGlzdF8xODwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzLz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJpY19wbGF5bGlzdCIgZmlsbD0icmdiKDE1MywgMTUzLCAxNTMpIj4KICAgICAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMi4wMDAwMDAsIDIuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTIiIHg9IjAiIHk9IjQiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIvPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlBhdGgtMiIgZmlsbC1vcGFjaXR5PSIwLjciIHBvaW50cz0iMyAwIDE0IDAgMTQgMTAgMTIgMTAgMTIgMiAzIDIiLz4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+)',
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        backgroundRepeat: 'no-repeat'
+                                    }}></div>
+                                    <span>Playlists from this user</span>
+                                    <span className='view-all'>View all</span>
+                                </div>
+                                <div className='content-relative'>
+                                    {this.state.userAlbums && this.state.userAlbums?.map((item, index) => {
+                                        return (
+                                            <div key={item.id} >
+                                                {
+                                                    JSON.stringify(this.state.detailAlbum) !== JSON.stringify(item) &&
+                                                    <div className='user-album' >
+                                                        <div className='round-user-album-th' style={{
+                                                            backgroundImage: 'url(https://a-v2.sndcdn.com/assets/images/playlist-cover-bg_small-1e402003.png)',
+                                                            backgroundPosition: 'center center',
+                                                            backgroundSize: 'cover',
+                                                            backgroundRepeat: 'no-repeat'
+                                                        }}>
+                                                            <div className='user-album-thumbnail' style={{
+                                                                backgroundImage: `url("${item.thumbnail}")`,
+                                                                backgroundPosition: 'center center',
+                                                                backgroundSize: 'cover',
+                                                                backgroundRepeat: 'no-repeat'
+                                                            }}>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className='user-album-info'>
+                                                            <div className='artist'>
+                                                                {item.createBy?.name}
+                                                            </div>
+                                                            <div className='user-album-name'>
+                                                                {item.name}
+                                                            </div>
+                                                            <div className='user-album-liked'>
+                                                                <i className="fas fa-heart"></i> 100
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        )
+                                    })}
+
 
                                 </div>
-                                <div className='album-info-name'>
-                                    {detailAlbum.createBy && detailAlbum.createBy.name}
-                                </div>
-                                <div className='album-info-quantity'>
-                                    <i class="fas fa-user-friends"></i> 100
-                                </div>
-                                <div className='album-info-btn-follow'>
-                                    <button className='btn-follow'>Follow</button>
-                                </div>
                             </div>
-                            <div className='album-content-center'>
-                                <div className='track-avatar'></div>
-                                <div className='track-number'></div>
-                                <div className='track-artist'></div>
-                                <div className='track-name'></div>
-                            </div>
-                            <div className='album-content-right'>
 
-                            </div>
+                            <div className=''></div>
                         </div>
                     </div>
 
-                </div>
 
+                </div >
+                <div className='album-player' >
 
-                {/* <div className='album-content-left'>
-                        <img className='thumbnail' src={detailAlbum.thumbnail}></img>
-                        <div className='info'>
-                            <h3 className='name'>{detailAlbum.name}</h3>
-                            <span className='create'>
-                                <span>Create at: </span>
-                                <span className='create-at'>{moment.utc(detailAlbum.createAt).format("DD/MM/YYYY")}</span>
-                            </span>
-                            <span className='artist'></span>
-                            <span className='liked'>1k</span>
-                        </div>
-                    </div>
-                    <div className='album-content-right'>
-                        <div className=''>
-                            <div className='album-list-song'>
-                                <div className='album-list-title'>
-                                    <span>Bai hat</span>
-                                    <span>Tac gia</span>
-                                    <span>Thoi gian</span>
-                                </div>
-                                <div className='list-song-container'>
-                                    {
-
-                                        detailAlbum.songList &&
-                                        detailAlbum.songList.map((item, index) => {
-                                            return (
-                                                <div className='list-song' key={item.id}>
-                                                    <div className='col-1'>
-                                                        <span><i className="fas fa-music"></i></span>
-                                                        <img src={item.image} alt='thumbnail' className='img-music'></img>
-                                                        <span className='artist-music'>
-                                                            <span className='artist-name'>{item.name}</span>
-                                                            <span>{item.user && item.user.name}</span>
-                                                        </span>
-                                                    </div>
-                                                    <div className='col-2'>
-
-                                                    </div>
-                                                    <div className='col-3'>
-                                                        {moment.utc(item.durationTime * 1000).format("mm:ss")}
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-
-                <div className='album-player'>
-                    <MusicPlayer />
-                </div>
+                </div >
 
             </>
         );
@@ -211,12 +243,14 @@ const mapStateToProps = state => {
     return {
         detailAlbum: state.album.detailAlbum,
         isPlaying: state.album.isPlaying,
+        userAlbums: state.album.userAlbums
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getDetailSong: (id) => dispatch(actions.getDetailAlbumStart(id)),
+        getDetailAlbum: (id) => dispatch(actions.getDetailAlbumStart(id)),
+        getAlbumByUserId: (id) => dispatch(actions.getAlbumByUserIdStart(id))
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AlbumMusic));

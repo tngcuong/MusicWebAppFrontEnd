@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import "./MusicPlayer.scss";
 import * as actions from '../../store/actions';
 import moment from 'moment';
-
+import PlayList from './PlayList';
+import Loader from "../../components/Loader";
+import { FormattedMessage, useIntl, injectIntl } from 'react-intl'
 
 let intervalId
 class MusicPlayer extends Component {
@@ -15,13 +16,17 @@ class MusicPlayer extends Component {
             sourceMusic: new Audio(),
             timeRef: React.createRef(),
             currentTime: 0,
-            progressRef: React.createRef()
+            progressRef: React.createRef(),
+            isOpenModal: false,
+            volume: 100,
+            isRepeat: 0,
+            isShuffle: false,
+            isLoading: false,
         };
 
     }
 
     getCurrentTime = () => {
-
         if (this.props.isPlaying === true) {
             intervalId = setInterval(() => {
                 let percent = Math.round(this.state.sourceMusic.currentTime * 10000 / this.state.sourceMusic.duration) / 100;
@@ -35,7 +40,25 @@ class MusicPlayer extends Component {
         }
     }
 
+
+
     async componentDidUpdate(prevProps, prevState) {
+        if (this.props.isPlaying != prevProps.isPlaying) {
+            this.props.playSong(this.props.isPlaying)
+            const { isPlaying } = this.props;
+            if (isPlaying === true) {
+                this.checkLoadMusic()
+                this.getCurrentTime()
+                this.endMusic()
+            } else {
+                // let percent = Math.round(this.state.sourceMusic.currentTime * 10000 / this.state.sourceMusic.duration) / 100;
+                // this.state.timeRef.current.style.cssText = `right: ${100 - percent}%`;
+                this.state.sourceMusic.pause()
+                this.endMusic()
+                clearInterval(intervalId)
+            }
+        }
+
         if (this.props.song != prevProps.song) {
             this.state.sourceMusic.pause()
             this.setState({
@@ -43,41 +66,111 @@ class MusicPlayer extends Component {
                 sourceMusic: new Audio(this.props.song.source),
                 currentTime: 0
             }, () => {
-                this.state.sourceMusic.load()
-                this.props.playSong(true)
-                this.state.sourceMusic.play()
+
             })
+            await this.state.sourceMusic.load()
+            this.props.playSong(true)
+            await this.checkLoadMusic()
+
+            this.endMusic()
         }
 
-
-        if (this.props.isPlaying != prevProps.isPlaying) {
-            this.props.playSong(this.props.isPlaying)
-            const { isPlaying } = this.props;
-            if (isPlaying === true) {
-                this.state.sourceMusic.play()
-                this.getCurrentTime()
-            } else {
-                this.state.sourceMusic.pause()
-                clearInterval(intervalId)
-            }
+        if (this.state.volume != prevState.volume) {
+            this.state.sourceMusic.volume = this.state.volume / 100
         }
+
     }
 
+    endMusic = () => {
+        const handleEndMusic = () => {
+            let { currentAlbum, song } = this.props
+            let { isShuffle, isRepeat } = this.state
+            if (isRepeat === 1) {
+                this.handleRepeatSong()
+            } else if (isRepeat === 2 || isRepeat === 0) {
+                if (isShuffle === true) {
+                    this.handleShuffle()
+                } else {
+                    if (song && currentAlbum.length > 0 && this.checkSongIsLast(song, currentAlbum) === false) {
+                        let index = currentAlbum.findIndex(item => JSON.stringify(this.props.song) === JSON.stringify(item))
+                        this.props.setCurrentSong(currentAlbum[index + 1])
+                    } else {
+                        if (isRepeat === 2) {
+                            this.handleRepeatAlbum()
+                        }
+                        this.state.timeRef.current.style.cssText = `right: 100%`;
+                        this.setState({
+                            currentTime: 0,
+                        })
+                        this.state.sourceMusic.currentTime = 0
+                        this.props.playSong(false)
+                    }
+                }
+            }
+
+
+
+        }
+
+        this.state.sourceMusic.addEventListener("ended", handleEndMusic)
+        return this.state.sourceMusic.addEventListener("ended", handleEndMusic)
+    }
+
+    handleShuffle = () => {
+        let { currentAlbum, song } = this.props
+        const randomIndex = Math.floor(Math.random() * currentAlbum?.length)
+        if (randomIndex === -1) {
+            randomIndex = 0
+        }
+        this.props.setCurrentSong(currentAlbum[randomIndex])
+    }
+
+    handleRepeatSong = () => {
+        this.state.sourceMusic.play()
+    }
+
+    componentWillUnmount() {
+    }
+
+    handleRepeatAlbum = () => {
+        let { currentAlbum } = this.props
+        this.props.setCurrentSong(currentAlbum[0])
+    }
+
+    checkLoadMusic = async () => {
+        let source = this.state.sourceMusic;
+        source.play()
+        this.setState({
+            isPlaying: true
+        })
+        source.addEventListener("canplaythrough", () => {
+            this.setState({
+                isPlaying: false
+            })
+        });
+    }
 
     async componentDidMount() {
-        this.setState({
-            currentSong: { ...this.props.song },
-            sourceMusic: new Audio(this.props.song.source)
-        }, () => {
+        let { isFirstMount } = this.props
+        if (isFirstMount === false) {
+            this.props.firstMount()
+            this.setState({
+                currentSong: { ...this.props.song },
+                sourceMusic: new Audio(this.props.song.source)
+            }, () => {
+
+            })
             this.state.sourceMusic.load()
             this.props.playSong(false)
-        })
+            this.endMusic()
+        }
+
     }
 
     checkToPlay() {
         const { isPlaying } = this.props;
         if (isPlaying) {
-            this.state.sourceMusic.play()
+            this.checkLoadMusic()
         } else {
             this.state.sourceMusic.pause()
         }
@@ -95,18 +188,59 @@ class MusicPlayer extends Component {
         this.props.playSong(play)
 
         if (play) {
-            this.state.sourceMusic.play()
+            this.checkLoadMusic()
         } else {
             this.state.sourceMusic.pause()
         }
     };
 
-    handlePrevSong = () => {
+    openPlayList = () => {
+        this.toggleSongModal()
+    }
 
+    handlePrevSong = () => {
+        let { currentAlbum, song } = this.props
+        if (song && currentAlbum && this.checkSongIsFirst(song, currentAlbum) === false) {
+            let index = currentAlbum.findIndex(item => JSON.stringify(this.props.song) === JSON.stringify(item))
+            this.props.setCurrentSong(currentAlbum[index - 1])
+        }
+    }
+
+    checkSongIsLast = (item, array) => {
+        if (JSON.stringify(array[array.length - 1]) === JSON.stringify(item)) {
+            return true
+        }
+        return false
+    }
+
+    checkSongIsFirst = (item, array) => {
+        if (JSON.stringify(array[0]) === JSON.stringify(item)) {
+            return true
+        }
+        return false
     }
 
     handleNextSong = () => {
+        let { currentAlbum, song } = this.props
+        if (this.state.isShuffle === true) {
+            this.handleShuffle()
+        } else if (song && currentAlbum && this.checkSongIsLast(song, currentAlbum) === false) {
+            let index = currentAlbum.findIndex(item => JSON.stringify(this.props.song) === JSON.stringify(item))
+            this.props.setCurrentSong(currentAlbum[index + 1])
+        }
 
+    }
+
+    toggleShuffle = () => {
+        this.setState({
+            isShuffle: !this.state.isShuffle
+        })
+    }
+
+    toggleRepeat = () => {
+        this.setState({
+            isRepeat: this.state.isRepeat === 2 ? 0 : this.state.isRepeat + 1
+        })
     }
 
     handleProgress = (e) => {
@@ -120,13 +254,40 @@ class MusicPlayer extends Component {
         this.state.sourceMusic.currentTime = currentTime
     }
 
-    render() {
-        const { currentSong } = this.state;
-        const { isPlaying } = this.props;
+    toggleSongModal = () => {
+        this.setState({
+            isOpenModal: !this.state.isOpenModal
+        })
+    }
 
+    handleChangeVolume = (e) => {
+        this.setState({
+            volume: e.target.value
+        })
+    }
+
+    toggleVolume = () => {
+        if (this.state.volume === 0) {
+            this.setState({
+                volume: 70
+            })
+        } else {
+            this.setState({
+                volume: 0
+            })
+        }
+    }
+
+
+
+    render() {
+        const { currentSong, volume, isShuffle, isRepeat } = this.state;
+        const { isPlaying, song, isShowPlayer } = this.props;
+        const { intl } = this.props;
+        console.log(this.props.currentUser);
         return (
             <>
-                {currentSong &&
+                {isShowPlayer === true &&
                     <div className='player-container'>
                         <div className='player-left'>
                             <div className='bg-image section-slider' style={{
@@ -152,25 +313,60 @@ class MusicPlayer extends Component {
                         </div>
                         <div className='player-center'>
                             <div className='player-action'>
-                                <span title='phat ngau nhien'>
-                                    <i className="fas fa-random"></i>
+                                {isShuffle === true ?
+                                    <span title={intl.formatMessage({ id: 'player.random' })} onClick={() => { this.toggleShuffle() }} style={{ color: "purple" }}>
+                                        <i className="fas fa-random"></i>
+                                    </span>
+                                    :
+                                    <span title={intl.formatMessage({ id: 'player.random' })} onClick={() => { this.toggleShuffle() }}>
+                                        <i className="fas fa-random"></i>
+                                    </span>}
+                                {this.props.currentAlbum?.length > 0 && this.checkSongIsFirst(this.props.song, this.props.currentAlbum) === false ?
+                                    <span title={intl.formatMessage({ id: 'player.back' })}>
+                                        <i className="fas fa-step-backward"
+                                            onClick={() => { this.handlePrevSong() }}
+                                        ></i>
+                                    </span>
+                                    :
+                                    <span style={{ opacity: "0.3" }} title={intl.formatMessage({ id: 'player.back' })}>
+                                        <i className="fas fa-step-backward"
+
+                                        ></i>
+                                    </span>
+                                }
+
+
+                                <span className='play-btn' onClick={() => { this.handlePlayMusic() }} >
+                                    {isPlaying === true ? <i className="fas fa-pause" title={intl.formatMessage({ id: 'player.pause' })}></i> : <i className="fas fa-play" title={intl.formatMessage({ id: 'player.play' })}></i>}
                                 </span>
-                                <span>
-                                    <i className="fas fa-step-backward"
-                                        onClick={() => { this.handlePrevSong() }}
-                                    ></i>
-                                </span>
-                                <span className='play-btn' onClick={() => { this.handlePlayMusic() }}>
-                                    {isPlaying === true ? <i className="fas fa-pause"></i> : <i className="fas fa-play"></i>}
-                                </span>
-                                <span>
-                                    <i className="fas fa-step-forward"
-                                        onClick={() => { this.handleNextSong() }}
-                                    ></i>
-                                </span>
-                                <span title='phat lai'>
-                                    <i className="fas fa-redo-alt"></i>
-                                </span>
+                                {this.props.currentAlbum?.length > 0 && this.checkSongIsLast(this.props.song, this.props.currentAlbum) === false ?
+                                    <span title={intl.formatMessage({ id: 'player.next' })}>
+                                        <i className="fas fa-step-forward"
+                                            onClick={() => { this.handleNextSong() }}
+                                        ></i>
+                                    </span>
+                                    :
+                                    <span title={intl.formatMessage({ id: 'player.next' })}>
+                                        <i className="fas fa-step-forward" style={{ opacity: "0.3" }}
+                                        ></i>
+                                    </span>
+                                }
+                                {isRepeat === 1 &&
+                                    <span title={intl.formatMessage({ id: 'player.repeat.song' })} onClick={() => { this.toggleRepeat() }} className='repeat1' style={{ color: "purple" }} >
+                                        <i className="fas fa-redo-alt"></i>
+                                    </span>
+                                }
+                                {isRepeat === 2 &&
+                                    <span title={intl.formatMessage({ id: 'player.repeat.playList' })} onClick={() => { this.toggleRepeat() }} style={{ color: "purple" }}>
+                                        <i className="fas fa-redo-alt"></i>
+                                    </span>
+
+                                }
+                                {isRepeat === 0 &&
+                                    <span title={intl.formatMessage({ id: 'player.repeat.repeat' })} onClick={() => { this.toggleRepeat() }}  >
+                                        <i className="fas fa-redo-alt"></i>
+                                    </span>
+                                }
                             </div>
                             <div className='progress'>
                                 <span className='time-left'>{moment.utc(this.state.currentTime * 1000).format("mm:ss")}</span>
@@ -184,10 +380,25 @@ class MusicPlayer extends Component {
                             </div>
                         </div>
                         <div className='player-right'>
+                            <div className='volume'>
+                                <span onClick={() => this.toggleVolume()}>{+volume === 0 ? <i className="fas fa-volume-off" title={intl.formatMessage({ id: 'player.volume' })}></i> : <i className="fas fa-volume-up" title={intl.formatMessage({ id: 'player.mute' })}></i>}</span>
 
+                                <input type='range' step={1} min={0} max={100} value={volume} onChange={(e) => { this.handleChangeVolume(e) }}></input>
+                            </div>
+                            <div>
+                                <div className='album' onClick={() => { this.openPlayList() }}><i className="fas fa-stream"></i>
+                                </div>
+                                {this.state.isOpenModal && <PlayList
+                                    toggleFromParent={this.toggleSongModal}
+                                    isOpen={this.state.isOpenModal}
+                                    size="xl"
+                                ></PlayList>}
+                            </div>
                         </div>
                     </div >
+
                 }
+
             </>
         );
     }
@@ -197,13 +408,19 @@ const mapStateToProps = state => {
     return {
         song: state.song.currentSong,
         isPlaying: state.song.isPlaying,
+        currentAlbum: state.album.currentAlbum,
+        isFirstMount: state.song.firstMount,
+        isShowPlayer: state.song.isShowPlayer,
+        currentUser: state.user.currentUser
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
+        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
+        firstMount: () => dispatch(actions.firstMount())
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MusicPlayer);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MusicPlayer));

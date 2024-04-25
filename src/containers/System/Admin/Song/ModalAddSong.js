@@ -66,8 +66,8 @@ class ModalAddSong extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.currentUser !== this.props.currentUser) {
             this.setState({
-                currentUser: {...this.props.currentUser}
-            }, () => { console.log(this.state) })
+                currentUser: { ...this.props.currentUser }
+            }, () => { })
         }
     }
 
@@ -107,7 +107,6 @@ class ModalAddSong extends Component {
 
     componentDidMount() {
         this.props.getCurrentUser()
-
     }
 
     toggle = () => {

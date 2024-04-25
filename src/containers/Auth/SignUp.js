@@ -72,6 +72,10 @@ class SignUp extends Component {
         })
     }
 
+    componentDidMount() {
+        this.props.showPlayer(false)
+    }
+
     render() {
         return (
             <>
@@ -154,7 +158,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        handleRegister: (data) => dispatch(actions.registerStart(data))
+        handleRegister: (data) => dispatch(actions.registerStart(data)),
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
     };
 };
 
