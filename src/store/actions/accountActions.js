@@ -7,8 +7,9 @@ export const accountLoginSuccess = (accountInfo) => ({
     accountInfo: accountInfo
 })
 
-export const accountLoginFail = () => ({
-    type: actionTypes.ACCOUNT_LOGIN_FAIL
+export const accountLoginFail = (error) => ({
+    type: actionTypes.ACCOUNT_LOGIN_FAIL,
+    data: error
 })
 
 export const processLogout = () => ({
@@ -22,13 +23,15 @@ export const accountLoginStart = (userName, password) => {
             let data = await handleLogin(userName, password)
             console.log(data);
             if (data && data.errorCode === 200) {
-
                 dispatch(accountLoginSuccess(data.content.token))
             } else {
-                dispatch(accountLoginFail())
+                dispatch(accountLoginFail(data.error))
             }
         } catch (error) {
             console.log(error);
+            if (error && error.response && error.response.data) {
+                dispatch(accountLoginFail(error.response.data.message))
+            }
         }
     }
 }

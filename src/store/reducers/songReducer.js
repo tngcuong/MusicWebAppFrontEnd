@@ -97,18 +97,50 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.GET_DETAIL_ALBUM_SUCCESS:
+        case actionTypes.a:
             state.isLoading = false
             state.likedSong = [...action.list]
             return {
                 ...state
             }
-        case actionTypes.GET_DETAIL_ALBUM_START:
+        case actionTypes.b:
             state.isLoading = true
             return {
                 ...state
             }
-        case actionTypes.GET_DETAIL_ALBUM_FAILED:
+        case actionTypes.c:
+            state.isLoading = false
+            toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.LIKE_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.LIKE_SONG_SUCCESS:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.LIKE_SONG_FAILED:
+            state.isLoading = false
+            toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.UNLIKE_SONG_SUCCESS:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.UNLIKE_SONG_SUCCESS:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.UNLIKE_SONG_FAILED:
             state.isLoading = false
             toast.success(action.error)
             return {

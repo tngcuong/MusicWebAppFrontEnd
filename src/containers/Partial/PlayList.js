@@ -19,6 +19,16 @@ class PlayList extends Component {
 
     }
 
+    playSong = (item) => {
+        let { song, isPlaying } = this.props
+        if (JSON.stringify(this.props.song) !== JSON.stringify(item)) {
+            this.props.setCurrentSong(item)
+        } else {
+            this.props.playSong(!isPlaying)
+        }
+
+    }
+
     toggle = () => {
         this.props.toggleFromParent()
     }
@@ -37,7 +47,7 @@ class PlayList extends Component {
                             this.props.currentAlbum?.length > 0 &&
                             this.props.currentAlbum.map((item, index) => {
                                 return (
-                                    <div key={item.id}>
+                                    <div key={item.id} onClick={() => { this.playSong(item) }}>
                                         {JSON.stringify(this.props.song) !== JSON.stringify(item) ?
                                             <div className='list-song' ref={this.state.itemRef}
                                                 style={{
@@ -106,12 +116,14 @@ const mapStateToProps = state => {
     return {
         currentAlbum: state.album.currentAlbum,
         song: state.song.currentSong,
+        isPlaying: state.song.isPlaying
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
+        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
     };
 };
 

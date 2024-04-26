@@ -7,6 +7,7 @@ import * as actions from "../../store/actions";
 import './Login.scss';
 import { FormattedMessage } from 'react-intl';
 import { handleLogin } from '../../services/accountService';
+import Loader from '../../components/Loader';
 
 class Login extends Component {
     constructor(props) {
@@ -44,11 +45,17 @@ class Login extends Component {
             isShowPassword: !this.state.isShowPassword
         })
     }
+    componentDidMount() {
+        this.props.showPlayer(false)
+    }
 
     render() {
 
         return (
             <>
+                {this.props.isLoading === true &&
+                    <Loader />
+                }
                 <div className='login-background'>
                     <div className='login-container'>
                         <div className='login-content row'>
@@ -100,14 +107,16 @@ class Login extends Component {
 
 const mapStateToProps = state => {
     return {
-        language: state.app.language
+        language: state.app.language,
+        isLoading: state.account.isLoading
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        accountLogin: (username, password) => dispatch(actions.accountLoginStart(username, password))
+        accountLogin: (username, password) => dispatch(actions.accountLoginStart(username, password)),
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
     };
 };
 

@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getAllSongs, createASong, deleteASongById, getLikedSong } from '../../services/songService';
+import { getAllSongs, createASong, deleteASongById, getLikedSong, likeSong, unLikeSong } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
     type: actionTypes.FETCH_SONG_SUCCESS,
@@ -129,4 +129,58 @@ export const getLikedSongFailed = (error) => ({
     type: actionTypes.GET_LIKED_SONG_FAILED,
     flag: error
 })
+
+export const likeSongStart = (idUser, idSong) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.LIKE_SONG_START })
+            let data = await likeSong(idUser, idSong)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                likeSongSuccess()
+            } else {
+                dispatch(likeSongFailed(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const likeSongSuccess = () => ({
+    type: actionTypes.LIKE_SONG_SUCCESS,
+})
+
+export const likeSongFailed = (error) => ({
+    type: actionTypes.LIKE_SONG_FAILED,
+    flag: error
+})
+
+export const unLikeSongStart = (idUser, idSong) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.UNLIKE_SONG_START })
+            let data = await unLikeSong(idUser, idSong)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                unLikeSongSuccess()
+            } else {
+                dispatch(unLikeSongFailed(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const unLikeSongSuccess = () => ({
+    type: actionTypes.UNLIKE_SONG_SUCCESS,
+})
+
+export const unLikeSongFailed = (error) => ({
+    type: actionTypes.UNLIKE_SONG_FAILED,
+    flag: error
+})
+
+
 

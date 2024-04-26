@@ -30,6 +30,12 @@ class AlbumMusic extends Component {
         this.props.getDetailAlbum(this.props.match.params.album)
     }
 
+    setCurrentAlbum = async (item, index) => {
+        this.props.setCurrentAlbum(this.state.detailAlbum.songList)
+        await this.props.setCurrentSong(item)
+        await this.props.playSong(true)
+    }
+
     componentDidUpdate(preProps, prevState) {
         if (this.props.detailAlbum != preProps.detailAlbum) {
             this.setState({
@@ -53,7 +59,7 @@ class AlbumMusic extends Component {
 
     render() {
         let { detailAlbum } = this.state
-
+        console.log(this.props);
         return (
             <>
                 <HomeHeader isShowBanner={false} />
@@ -142,7 +148,7 @@ class AlbumMusic extends Component {
                                             detailAlbum?.songList &&
                                             detailAlbum.songList?.map((item, index) => {
                                                 return (
-                                                    <div className='list-song' key={item.id}>
+                                                    <div className='list-song' key={item.id} onClick={() => this.setCurrentAlbum(item, index)}>
                                                         <div className='track-avatar' style={{
                                                             backgroundImage: `url("${item.image}")`,
                                                             backgroundPosition: 'center center',
@@ -250,7 +256,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getDetailAlbum: (id) => dispatch(actions.getDetailAlbumStart(id)),
-        getAlbumByUserId: (id) => dispatch(actions.getAlbumByUserIdStart(id))
+        getAlbumByUserId: (id) => dispatch(actions.getAlbumByUserIdStart(id)),
+        setCurrentAlbum: (album) => dispatch(actions.setCurrentAlbum(album)),
+        setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
+        playSong: (flag) => dispatch(actions.playMusic(flag)),
     };
 };
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AlbumMusic));

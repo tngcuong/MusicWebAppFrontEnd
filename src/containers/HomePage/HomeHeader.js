@@ -40,14 +40,21 @@ class HomeHeader extends Component {
         }
     }
 
+    goLogin = () => {
+        this.props.history.push(`/login`)
+    }
+
+    goRegist = () => {
+        this.props.history.push(`/sign-up`)
+    }
+
     HandleToPersonalPage = () => {
         this.props.history.push(`/user/${this.state.currentUser.id}`)
     }
 
     render() {
-        let language = this.props.language
+        let { language, processLogout, currentUser } = this.props
         let isLogin = this.props.isLoggedIn
-        const { currentUser } = this.state
         console.log(this.props);
         return (
             <>
@@ -94,8 +101,13 @@ class HomeHeader extends Component {
                         </div>
                         <div className='right-content'>
                             {isLogin && isLogin === true &&
-                                <div className='child-content' onClick={() => { this.HandleToPersonalPage() }}>
-                                    <div><b><FormattedMessage id="home-header.profile" /></b></div>
+                                <div className='child-content' onClick={() => { this.HandleToPersonalPage() }}  >
+                                    <div className='profile' style={{
+                                        backgroundImage: `url("${currentUser.avatar}")`,
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        backgroundRepeat: 'no-repeat'
+                                    }}><b><FormattedMessage id="home-header.profile" /></b></div>
                                     {/* <div className='subs-title'></div> */}
                                 </div>
                             }
@@ -103,13 +115,13 @@ class HomeHeader extends Component {
                             <div className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span></div>
                             <div className='login-logout'>
                                 {isLogin && isLogin === true ?
-                                    <FormattedMessage id="home-header.logout" />
+                                    <span onClick={processLogout}><FormattedMessage id="home-header.logout" /></span>
 
                                     :
-                                    <FormattedMessage id="home-header.login" />
+                                    <span onClick={() => { this.goLogin() }}><FormattedMessage id="home-header.login" /></span>
                                 }
-                                {isLogin && isLogin === false &&
-                                    <FormattedMessage id="home-header.register" />
+                                {isLogin === false &&
+                                    <span style={{ marginLeft: "14px" }} onClick={() => { this.goRegist() }}><FormattedMessage id="home-header.register" /></span>
                                 }
                             </div>
                         </div>
@@ -170,6 +182,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        processLogout: () => dispatch(actions.processLogout()),
         getCurrentUser: () => dispatch(actions.getCurrentUserStart()),
         changeLanguageApp: (language) => dispatch(changeLanguageApp(language))
     };

@@ -6,6 +6,8 @@ import moment from 'moment';
 import PlayList from './PlayList';
 import Loader from "../../components/Loader";
 import { FormattedMessage, useIntl, injectIntl } from 'react-intl'
+import { likeSong } from '../../services/songService';
+import LikeSong from './LikeSong';
 
 let intervalId
 class MusicPlayer extends Component {
@@ -77,6 +79,10 @@ class MusicPlayer extends Component {
 
         if (this.state.volume != prevState.volume) {
             this.state.sourceMusic.volume = this.state.volume / 100
+        }
+
+        if (this.props.currentUser !== prevProps.currentUser) {
+
         }
 
     }
@@ -278,13 +284,11 @@ class MusicPlayer extends Component {
         }
     }
 
-
-
     render() {
         const { currentSong, volume, isShuffle, isRepeat } = this.state;
-        const { isPlaying, song, isShowPlayer } = this.props;
+        const { isPlaying, song, isShowPlayer, currentUser } = this.props;
         const { intl } = this.props;
-        console.log(this.props.currentUser);
+
         return (
             <>
                 {isShowPlayer === true &&
@@ -304,12 +308,18 @@ class MusicPlayer extends Component {
                                 <span className='song-name'>{currentSong?.name}</span>
                                 <span className='song-username'>{currentSong.user && currentSong.user.name}</span>
                             </div>
-                            <div>
+                            <LikeSong></LikeSong>
+                            {/* <div>
                                 <span>
-                                    <i className="far fa-heart"></i>
+                                    {currentUser && currentUser.listSong && currentUser.listSong.includes(currentSong.id) ?
+                                        <i className="fas fa-heart" onClick={() => this.unLikeSong()}></i>
+                                        :
+                                        <i className="far fa-heart" onClick={() => this.likeSong()} ></i>
+                                    }
+
                                 </span>
 
-                            </div>
+                            </div> */}
                         </div>
                         <div className='player-center'>
                             <div className='player-action'>
@@ -419,7 +429,10 @@ const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
-        firstMount: () => dispatch(actions.firstMount())
+        firstMount: () => dispatch(actions.firstMount()),
+        likeSong: (idUser, idSong) => dispatch(actions.likeSongStart(idUser, idSong)),
+        unLikeSong: (idUser, idSong) => dispatch(actions.unLikeSongStart(idUser, idSong)),
+        getCurrentUser: () => dispatch(actions.getCurrentUserStart())
     };
 };
 

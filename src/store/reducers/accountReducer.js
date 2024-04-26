@@ -11,11 +11,14 @@ const initialState = {
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ACCOUNT_LOGIN_START:
+            state.isLoading = true
             return {
                 ...state,
                 isLoading: true
             }
         case actionTypes.ACCOUNT_LOGIN_SUCCESS:
+            state.isLoading = false
+            toast.success('Login success')
             return {
                 ...state,
                 isLoggedIn: true,
@@ -23,6 +26,8 @@ const appReducer = (state = initialState, action) => {
                 accountInfo: action.accountInfo
             }
         case actionTypes.ACCOUNT_LOGIN_FAIL:
+            state.isLoading = false
+            toast.error(action.data)
             return {
                 ...state,
                 isLoggedIn: false,
