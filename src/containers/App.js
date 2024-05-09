@@ -16,14 +16,27 @@ import SingUp from './Auth/SignUp.js';
 
 import System from '../routes/System';
 
+import * as actions from '../store/actions';
+import "./App.scss";
 import { CustomToastCloseButton } from '../components/CustomToast';
 import HomePage from './HomePage/HomePage.js';
 import Carousel from './HomePage/Section/Carousel.js';
 import CustomScrollbars from '../components/CustomScrollbars.js';
 import AlbumMusic from './Section/AlbumMusic.js';
 import MusicPlayer from './Partial/MusicPlayer.js';
+import Profile from './Section/Profile/Profile.js';
 
 class App extends Component {
+    interval;
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+
+    refreshToken = () => {
+        this.props.refreshToken()
+    }
 
     handlePersistorState = () => {
         const { persistor } = this.props;
@@ -41,6 +54,9 @@ class App extends Component {
 
     componentDidMount() {
         this.handlePersistorState();
+        this.interval = setInterval(() => {
+            this.refreshToken();
+        }, 7 * 60 * 1000);
     }
 
     render() {
@@ -59,6 +75,7 @@ class App extends Component {
                                         <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                         <Route path={path.HOMEPAGE} component={HomePage} />
                                         <Route path={path.DETAIL_ALBUM} component={AlbumMusic} />
+                                        <Route path={path.PROFILE} component={Profile} />
                                     </Switch>
                                 </CustomScrollbars>
                             </div>
@@ -100,6 +117,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        refreshToken: () => dispatch(actions.refreshTokenStart())
     };
 };
 

@@ -9,7 +9,11 @@ const initialState = {
     isSong: true,
     firstMount: false,
     isShowPlayer: false,
-    likedSong: []
+    likedSong: [],
+    top5likedSong: [],
+    isLiked: false,
+    numberCount: 0,
+    songDes: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -19,6 +23,7 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state
             }
+
         case actionTypes.FETCH_SONG_SUCCESS:
             let copyState = { ...state }
             copyState.songs = [...action.data]
@@ -97,23 +102,6 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.a:
-            state.isLoading = false
-            state.likedSong = [...action.list]
-            return {
-                ...state
-            }
-        case actionTypes.b:
-            state.isLoading = true
-            return {
-                ...state
-            }
-        case actionTypes.c:
-            state.isLoading = false
-            toast.success(action.error)
-            return {
-                ...state
-            }
         case actionTypes.LIKE_SONG_START:
             state.isLoading = true
             return {
@@ -121,8 +109,10 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.LIKE_SONG_SUCCESS:
             state.isLoading = false
+            state.isLiked = !state.isLiked
             return {
-                ...state
+                ...state,
+
             }
         case actionTypes.LIKE_SONG_FAILED:
             state.isLoading = false
@@ -130,17 +120,72 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state
             }
-        case actionTypes.UNLIKE_SONG_SUCCESS:
+        case actionTypes.UNLIKE_SONG_START:
             state.isLoading = true
             return {
                 ...state
             }
         case actionTypes.UNLIKE_SONG_SUCCESS:
             state.isLoading = false
+            state.isLiked = !state.isLiked
+            return {
+                ...state,
+            }
+        case actionTypes.UNLIKE_SONG_FAILED:
+            state.isLoading = false
+            toast.success(action.error)
             return {
                 ...state
             }
-        case actionTypes.UNLIKE_SONG_FAILED:
+        case actionTypes.GET_TOP5_LIKED_SONG_SUCCESS:
+            state.isLoading = false
+            state.top5likedSong = [...action.data]
+            return {
+                ...state
+            }
+        case actionTypes.GET_TOP5_LIKED_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+
+        case actionTypes.GET_TOP5_LIKED_SONG_FAILED:
+            state.isLoading = false
+            toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.GET_NUMBER_LIKED_START:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.GET_NUMBER_LIKED_SUCCESS:
+            state.isLoading = true
+            state.numberCount = action.data.liked
+            return {
+                ...state
+            }
+
+        case actionTypes.GET_NUMBER_LIKED_FAILDED:
+            state.isLoading = false
+            toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.GET_SONG_DES_BY_ID_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_SONG_DES_BY_ID_SUCCESS:
+            state.isLoading = false
+            state.songDes = action.data
+            return {
+                ...state
+            }
+
+        case actionTypes.GET_SONG_DES_BY_ID_FAILDED:
             state.isLoading = false
             toast.success(action.error)
             return {

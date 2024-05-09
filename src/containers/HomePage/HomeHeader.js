@@ -49,7 +49,7 @@ class HomeHeader extends Component {
     }
 
     HandleToPersonalPage = () => {
-        this.props.history.push(`/user/${this.state.currentUser.id}`)
+        this.props.history.push(`/profile/${this.state.currentUser.id}`)
     }
 
     render() {

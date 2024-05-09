@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from "connected-react-router";
-
+import { withRouter } from 'react-router';
 import * as actions from "../../store/actions";
 import ConFirmSignUp from './ConFirmSignUp';
 import './SignUp.scss';
@@ -57,6 +57,10 @@ class SignUp extends Component {
     componentDidUpdate(preprops, prestates) {
         if (this.props.registerSuccess !== preprops.registerSuccess && this.props.registerSuccess === true) {
             this.toggleSignupModal()
+        }
+
+        if (this.props.verify == true) {
+            this.props.history.push('/login');
         }
     }
 
@@ -151,7 +155,8 @@ const mapStateToProps = state => {
     return {
         language: state.app.language,
         registerSuccess: state.account.registerSuccess,
-        isLoading: state.account.isLoading
+        isLoading: state.account.isLoading,
+        verify: state.account.verify
     };
 };
 
@@ -163,4 +168,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));

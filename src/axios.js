@@ -5,7 +5,7 @@ import config from './config';
 const instance = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_URL,
     headers: { "content-type": "application/json" },
-    withCredentials: false
+    withCredentials: true
 });
 
 // const createError = (httpStatusCode, statusCode, errorMessage, problems, errorCode = '') => {

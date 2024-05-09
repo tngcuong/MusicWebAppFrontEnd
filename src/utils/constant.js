@@ -5,7 +5,8 @@ export const path = {
     LOG_OUT: '/logout',
     SYSTEM: '/system',
     SIGNUP: '/sign-up',
-    DETAIL_ALBUM: '/details-album/:album'
+    DETAIL_ALBUM: '/details-album/:album',
+    PROFILE: '/profile/:profile'
 };
 
 export const LANGUAGES = {

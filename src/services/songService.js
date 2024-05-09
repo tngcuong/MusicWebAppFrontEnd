@@ -22,13 +22,26 @@ const getLikedSong = async (id) => {
     return axios.delete(`api/LikedSong/GetLikedSongById?id=${id}`)
 }
 
-const likeSong =  (idUser, idSong) => {
+const likeSong = (idUser, idSong) => {
     return axios.post(`api/LikedSong/AddSongToLikedSong?idUser=${idUser}`, idSong)
 }
 
-const unLikeSong =  (idUser, idSong) => {
+const unLikeSong = (idUser, idSong) => {
     return axios.post(`api/LikedSong/RemoveSongToLikedSong?idUser=${idUser}`, idSong)
 }
+
+const top5likedSong = (idUser) => {
+    return axios.get(`api/LikedSong/GetMostLikedSongByUserId?id=${idUser}`)
+}
+
+const countLiked = (idSong) => {
+    return axios.get(`api/LikedSong/GetLikedBySongId?id=${idSong}`)
+}
+
+const getSongDesByUserId = (idUser, pageIndex, pageSize) => {
+    return axios.get(`api/Song/GetSongDescendingByIdUser?id=${idUser}&pageIndex=${pageIndex}&pageSize=${pageSize}`)
+}
+
 
 export {
     unLikeSong,
@@ -36,5 +49,8 @@ export {
     getLikedSong,
     getAllSongs,
     createASong,
-    deleteASongById
+    deleteASongById,
+    top5likedSong,
+    countLiked,
+    getSongDesByUserId
 }

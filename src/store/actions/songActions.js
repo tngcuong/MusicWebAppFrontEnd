@@ -1,5 +1,15 @@
 import actionTypes from './actionTypes';
-import { getAllSongs, createASong, deleteASongById, getLikedSong, likeSong, unLikeSong } from '../../services/songService';
+import {
+    getAllSongs,
+    createASong,
+    deleteASongById,
+    getLikedSong,
+    likeSong,
+    unLikeSong,
+    top5likedSong,
+    countLiked,
+    getSongDesByUserId
+} from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
     type: actionTypes.FETCH_SONG_SUCCESS,
@@ -137,7 +147,7 @@ export const likeSongStart = (idUser, idSong) => {
             let data = await likeSong(idUser, idSong)
             console.log(data);
             if (data && data.errorCode === 200) {
-                likeSongSuccess()
+                dispatch(likeSongSuccess())
             } else {
                 dispatch(likeSongFailed(data.error))
             }
@@ -149,6 +159,7 @@ export const likeSongStart = (idUser, idSong) => {
 
 export const likeSongSuccess = () => ({
     type: actionTypes.LIKE_SONG_SUCCESS,
+    data: true
 })
 
 export const likeSongFailed = (error) => ({
@@ -163,7 +174,7 @@ export const unLikeSongStart = (idUser, idSong) => {
             let data = await unLikeSong(idUser, idSong)
             console.log(data);
             if (data && data.errorCode === 200) {
-                unLikeSongSuccess()
+                dispatch(unLikeSongSuccess())
             } else {
                 dispatch(unLikeSongFailed(data.error))
             }
@@ -175,6 +186,7 @@ export const unLikeSongStart = (idUser, idSong) => {
 
 export const unLikeSongSuccess = () => ({
     type: actionTypes.UNLIKE_SONG_SUCCESS,
+    data: false
 })
 
 export const unLikeSongFailed = (error) => ({
@@ -182,5 +194,84 @@ export const unLikeSongFailed = (error) => ({
     flag: error
 })
 
+export const getTop5LikedSongStart = (idUser) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_TOP5_LIKED_SONG_START })
+            let data = await top5likedSong(idUser)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(getTop5LikedSongSuccess(data.content))
+            } else {
+                dispatch(getTop5LikedSongStartFailed(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 
+export const getTop5LikedSongSuccess = (data) => ({
+    type: actionTypes.GET_TOP5_LIKED_SONG_SUCCESS,
+    data: data
+})
+
+export const getTop5LikedSongStartFailed = (error) => ({
+    type: actionTypes.GET_TOP5_LIKED_SONG_FAILED,
+    flag: error
+})
+
+export const getCountNumberStart = (idSong) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_NUMBER_LIKED_START })
+            let data = await countLiked(idSong)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(getCountNumberSuccess(data.content))
+            } else {
+                dispatch(getCountNumberFailded(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const getCountNumberSuccess = (data) => ({
+    type: actionTypes.GET_NUMBER_LIKED_SUCCESS,
+    data: data
+})
+
+export const getCountNumberFailded = (error) => ({
+    type: actionTypes.GET_NUMBER_LIKED_FAILDED,
+    flag: error
+})
+
+export const getSongDesByUserIdStart = (idUser) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_SONG_DES_BY_ID_START })
+            let data = await getSongDesByUserId(idUser)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(getSongDesByUserIdSuccess(data.content))
+            } else {
+                dispatch(getSongDesByUserIdFailded(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const getSongDesByUserIdSuccess = (data) => ({
+    type: actionTypes.GET_SONG_DES_BY_ID_SUCCESS,
+    data: data
+})
+
+export const getSongDesByUserIdFailded = (error) => ({
+    type: actionTypes.GET_SONG_DES_BY_ID_FAILDED,
+    flag: error
+})
 

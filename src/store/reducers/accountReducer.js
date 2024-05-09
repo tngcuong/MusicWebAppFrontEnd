@@ -1,11 +1,13 @@
 import actionTypes from '../actions/actionTypes';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router';
 
 const initialState = {
     isLoggedIn: false,
     accountInfo: null,
     isLoading: false,
-    registerSuccess: false
+    registerSuccess: false,
+    verify: false
 }
 
 const appReducer = (state = initialState, action) => {
@@ -47,6 +49,7 @@ const appReducer = (state = initialState, action) => {
                 registerSuccess: false,
             }
         case actionTypes.REGISTER_SUCCESS:
+
             return {
                 ...state,
                 isLoading: false,
@@ -65,13 +68,33 @@ const appReducer = (state = initialState, action) => {
                 isLoading: true
             }
         case actionTypes.VERIFY_SUCCESS:
+            toast.success('Verify success')
+            return {
+                ...state,
+                isLoading: false,
+                verify: true,
+                registerSuccess: false
+            }
+        case actionTypes.VERIFY_FAILDED:
+            toast.error(action.errorMessage)
+            return {
+                ...state,
+                isLoading: false
+            }
+        case actionTypes.REFRESH_TOKEN_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case actionTypes.REFRESH_TOKEN_SUCCESS:
+
             return {
 
                 ...state,
                 isLoading: false,
-                registerSuccess: false
+                accountInfo: action.data
             }
-        case actionTypes.VERIFY_FAILDED:
+        case actionTypes.REFRESH_TOKEN_FAILED:
             toast.error(action.errorMessage)
             return {
                 ...state,

@@ -16,5 +16,21 @@ const handleVerify = (data) => {
     })
 }
 
+const refreshToken = () => {
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    if (token != null) {
+        return axios.get("api/Account/RefreshToken", {
+            "headers": {
+                "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+            }
+        })
+    }
+}
 
-export { handleLogin, handleRegister, handleVerify } 
+
+export {
+    handleLogin,
+    handleRegister,
+    handleVerify,
+    refreshToken
+} 

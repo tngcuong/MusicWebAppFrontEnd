@@ -308,7 +308,7 @@ class MusicPlayer extends Component {
                                 <span className='song-name'>{currentSong?.name}</span>
                                 <span className='song-username'>{currentSong.user && currentSong.user.name}</span>
                             </div>
-                            <LikeSong></LikeSong>
+                            <LikeSong idSong={currentSong.id}></LikeSong>
                             {/* <div>
                                 <span>
                                     {currentUser && currentUser.listSong && currentUser.listSong.includes(currentSong.id) ?

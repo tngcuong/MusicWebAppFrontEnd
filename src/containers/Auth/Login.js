@@ -8,6 +8,7 @@ import './Login.scss';
 import { FormattedMessage } from 'react-intl';
 import { handleLogin } from '../../services/accountService';
 import Loader from '../../components/Loader';
+import { KeyCodeUtils } from "../../utils";
 
 class Login extends Component {
     constructor(props) {
@@ -17,7 +18,8 @@ class Login extends Component {
             password: '',
             isShowPassword: false,
             errMessage: '',
-        }
+        };
+        this.acceptBtnRef = React.createRef()
     }
 
     handleOnchangeusername = (e) => {
@@ -47,6 +49,20 @@ class Login extends Component {
     }
     componentDidMount() {
         this.props.showPlayer(false)
+        document.addEventListener('keydown', this.handlerKeyDown);
+    }
+
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handlerKeyDown);
+    }
+
+    handlerKeyDown = (event) => {
+        const keyCode = event.which || event.keyCode;
+        if (keyCode === KeyCodeUtils.ENTER) {
+            if (!this.acceptBtnRef.current || this.acceptBtnRef.current.disabled) return;
+            this.acceptBtnRef.current.click();
+        }
     }
 
     render() {
@@ -84,7 +100,7 @@ class Login extends Component {
                                 {this.state.errMessage}
                             </div>
                             <div className='col-12'>
-                                <button onClick={() => { this.handleOnclickLogin() }} className='btn-login'>Login</button>
+                                <button ref={this.acceptBtnRef} onClick={() => { this.handleOnclickLogin() }} className='btn-login'>Login</button>
                             </div>
                             <div className='col-12'>
                                 <span className='forgot-password '>Forgot your password?</span>
@@ -114,7 +130,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        navigate: (path) => dispatch(push(path)),
+        // navigate: (path) => dispatch(push(path)),
         accountLogin: (username, password) => dispatch(actions.accountLoginStart(username, password)),
         showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
     };

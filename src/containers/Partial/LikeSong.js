@@ -7,7 +7,7 @@ class LikeSong extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLiked: false
+            isLiked: false,
         };
     }
 
@@ -15,31 +15,31 @@ class LikeSong extends Component {
         if (this.state.isLiked === !prevState.isLiked) {
             this.props.getCurrentUser()
         }
+
     }
 
     likeSong = async () => {
-        const { song, currentUser } = this.props;
-        await this.props.likeSong(currentUser.id, song.id)
+        const { idSong, currentUser } = this.props;
+        await this.props.likeSong(currentUser.id, idSong)
         this.setState({
-            isLiked: true
+            isLiked: !this.state.isLiked
         })
     }
 
     unLikeSong = async () => {
-        const { song, currentUser } = this.props;
-        await  this.props.unLikeSong(currentUser.id, song.id)
+        const { idSong, currentUser } = this.props;
+        await this.props.unLikeSong(currentUser.id, idSong)
         this.setState({
-            isLiked: false
+            isLiked: !this.state.isLiked
         })
     }
 
     render() {
-        const { song, currentUser } = this.props;
-        console.log(currentUser);
+        const { idSong, currentUser } = this.props;
         return (
             <div>
                 <span>
-                    {currentUser && currentUser.listSong && currentUser.listSong.includes(song.id) ?
+                    {currentUser && currentUser.listSong && currentUser.listSong.includes(idSong) ?
                         <i className="fas fa-heart" onClick={() => this.unLikeSong()}></i>
                         :
                         <i className="far fa-heart" onClick={() => this.likeSong()} ></i>
@@ -55,7 +55,8 @@ class LikeSong extends Component {
 const mapStateToProps = state => {
     return {
         song: state.song.currentSong,
-        currentUser: state.user.currentUser
+        currentUser: state.user.currentUser,
+        isLiked: state.song.isLiked,
     };
 };
 

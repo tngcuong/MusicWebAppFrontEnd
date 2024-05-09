@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { handleLogin, handleRegister, handleVerify } from "../../services/accountService";
+import { handleLogin, handleRegister, handleVerify, refreshToken } from "../../services/accountService";
 import { toast } from 'react-toastify';
 
 export const accountLoginSuccess = (accountInfo) => ({
@@ -93,3 +93,33 @@ export const verifyFailded = (data) => ({
     errorMessage: data
 })
 
+export const refreshTokenStart = () => {
+    return async (dispatch, getState) => {
+
+        try {
+            dispatch({ type: actionTypes.REFRESH_TOKEN_START })
+            let data = await refreshToken()
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(refreshTokenSuccess(data.content.token))
+            } else {
+                dispatch(refreshTokenFailed())
+            }
+        } catch (error) {
+            console.log(error.response);
+            if (error && error.response && error.response.data) {
+                dispatch(refreshTokenFailed(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const refreshTokenSuccess = (data) => ({
+    type: actionTypes.REFRESH_TOKEN_SUCCESS,
+    data: data
+})
+
+export const refreshTokenFailed = (data) => ({
+    type: actionTypes.REFRESH_TOKEN_FAILED,
+    errorMessage: data
+})
