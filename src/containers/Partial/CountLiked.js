@@ -26,7 +26,6 @@ class CountLiked extends Component {
         const { idSong } = this.props;
         try {
             let data = await countLiked(idSong)
-            console.log(data);
             if (data && data.errorCode === 200) {
                 this.setState({
                     countLiked: data.content.liked

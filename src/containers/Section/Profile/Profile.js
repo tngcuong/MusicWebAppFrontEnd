@@ -63,6 +63,7 @@ class Profile extends Component {
 
     render() {
         const { ProfileUser, All, PopularTracks, Tracks, PlayLists, LikedTracks } = this.state;
+        console.log(ProfileUser);
         return (
             <div>
                 <HomeHeader isShowBanner={false} />
@@ -133,7 +134,7 @@ class Profile extends Component {
                                                 <td className='info-stat'>
                                                     <a>
                                                         <h3>Followers</h3>
-                                                        <div>200</div>
+                                                        <div>{ProfileUser?.followers?.length}</div>
                                                     </a>
                                                 </td>
                                                 <td className='info-stat'>
