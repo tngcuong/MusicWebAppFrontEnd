@@ -10,6 +10,7 @@ import { calcuDate } from '../../../components/HOC/RandomColor';
 import WaveSurfer from "wavesurfer.js";
 import LikeSong from '../../Partial/LikeSong';
 import CountLiked from '../../Partial/CountLiked';
+import { withRouter } from 'react-router';
 
 import { getSongDesByUserId } from '../../../services/songService';
 
@@ -17,7 +18,7 @@ class All extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ProfileUser: {},
+
             Top5LikedSong: [],
             waveformRef: React.createRef(),
             wavesurfer: React.createRef(),
@@ -30,34 +31,28 @@ class All extends Component {
 
 
     async componentDidMount() {
-        console.log(this.props);
-        this.props.getTop5LikedSong(this.props.profileUser.id)
-        await this.getRecentSong(this.props.profileUser.id, this.state.pageIndexRecent, this.state.pageSize)
+        this.props.getTop5LikedSong(this.props.match.params.profile)
+        await this.getRecentSong(this.props.match.params.profile, this.state.pageIndexRecent, this.state.pageSize)
     }
 
     async componentDidUpdate(prevProps, prevState) {
-        if (this.props.profileUser !== prevProps.profileUser) {
-            this.setState({
-                ProfileUser: { ...this.props.profileUser },
-            })
-            console.log(this.state, "aaaa");
-            this.props.getTop5LikedSong(this.props.profileUser.id)
-            await this.getRecentSong(this.props.profileUser.id, this.state.pageIndexRecent, this.state.pageSize)
+        if (this.props.match.params.profile !== prevProps.match.params.profile) {
+            this.props.getTop5LikedSong(this.props.match.params.profile)
+            await this.getRecentSong(this.props.match.params.profile, this.state.pageIndexRecent, this.state.pageSize)
         }
 
-        if (this.props.isLiked != prevProps.isLiked) {
-            this.props.getTop5LikedSong(this.props.profileUser.id)
+        if (this.props.isLiked !== prevProps.isLiked) {
+            this.props.getTop5LikedSong(this.props.match.params.profile)
         }
     }
 
     getRecentSong = async (id, pageIndexRecent, pageSize) => {
-        const { ProfileUser } = this.state;
         try {
             let data = await getSongDesByUserId(id, pageIndexRecent, pageSize)
             console.log(data);
             if (data && data.errorCode === 200) {
                 this.setState({
-                    recentSong: [...data.content]
+                    recentSong: [...data.content.data]
                 })
             } else {
                 console.log("get recent song error");
@@ -69,7 +64,7 @@ class All extends Component {
 
 
     render() {
-        const { ProfileUser, waveformRef, isClick, recentSong } = this.state
+        const { waveformRef, isClick, recentSong } = this.state
         const { top5likedSong } = this.props
 
         return (
@@ -140,56 +135,56 @@ class All extends Component {
                     </div>
                     <div className='recent-content'>
                         {
-                            // recentSong && recentSong.length > 0 &&
-                            // recentSong.map((item, index) => {
-                            //     return (
-                            //         <div className='content' key={item.id}>
-                            //             <div className='image' style={{
-                            //                 backgroundImage: `url("${item.image}")`,
-                            //                 backgroundPosition: 'center center',
-                            //                 backgroundSize: 'cover',
-                            //                 backgroundRepeat: 'no-repeat'
-                            //             }}>
+                            recentSong && recentSong.length > 0 &&
+                            recentSong.map((item, index) => {
+                                return (
+                                    <div className='content' key={item.id}>
+                                        <div className='image' style={{
+                                            backgroundImage: `url("${item.image}")`,
+                                            backgroundPosition: 'center center',
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}>
 
-                            //             </div>
-                            //             <div className='details'>
-                            //                 <div className='sound-title'>
-                            //                     <div className='sound-header'>
-                            //                         <div className='play-btn'>
-                            //                             <div className='play'>
-                            //                                 <i className="fas fa-play-circle"></i>
-                            //                             </div>
-                            //                         </div>
-                            //                         <div className='name'>
-                            //                             <div className='artist'>
-                            //                                 <a href=''>{item.user?.name}</a>
-                            //                             </div>
-                            //                             <a className='name-song'>{item.name}</a>
-                            //                         </div>
-                            //                         <div className='time-make'>
-                            //                             <span>{calcuDate(item.createAt)} ago</span>
-                            //                         </div>
-                            //                     </div>
-                            //                 </div>
-                            //                 <div className='sound-wave'>
-                            //                     <div className='chat'>
+                                        </div>
+                                        <div className='details'>
+                                            <div className='sound-title'>
+                                                <div className='sound-header'>
+                                                    <div className='play-btn'>
+                                                        <div className='play'>
+                                                            <i className="fas fa-play-circle"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div className='name'>
+                                                        <div className='artist'>
+                                                            <a href=''>{item.user?.name}</a>
+                                                        </div>
+                                                        <a className='name-song'>{item.name}</a>
+                                                    </div>
+                                                    <div className='time-make'>
+                                                        <span>{calcuDate(item.createAt)} ago</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='sound-wave'>
+                                                <div className='chat'>
 
-                            //                     </div>
-                            //                 </div>
-                            //                 <div className='actions'>
-                            //                     <div className='actions-container'>
-                            //                         <div className='like' >
-                            //                             <LikeSong
-                            //                                 idSong={item.id}
-                            //                             ></LikeSong>
-                            //                             <div><CountLiked idSong={item.id}></CountLiked></div>
-                            //                         </div>
-                            //                     </div>
-                            //                 </div>
-                            //             </div>
-                            //         </div>
-                            //     )
-                            // })
+                                                </div>
+                                            </div>
+                                            <div className='actions'>
+                                                <div className='actions-container'>
+                                                    <div className='like' >
+                                                        <LikeSong
+                                                            idSong={item.id}
+                                                        ></LikeSong>
+                                                        <div><CountLiked idSong={item.id}></CountLiked></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
                         }
 
                     </div>
@@ -221,4 +216,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(All));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(All)));

@@ -31,7 +31,10 @@ class Profile extends Component {
             this.setState({
                 ProfileUser: { ...this.props.profileUser }
             })
-            console.log(this.state);
+        }
+
+        if (this.props.match.params.profile !== preProps.match.params.profile) {
+            this.props.getUser(this.props.match.params.profile)
         }
 
     }
@@ -122,7 +125,34 @@ class Profile extends Component {
                             }
                         </div>
                         <div className='profile-content-right'>
-
+                            <div className='content-right'>
+                                <div className='header'>
+                                    <table className='table-stat'>
+                                        <tbody>
+                                            <tr>
+                                                <td className='info-stat'>
+                                                    <a>
+                                                        <h3>Followers</h3>
+                                                        <div>200</div>
+                                                    </a>
+                                                </td>
+                                                <td className='info-stat'>
+                                                    <a>
+                                                        <h3>Following</h3>
+                                                        <div>1</div>
+                                                    </a>
+                                                </td>
+                                                <td className='info-stat'>
+                                                    <a>
+                                                        <h3>Tracks</h3>
+                                                        <div>2</div>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
