@@ -16,66 +16,94 @@
         background-color: #f0f2f5;
         height          : 260px;
 
-        .profile-avatar {
-            width          : 200px;
-            height         : 200px;
-            border-radius  : 50%;
-            position       : relative;
-            display        : flex;
-            justify-content: center;
-            align-items    : center;
+        &:hover {
+            cursor: pointer;
+        }
 
-            .btn-upload-avatar {
-                width     : 130px;
-                height    : 26px;
-                position  : absolute;
-                cursor    : pointer;
-                bottom    : 13px;
-                text-align: center;
+        .profile-right {
+            display: flex;
 
-                .lb-upload-avatar {
-                    background-color: hsla(0, 0%, 100%, .8);
-                    border-color    : rgba(0, 0, 0, .1);
-                    background-clip : padding-box;
-                    transition      : background-color .2s ease-in-out, border-color .2s ease-in-out;
-                    display         : inline-block;
-                    position        : relative;
-                    height          : 26px;
-                    margin          : 0;
-                    padding         : 2px 11px 2px 10px;
-                    border          : 1px solid #e5e5e5;
-                    border-radius   : 3px;
-                    background-color: #fff;
-                    cursor          : pointer;
-                    color           : #333;
-                    font-size       : 14px;
-                    line-height     : 20px;
-                    white-space     : nowrap;
-                    font-family     : Inter, sans-serif;
-                    font-weight     : 100;
-                    text-align      : center;
-                    vertical-align  : initial;
-                    box-sizing      : border-box;
+            .profile-avatar {
+                width          : 200px;
+                height         : 200px;
+                border-radius  : 50%;
+                position       : relative;
+                display        : flex;
+                justify-content: center;
+                align-items    : center;
 
-                    &:hover {
+                .btn-upload-avatar {
+                    width     : 130px;
+                    height    : 26px;
+                    position  : absolute;
+                    cursor    : pointer;
+                    bottom    : 13px;
+                    text-align: center;
+
+                    .lb-upload-avatar {
+                        background-color: hsla(0, 0%, 100%, .8);
+                        border-color    : rgba(0, 0, 0, .1);
+                        background-clip : padding-box;
+                        transition      : background-color .2s ease-in-out, border-color .2s ease-in-out;
+                        display         : inline-block;
+                        position        : relative;
+                        height          : 26px;
+                        margin          : 0;
+                        padding         : 2px 11px 2px 10px;
+                        border          : 1px solid #e5e5e5;
+                        border-radius   : 3px;
                         background-color: #fff;
-                        border-color    : rgba(0, 0, 0, .3);
+                        cursor          : pointer;
+                        color           : #333;
+                        font-size       : 14px;
+                        line-height     : 20px;
+                        white-space     : nowrap;
+                        font-family     : Inter, sans-serif;
+                        font-weight     : 100;
+                        text-align      : center;
+                        vertical-align  : initial;
+                        box-sizing      : border-box;
+
+                        &:hover {
+                            background-color: #fff;
+                            border-color    : rgba(0, 0, 0, .3);
+                        }
                     }
+
                 }
+
 
             }
 
             .profile-name {
-                font-size       : 24px;
-                position        : absolute;
-                right           : -250px;
-                top             : 0;
-                background-color: rgba(0, 0, 0, .8);
-                padding         : 0 4px;
-                color           : #fff;
-                font-weight     : 100;
+                max-width: 500px;
+
+                .around-name {
+                    background-color: rgba(0, 0, 0, .8);
+                    width           : fit-content;
+
+                    .name {
+                        font-size  : 24px;
+                        padding    : 0 4px;
+                        color      : #fff;
+                        font-weight: 100;
+                    }
+                }
+
+
+                .description {
+                    font-size: 24px;
+
+                    background-color: rgba(0, 0, 0, .8);
+                    padding         : 0 4px;
+                    color           : #fff;
+                    font-weight     : 100;
+                    max-width       : 500px;
+                }
+
             }
         }
+
     }
 
 
@@ -84,10 +112,19 @@
         height: 100%;
 
         .btn-upload-header {
-            width  : 100%;
-            height : 30px;
-            cursor : pointer;
-            padding: 17px;
+            width   : 100%;
+            height  : 30px;
+            cursor  : pointer;
+            padding : 17px;
+            position: relative;
+            display : inline-block;
+
+            &:hover {
+                .tooltiptext {
+                    visibility: visible;
+                    opacity   : 1;
+                }
+            }
 
             .lb-upload-header {
                 background-color: hsla(0, 0%, 100%, .8);
@@ -116,6 +153,43 @@
                 &:hover {
                     background-color: #fff;
                     border-color    : rgba(0, 0, 0, .3);
+
+                    .tooltiptext {
+                        visibility: visible;
+                        opacity   : 1;
+                    }
+                }
+
+            }
+
+            .tooltiptext {
+                visibility      : hidden;
+                width           : 250px;
+                background-color: #f9f9f9;
+                color           : #333;
+                text-align      : left;
+                border-radius   : 5px;
+                padding         : 10px;
+                position        : absolute;
+                z-index         : 1;
+                bottom          : auto;
+                top             : 150%;
+                left            : 0;
+                margin-left     : -125px;
+                box-shadow      : 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+                font-size       : 14px;
+                line-height     : 1.4;
+
+                &::after {
+                    content     : "";
+                    position    : absolute;
+                    top         : -10%;
+                    /* At the bottom of the tooltip */
+                    left        : 70%;
+                    margin-left : -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent transparent #f9f9f9 transparent;
                 }
             }
         }
@@ -172,38 +246,77 @@
         }
     }
 
-    .btn-edit {
+    .actions {
+        display: flex;
 
-        display         : inline-block;
-        position        : relative;
-        height          : 26px;
-        margin          : 0;
-        padding         : 2px 11px 2px 10px;
-        border          : 1px solid #e5e5e5;
-        border-radius   : 3px;
-        background-color: #fff;
-        cursor          : pointer;
-        color           : #333;
-        font-size       : 14px;
-        line-height     : 20px;
-        white-space     : nowrap;
-        font-family     : Inter, sans-serif;
-        font-weight     : 100;
-        text-align      : center;
-        vertical-align  : initial;
-        width           : 70px;
+        .btn-edit {
 
-        &:hover {
-            color       : #333;
-            outline     : 0;
-            border-color: #ccc;
+            display         : inline-block;
+            position        : relative;
+            height          : 26px;
+            margin          : 0;
+            padding         : 2px 11px 2px 10px;
+            border          : 1px solid #e5e5e5;
+            border-radius   : 3px;
+            background-color: #fff;
+            cursor          : pointer;
+            color           : #333;
+            font-size       : 14px;
+            line-height     : 20px;
+            white-space     : nowrap;
+            font-family     : Inter, sans-serif;
+            font-weight     : 100;
+            text-align      : center;
+            vertical-align  : initial;
+            width           : 70px;
+
+            &:hover {
+                color       : #333;
+                outline     : 0;
+                border-color: #ccc;
+            }
+
+            span {
+                /* Add desired color here */
+                color: #000;
+            }
         }
 
-        span {
-            /* Add desired color here */
-            color: #000;
+        .btn-upload {
+
+            display         : inline-block;
+            position        : relative;
+            height          : 26px;
+            margin          : 0;
+            padding         : 2px 11px 2px 10px;
+            border          : 1px solid #e5e5e5;
+            border-radius   : 3px;
+            background-color: #fff;
+            cursor          : pointer;
+            color           : #333;
+            font-size       : 14px;
+            line-height     : 20px;
+            white-space     : nowrap;
+            font-family     : Inter, sans-serif;
+            font-weight     : 100;
+            text-align      : center;
+            vertical-align  : initial;
+            width           : 81px;
+            margin-left     : 12px;
+
+            &:hover {
+                color       : #333;
+                outline     : 0;
+                border-color: #ccc;
+            }
+
+            span {
+                /* Add desired color here */
+                color: #000;
+            }
         }
     }
+
 }
 
 .profile-content {
@@ -211,11 +324,11 @@
     display: flex;
 
     .profile-content-left {
-        width: 70%;
+        width: 75%;
     }
 
     .profile-content-right {
-        width: 30%;
+        width: 25%;
 
         .content-right {
             width: 100%;
@@ -232,14 +345,271 @@
                             h3 {
                                 font-family: Inter, sans-serif;
                                 font-weight: 100;
-                                font-size  : 14px;
+                                font-size  : 16px;
                             }
+
+                            font-size: 16px;
                         }
 
                         text-align : center;
                     }
                 }
 
+            }
+
+            .profile-liked-song {
+                margin     : 0 19px;
+                margin-top : 55px;
+                font-family: Inter, sans-serif;
+
+                .liked-song-stat {
+                    border-bottom: 1px solid #e5e5e5;
+
+                    .link-liked-song {
+                        display        : flex;
+                        text-decoration: none;
+                        color          : #999;
+                        align-items    : center;
+                        line-height    : 24px;
+                        font-weight    : 100;
+
+
+                        div {
+                            display    : flex;
+                            align-items: center;
+                            height     : 100%;
+                            width      : 70%;
+                            gap        : 10px;
+
+                            span {
+                                font-size: 16px;
+                            }
+                        }
+
+                        .view-all {
+                            font-size : 16px;
+                            width     : 30%;
+                            text-align: right;
+
+                            &:hover {
+                                color: #333;
+                            }
+                        }
+                    }
+
+                }
+
+                .list-liked-song {
+                    margin-top: 20px;
+                    font      : Inter, sans-serif;
+
+                    .list {
+                        .liked-song {
+                            display      : flex;
+                            height       : 50px;
+                            width        : 100%;
+                            margin-bottom: 20px;
+
+                            .liked-song-img {
+                                width: 20%;
+
+                                .img {
+                                    width  : 50px;
+                                    height : 50px;
+                                    opacity: 1;
+                                }
+                            }
+
+
+                            .details {
+                                width     : 80%;
+                                max-height: 50px;
+                                margin    : 0 !important;
+
+                                .name {
+                                    .artist-name {
+                                        line-height  : 14px;
+                                        margin       : 0 !important;
+                                        overflow     : hidden;
+                                        white-space  : nowrap;
+                                        text-overflow: ellipsis;
+                                        word-break   : normal;
+                                        color        : #999;
+                                        font-weight  : 100;
+                                    }
+
+                                    .song-name {
+                                        margin       : 0 !important;
+                                        overflow     : hidden;
+                                        white-space  : nowrap;
+                                        text-overflow: ellipsis;
+                                        word-break   : normal;
+                                        font-weight  : 100;
+                                    }
+                                }
+
+                                .count-like {
+                                    display    : flex;
+                                    align-items: center;
+                                    color      : #999;
+                                    font-weight: 100;
+
+                                    i {
+                                        margin-right: 5px;
+                                    }
+
+                                    p {
+                                        margin: 0 !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .follower-container {
+                    margin-top: 35px;
+
+                    .follower-stat {
+                        border-bottom: 1px solid #e5e5e5;
+
+                        .link-follower {
+                            display        : flex;
+                            text-decoration: none;
+                            color          : #999;
+                            align-items    : center;
+                            line-height    : 24px;
+                            font-weight    : 100;
+
+                            i {
+                                margin-right: 5px;
+                            }
+
+                            div {
+                                display    : flex;
+                                align-items: center;
+                                height     : 100%;
+                                width      : 70%;
+                                gap        : 10px;
+
+                                span {
+                                    font-size: 16px;
+                                }
+                            }
+
+                            .view-all {
+                                font-size : 16px;
+                                width     : 30%;
+                                text-align: right;
+
+                                &:hover {
+                                    color: #333;
+                                }
+                            }
+                        }
+
+                    }
+
+                    .list-follower {
+                        margin-top: 20px;
+                        font      : Inter, sans-serif;
+
+                        .list {
+                            .follower {
+                                display      : flex;
+                                height       : 50px;
+                                width        : 100%;
+                                margin-bottom: 20px;
+                                align-items  : center;
+
+                                .follower-img {
+                                    width: 20%;
+
+                                    .img {
+                                        width  : 50px;
+                                        height : 50px;
+                                        opacity: 1;
+                                    }
+                                }
+
+
+                                .details-follower {
+                                    width     : 80%;
+                                    max-height: 50px;
+                                    margin    : 0 !important;
+
+                                    .name {
+                                        .follower-name {
+                                            line-height  : 14px;
+                                            margin       : 0 !important;
+                                            overflow     : hidden;
+                                            white-space  : nowrap;
+                                            text-overflow: ellipsis;
+                                            word-break   : normal;
+                                            color        : #333;
+                                            font-weight  : 100;
+                                        }
+
+                                        .details {
+                                            width      : 100%;
+                                            display    : flex;
+                                            align-items: center;
+                                            color      : #999;
+
+                                            .detail-track {
+                                                display    : flex;
+                                                align-items: center;
+                                                width      : 65%;
+
+                                                a {
+                                                    display: block;
+                                                    width  : 16px;
+                                                    height : 12px;
+                                                }
+
+                                                .count-track {
+                                                    margin       : 0 !important;
+                                                    overflow     : hidden;
+                                                    white-space  : nowrap;
+                                                    text-overflow: ellipsis;
+                                                    word-break   : normal;
+                                                    font-weight  : 100;
+                                                }
+                                            }
+
+                                            .btn-follow {
+                                                font-family  : Inter, sans-serif;
+                                                width        : 35%;
+                                                border       : 1px solid #e5e5e5;
+                                                border-radius: 4px;
+                                                display      : flex;
+                                                align-items  : center;
+                                                padding      : 3px 5px;
+                                                font-weight  : 100;
+
+                                                .icon-follow {
+                                                    display     : block;
+                                                    width       : 16px;
+                                                    height      : 12px;
+                                                    margin-right: 5px;
+                                                }
+
+                                                .text-follow {}
+
+                                                &:hover {
+                                                    border: 1px solid #333;
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

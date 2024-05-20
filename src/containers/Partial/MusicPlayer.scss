@@ -29,6 +29,10 @@
 
             .song-username {
                 font-weight: 500;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             span {

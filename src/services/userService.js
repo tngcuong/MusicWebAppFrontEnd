@@ -50,6 +50,9 @@ const getUserById = async (id) => {
     return axios.get(`api/User/GetUserById?id=${id}`)
 }
 
+const getFollowerByUserId = async (id) => {
+    return axios.get(`api/User/GetFollowerByUserId?id=${id}`)
+}
 
 
 export {
@@ -58,5 +61,6 @@ export {
     deleteUserService,
     editUser,
     getCurrentUser,
-    getUserById
+    getUserById,
+    getFollowerByUserId
 }

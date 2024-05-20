@@ -11,8 +11,10 @@ import WaveSurfer from "wavesurfer.js";
 import LikeSong from '../../Partial/LikeSong';
 import CountLiked from '../../Partial/CountLiked';
 import { withRouter } from 'react-router';
+import DeteleSongBtn from './Partial/DeteleSongBtn';
 
 import { getSongDesByUserId } from '../../../services/songService';
+import { getCurrentUser } from '../../../services/userService';
 
 class All extends Component {
     constructor(props) {
@@ -25,24 +27,28 @@ class All extends Component {
             isClick: false,
             recentSong: [],
             pageIndexRecent: 1,
-            pageSize: 5
+            pageSize: 5,
+            isOpenModal: false,
         }
     }
 
 
     async componentDidMount() {
+        this.props.getCurrentUser()
         this.props.getTop5LikedSong(this.props.match.params.profile)
         await this.getRecentSong(this.props.match.params.profile, this.state.pageIndexRecent, this.state.pageSize)
     }
 
     async componentDidUpdate(prevProps, prevState) {
         if (this.props.match.params.profile !== prevProps.match.params.profile) {
+            this.props.getCurrentUser()
             this.props.getTop5LikedSong(this.props.match.params.profile)
             await this.getRecentSong(this.props.match.params.profile, this.state.pageIndexRecent, this.state.pageSize)
         }
 
         if (this.props.isLiked !== prevProps.isLiked) {
             this.props.getTop5LikedSong(this.props.match.params.profile)
+            await this.getRecentSong(this.props.match.params.profile, this.state.pageIndexRecent, this.state.pageSize)
         }
     }
 
@@ -63,10 +69,11 @@ class All extends Component {
     }
 
 
+
     render() {
         const { waveformRef, isClick, recentSong } = this.state
-        const { top5likedSong } = this.props
-
+        const { top5likedSong, currentUser } = this.props
+        const idUser = this.props.match.params.profile
         return (
             <div className="profile-all">
                 <div className='spotlight'>
@@ -119,6 +126,7 @@ class All extends Component {
                                                         ></LikeSong>
                                                         <div><CountLiked idSong={item.id}></CountLiked></div>
                                                     </div>
+                                                    {idUser === currentUser.id && <DeteleSongBtn idSong={item.id} />}
                                                 </div>
                                             </div>
                                         </div>
@@ -179,6 +187,7 @@ class All extends Component {
                                                         ></LikeSong>
                                                         <div><CountLiked idSong={item.id}></CountLiked></div>
                                                     </div>
+                                                    {idUser === currentUser.id && <DeteleSongBtn idSong={item.id} />}
                                                 </div>
                                             </div>
                                         </div>
@@ -204,7 +213,8 @@ const mapStateToProps = state => {
         isShowPlayer: state.song.isShowPlayer,
         profileUser: state.user.user,
         top5likedSong: state.song.top5likedSong,
-        isLiked: state.song.isLiked
+        isLiked: state.song.isLiked,
+        currentUser: state.user.currentUser
     };
 };
 
@@ -212,7 +222,8 @@ const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
-        getTop5LikedSong: (idUser) => dispatch(actions.getTop5LikedSongStart(idUser))
+        getTop5LikedSong: (idUser) => dispatch(actions.getTop5LikedSongStart(idUser)),
+        getCurrentUser: () => dispatch(actions.getCurrentUserStart())
     };
 };
 

@@ -42,6 +42,11 @@ const getSongDesByUserId = (idUser, pageIndex, pageSize) => {
     return axios.get(`api/Song/GetSongDescendingByIdUser?id=${idUser}&pageIndex=${pageIndex}&pageSize=${pageSize}`)
 }
 
+const getLikedSongByUserId = (idUser) => {
+    return axios.get(`api/LikedSong/GetLikedSongByUserId?id=${idUser}`)
+}
+
+
 
 export {
     unLikeSong,
@@ -52,5 +57,6 @@ export {
     deleteASongById,
     top5likedSong,
     countLiked,
-    getSongDesByUserId
+    getSongDesByUserId,
+    getLikedSongByUserId
 }

@@ -62,9 +62,8 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div>
-
-                    <Router history={history}>
+                <Router history={history}>
+                    <div>
                         <div className="main-container">
                             <div className="content-container">
                                 <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
@@ -100,9 +99,10 @@ class App extends Component {
                                 theme="light"
                             />
                         </div>
-                    </Router>
-                </div>
-                <MusicPlayer />
+
+                    </div>
+                    <MusicPlayer />
+                </Router>
             </div >
         )
     }

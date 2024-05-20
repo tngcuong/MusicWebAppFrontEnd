@@ -38,6 +38,12 @@ class HomeHeader extends Component {
                 { currentUser: { ...this.props.currentUser } }
             )
         }
+
+        if (this.props.isLoadingAccount != preProps.isLoadingAccount) {
+            this.setState(
+                { currentUser: { ...this.props.currentUser } }
+            )
+        }
     }
 
     goLogin = () => {
@@ -101,15 +107,18 @@ class HomeHeader extends Component {
                         </div>
                         <div className='right-content'>
                             {isLogin && isLogin === true &&
-                                <div className='child-content' onClick={() => { this.HandleToPersonalPage() }}  >
-                                    <div className='profile' style={{
-                                        backgroundImage: `url("${currentUser.avatar}")`,
-                                        backgroundPosition: 'center center',
-                                        backgroundSize: 'cover',
-                                        backgroundRepeat: 'no-repeat'
-                                    }}><b><FormattedMessage id="home-header.profile" /></b></div>
-                                    {/* <div className='subs-title'></div> */}
+                                <div>
+                                    <div className='child-content' onClick={() => { this.HandleToPersonalPage() }}  >
+                                        <div className='profile' style={{
+                                            backgroundImage: `url("${currentUser.avatar}")`,
+                                            backgroundPosition: 'center center',
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}><b><FormattedMessage id="home-header.profile" /></b></div>
+                                        {/* <div className='subs-title'></div> */}
+                                    </div>
                                 </div>
+
                             }
                             <div className={language === LANGUAGES.VI ? 'language-vn active' : 'language-vn'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.VI) }}><FormattedMessage id="home-header.vi" /></span></div>
                             <div className={language === LANGUAGES.EN ? 'language-en active' : 'language-en'}><span onClick={() => { this.handleChangeLanguage(LANGUAGES.EN) }}><FormattedMessage id="home-header.en" /></span></div>
@@ -177,6 +186,7 @@ const mapStateToProps = state => {
         isLoggedIn: state.account.isLoggedIn,
         language: state.app.language,
         currentUser: state.user.currentUser,
+        isLoadingAccount: state.account.isLoading
     };
 };
 

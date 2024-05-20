@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Feature.scss";
+
 class Feature extends React.Component {
     constructor(props) {
         super(props);

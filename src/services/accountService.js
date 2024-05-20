@@ -27,10 +27,50 @@ const refreshToken = () => {
     }
 }
 
+const updateAvatar = (infoUpdate) => {
+    const formData = new FormData();
+    formData.append("Id", infoUpdate.id);
+    formData.append("Avatar", infoUpdate.avatar);
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.put(`api/Account/UpdateAvatar`, formData, {
+        "headers": {
+            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+        }
+    })
+}
+
+const updateCoverAvatar = (infoUpdate) => {
+    const formData = new FormData();
+    formData.append("Id", infoUpdate.id);
+    formData.append("CoverAvatar", infoUpdate.coverAvatar);
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.put(`api/Account/UpdateCoverAvatar`, formData, {
+        "headers": {
+            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+        }
+    })
+}
+
+const updateProfile = (infoUpdate) => {
+    const formData = new FormData();
+    formData.append("Id", infoUpdate.id);
+    formData.append("Avatar", infoUpdate.img);
+    formData.append("Name", infoUpdate.name);
+    formData.append("Description", infoUpdate.description);
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.put(`api/Account/UpdateInfo`, formData, {
+        "headers": {
+            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
+        }
+    })
+}
 
 export {
     handleLogin,
     handleRegister,
     handleVerify,
-    refreshToken
+    refreshToken,
+    updateAvatar,
+    updateCoverAvatar,
+    updateProfile
 } 

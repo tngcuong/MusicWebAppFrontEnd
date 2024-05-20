@@ -9,6 +9,7 @@ const initialState = {
     userAlbums: [],
     isAlbum: true,
     currentAlbum: [],
+    isLiked: false
 }
 
 const albumReducer = (state = initialState, action) => {
@@ -69,6 +70,56 @@ const albumReducer = (state = initialState, action) => {
             state.currentAlbum = [...action.data]
             return {
                 ...state,
+            }
+        case actionTypes.TOGGLE_LIKE_ALBUM_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.TOGGLE_LIKE_ALBUM_SUCCESS:
+            state.isLoading = false
+            state.isLiked = !state.isLiked
+            return {
+                ...state,
+            }
+        case actionTypes.TOGGLE_LIKE_ALBUM_FAILED:
+            state.isLoading = false
+            toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.DELETE_ALBUM_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.DELETE_ALBUM_SUCCESS:
+            state.isLoading = false
+            state.isLiked = !state.isLiked
+            toast.success('delete successfully')
+            return {
+                ...state
+            }
+        case actionTypes.DELETE_ALBUM_FAILED:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_PLAYLIST_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_PLAYLIST_SUCCESS:
+            state.isLoading = false
+            toast.success('Upload playlist successfully')
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_PLAYLIST_FAILDED:
+            state.isLoading = false
+            return {
+                ...state
             }
         default:
             return state;

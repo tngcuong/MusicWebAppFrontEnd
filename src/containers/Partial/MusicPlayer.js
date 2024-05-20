@@ -8,6 +8,7 @@ import Loader from "../../components/Loader";
 import { FormattedMessage, useIntl, injectIntl } from 'react-intl'
 import { likeSong } from '../../services/songService';
 import LikeSong from './LikeSong';
+import { withRouter } from 'react-router';
 
 let intervalId
 class MusicPlayer extends Component {
@@ -133,9 +134,6 @@ class MusicPlayer extends Component {
 
     handleRepeatSong = () => {
         this.state.sourceMusic.play()
-    }
-
-    componentWillUnmount() {
     }
 
     handleRepeatAlbum = () => {
@@ -284,6 +282,19 @@ class MusicPlayer extends Component {
         }
     }
 
+    goProfile = (id) =>{
+        this.props.history.push(`/profile/${id}`)
+    }
+
+    componentWillUnmount() {
+        clearInterval(intervalId)
+        this.setState({
+            currentTime: 0
+        })
+        this.props.playSong(false)
+        this.state.sourceMusic.pause()
+    }
+
     render() {
         const { currentSong, volume, isShuffle, isRepeat } = this.state;
         const { isPlaying, song, isShowPlayer, currentUser } = this.props;
@@ -306,7 +317,7 @@ class MusicPlayer extends Component {
                             {/* <img src={currentSong?.image} alt={currentSong?.name}></img> */}
                             <div className='info'>
                                 <span className='song-name'>{currentSong?.name}</span>
-                                <span className='song-username'>{currentSong.user && currentSong.user.name}</span>
+                                <span className='song-username' onClick={()=>{this.goProfile(currentSong?.user.id)}} >{currentSong.user && currentSong.user.name}</span>
                             </div>
                             <LikeSong idSong={currentSong.id}></LikeSong>
                             {/* <div>
@@ -436,4 +447,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MusicPlayer));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(injectIntl(MusicPlayer)));

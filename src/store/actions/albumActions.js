@@ -1,6 +1,13 @@
 import actionTypes from './actionTypes';
 
-import { getAllAlbums, getDetailAlbumById, getDetailAlbumByUserId } from '../../services/albumService';
+import {
+    getAllAlbums,
+    getDetailAlbumById,
+    getDetailAlbumByUserId,
+    toggleLikePLayList,
+    deletePlayList,
+    uploadPlaylist
+} from '../../services/albumService';
 
 export const fetchAlbumSuccess = (data) => ({
     type: actionTypes.FETCH_ALBUM_SUCCESS,
@@ -93,3 +100,83 @@ export const setCurrentAlbum = (data) => ({
     type: actionTypes.SET_CURRENT_ALBUM,
     data: data
 })
+
+export const toggleLikeAlbumStart = (idUser, idSong) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.TOGGLE_LIKE_ALBUM_START })
+            let data = await toggleLikePLayList(idUser, idSong)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(toggleLikeAlbumSuccess())
+            } else {
+                dispatch(toggleLikeAlbumFailed(data.error))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const toggleLikeAlbumSuccess = () => ({
+    type: actionTypes.TOGGLE_LIKE_ALBUM_SUCCESS,
+})
+
+export const toggleLikeAlbumFailed = (error) => ({
+    type: actionTypes.TOGGLE_LIKE_ALBUM_FAILED,
+    flag: error
+})
+
+export const deletePlayListStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.DELETE_ALBUM_START })
+            let data = await deletePlayList(id)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(deletePlayListSuccess())
+
+            } else {
+                dispatch(deletePlayListFailed())
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+}
+
+export const deletePlayListSuccess = () => ({
+    type: actionTypes.DELETE_ALBUM_SUCCESS,
+})
+
+export const deletePlayListFailed = () => ({
+    type: actionTypes.DELETE_ALBUM_FAILED
+})
+
+export const uploadPlaylistStart = (playlist) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.UPLOAD_PLAYLIST_START })
+            let data = await uploadPlaylist(playlist)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(uploadPlaylistSuccess())
+
+            } else {
+                dispatch(uploadPlaylistFailded())
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const uploadPlaylistSuccess = () => ({
+    type: actionTypes.UPLOAD_PLAYLIST_SUCCESS
+})
+
+export const uploadPlaylistFailded = () => ({
+    type: actionTypes.UPLOAD_PLAYLIST_FAILDED
+})
+

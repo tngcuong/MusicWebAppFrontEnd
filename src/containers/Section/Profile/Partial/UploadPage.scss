@@ -1,0 +1,66 @@
+.upload-modal-container {
+    display    : grid;
+    place-items: center;
+
+    .modal-content {
+        width : 170% !important;
+        height: 65vh;
+
+        .modal-body {
+            padding: 0 0 !important;
+
+            .upload-container {
+
+                .upload {
+                    text-decoration: none;
+                    list-style     : none;
+                    display        : flex;
+
+                    .upload-list-item {
+                        margin    : 0;
+                        padding   : 0;
+                        list-style: none;
+                        display   : flex;
+                        font-size : 18px;
+
+                        li {
+                            padding: 0.5rem 1rem;
+                            cursor : pointer;
+                            color  : #000;
+                            margin : 0 10px;
+
+                            /* Text color for navigation links */
+                            /* Add hover effect here */
+                            &:hover {
+                                border-bottom: 1px solid #161616;
+                            }
+
+                            &:active {
+                                border-color: #f50;
+                                color       : #f50;
+                                cursor      : default;
+                            }
+                        }
+
+                        .m-active {
+                            border-color : #f50;
+                            color        : #f50;
+                            cursor       : default;
+                            border-bottom: 2px solid #f50;
+                        }
+                    }
+                }
+
+                .upload-content {
+                    .profile-content {
+                        width: 100%;
+                    }
+
+                    .profile-content-left {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

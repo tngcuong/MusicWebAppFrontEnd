@@ -275,3 +275,29 @@ export const getSongDesByUserIdFailded = (error) => ({
     flag: error
 })
 
+export const uploadSongStart = (song, pageIndex, pageSize) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.UPLOAD_SONG_START })
+            let data = await createASong(song)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+
+                dispatch(uploadSongSuccess())
+            } else {
+                dispatch(uploadSongFailed())
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const uploadSongSuccess = () => ({
+    type: actionTypes.UPLOAD_SONG_SUCCESS
+})
+
+export const uploadSongFailed = () => ({
+    type: actionTypes.UPLOAD_SONG_FAILDED
+})
+

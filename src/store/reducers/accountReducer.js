@@ -7,7 +7,8 @@ const initialState = {
     accountInfo: null,
     isLoading: false,
     registerSuccess: false,
-    verify: false
+    verify: false,
+    isApiFailded: false
 }
 
 const appReducer = (state = initialState, action) => {
@@ -99,6 +100,63 @@ const appReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false
+            }
+        case actionTypes.UPDATE_COVER_AVATAR_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case actionTypes.UPDATE_COVER_AVATAR_SUCCESS:
+
+            return {
+
+                ...state,
+                isLoading: false,
+            }
+        case actionTypes.UPDATE_COVER_AVATAR_FAILDED:
+            toast.error(action.errorMessage)
+            return {
+                ...state,
+                isLoading: false
+            }
+        case actionTypes.UPDATE_AVATAR_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case actionTypes.UPDATE_AVATAR_SUCCESS:
+
+            return {
+
+                ...state,
+                isLoading: false,
+            }
+        case actionTypes.UPDATE_AVATAR_FAILDED:
+            toast.error(action.errorMessage)
+            return {
+                ...state,
+                isLoading: false
+            }
+        case actionTypes.UPDATE_INFO_START:
+            return {
+                ...state,
+                isLoading: true,
+                isApiFailded: true
+            }
+        case actionTypes.UPDATE_INFO_SUCCESS:
+            toast.error("update successfully")
+            return {
+
+                ...state,
+                isLoading: false,
+                isApiFailded: false
+            }
+        case actionTypes.UPDATE_INFO_FAILED:
+            toast.error("update failded")
+            return {
+                ...state,
+                isLoading: false,
+                isApiFailded: true
             }
         default:
             return state;

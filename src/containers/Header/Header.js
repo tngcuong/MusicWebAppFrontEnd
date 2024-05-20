@@ -7,7 +7,6 @@ import { adminMenu } from './menuApp';
 import { FormattedMessage } from 'react-intl';
 import './Header.scss';
 import { LANGUAGES } from '../../utils';
-import { getCurrentUser } from '../../services/userService';
 import { withRouter } from 'react-router';
 
 class Header extends Component {

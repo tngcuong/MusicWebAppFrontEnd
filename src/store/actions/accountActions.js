@@ -1,5 +1,13 @@
 import actionTypes from "./actionTypes";
-import { handleLogin, handleRegister, handleVerify, refreshToken } from "../../services/accountService";
+import {
+    handleLogin,
+    handleRegister,
+    handleVerify,
+    refreshToken,
+    updateAvatar,
+    updateCoverAvatar,
+    updateProfile
+} from "../../services/accountService";
 import { toast } from 'react-toastify';
 
 export const accountLoginSuccess = (accountInfo) => ({
@@ -93,6 +101,64 @@ export const verifyFailded = (data) => ({
     errorMessage: data
 })
 
+export const updateAvatarStart = (infoUpdate) => {
+    return async (dispatch, getState) => {
+
+        try {
+            dispatch({ type: actionTypes.UPDATE_AVATAR_START })
+            let data = await updateAvatar(infoUpdate)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(updateAvatarSuccess(data.content.token))
+            }
+        } catch (error) {
+            console.log(error.response);
+            if (error && error.response && error.response.data) {
+                dispatch(updateAvatarFailed(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const updateAvatarSuccess = (data) => ({
+    type: actionTypes.UPDATE_AVATAR_SUCCESS,
+    data: data
+})
+
+export const updateAvatarFailed = (data) => ({
+    type: actionTypes.UPDATE_AVATAR_FAILDED,
+    errorMessage: data
+})
+
+export const updateCoverAvatarStart = (infoUpdate) => {
+    return async (dispatch, getState) => {
+
+        try {
+            dispatch({ type: actionTypes.UPDATE_COVER_AVATAR_START })
+            let data = await updateCoverAvatar(infoUpdate)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(updateCoverAvatarSuccess(data.content.token))
+            }
+        } catch (error) {
+            console.log(error.response);
+            if (error && error.response && error.response.data) {
+                dispatch(updateCoverAvatarFailed(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const updateCoverAvatarSuccess = (data) => ({
+    type: actionTypes.UPDATE_AVATAR_SUCCESS,
+    data: data
+})
+
+export const updateCoverAvatarFailed = (data) => ({
+    type: actionTypes.UPDATE_AVATAR_FAILDED,
+    errorMessage: data
+})
+
 export const refreshTokenStart = () => {
     return async (dispatch, getState) => {
 
@@ -122,4 +188,31 @@ export const refreshTokenSuccess = (data) => ({
 export const refreshTokenFailed = (data) => ({
     type: actionTypes.REFRESH_TOKEN_FAILED,
     errorMessage: data
+})
+
+export const updateInfoStart = (updateInfo) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.UPDATE_INFO_START })
+            let data = await updateProfile(updateInfo)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(updateInfoSuccess())
+
+            } else {
+                dispatch(updateInfoFailed())
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+}
+
+export const updateInfoSuccess = () => ({
+    type: actionTypes.UPDATE_INFO_SUCCESS,
+})
+
+export const updateInfoFailed = () => ({
+    type: actionTypes.UPDATE_INFO_FAILED
 })

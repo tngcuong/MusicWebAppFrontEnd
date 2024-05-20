@@ -13,7 +13,8 @@ const initialState = {
     top5likedSong: [],
     isLiked: false,
     numberCount: 0,
-    songDes: []
+    songDes: [],
+    isDeleted: false,
 }
 
 const appReducer = (state = initialState, action) => {
@@ -73,7 +74,8 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.DELETE_SONG_SUCCESS:
             state.isLoading = false
-            toast.success('success')
+            state.isLiked = !state.isLiked
+            toast.success('delete successfully')
             return {
                 ...state
             }
@@ -188,6 +190,22 @@ const appReducer = (state = initialState, action) => {
         case actionTypes.GET_SONG_DES_BY_ID_FAILDED:
             state.isLoading = false
             toast.success(action.error)
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_SONG_SUCCESS:
+            state.isLoading = false
+            toast.success('Upload song successfully')
+            return {
+                ...state
+            }
+        case actionTypes.UPLOAD_SONG_FAILDED:
+            state.isLoading = false
             return {
                 ...state
             }
