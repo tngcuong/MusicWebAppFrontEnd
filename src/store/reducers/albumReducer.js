@@ -9,7 +9,8 @@ const initialState = {
     userAlbums: [],
     isAlbum: true,
     currentAlbum: [],
-    isLiked: false
+    isLiked: false,
+    isFailed: true
 }
 
 const albumReducer = (state = initialState, action) => {
@@ -107,16 +108,36 @@ const albumReducer = (state = initialState, action) => {
             }
         case actionTypes.UPLOAD_PLAYLIST_START:
             state.isLoading = true
+            state.isFailed = true
             return {
                 ...state
             }
         case actionTypes.UPLOAD_PLAYLIST_SUCCESS:
             state.isLoading = false
+            state.isFailed = false
             toast.success('Upload playlist successfully')
             return {
                 ...state
             }
         case actionTypes.UPLOAD_PLAYLIST_FAILDED:
+            toast.success(action.error)
+            state.isLoading = false
+            state.isFailed = true
+            return {
+                ...state
+            }
+        case actionTypes.ADD_SONG_TO_ALBUM_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.ADD_SONG_TO_ALBUM_SUCCESS:
+            state.isLoading = false
+            toast.success('Add song to playlist successfully')
+            return {
+                ...state
+            }
+        case actionTypes.ADD_SONG_TO_ALBUM_FAILDED:
             state.isLoading = false
             return {
                 ...state

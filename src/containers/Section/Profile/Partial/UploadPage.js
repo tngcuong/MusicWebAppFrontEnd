@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Progress } from 'reactstrap';
 import * as actions from '../../../../store/actions';
 import { LANGUAGES } from '../../../../utils';
 import Loader from '../../../../components/Loader';
@@ -14,7 +14,12 @@ class UploadPage extends Component {
         super(props);
         this.state = {
             song: true,
-            playlist: false
+            playlist: false,
+            imgSong: null,
+            sourceSong: null,
+            nameSong: "",
+            namePlaylist: "",
+            thumbnailPlaylist: null,
         };
 
     }
@@ -22,6 +27,9 @@ class UploadPage extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+        if (this.props.currentUser != prevProps.currentUser) {
+
+        }
 
     }
 
@@ -51,23 +59,99 @@ class UploadPage extends Component {
 
     }
 
-    setSongData = (data) => {
-        this.setState({ songData: data });
+    setSongImg = (img) => {
+        this.setState({
+            imgSong: img,
+        })
+    }
+
+    setNamePlaylist = (name) => {
+        this.setState({
+            namePlaylist: name,
+        })
+
+    }
+
+    setImagePlaylist = (img) => {
+        this.setState({
+            thumbnailPlaylist: img
+        })
+    }
+
+    setSongSource = (source) => {
+        this.setState({
+            sourceSong: source,
+        })
+    }
+
+    setSongName = (name) => {
+        this.setState({
+            nameSong: name
+        })
+    }
+
+    checkValidatePlaylistInput = () => {
+        let isValid = true
+        let arrInput = ["namePlaylist", 'thumbnailPlaylist']
+        for (let i = 0; i < arrInput.length; i++) {
+            if (!this.state[arrInput[i]]) {
+                isValid = false
+                alert('Missing parameter ' + arrInput[i])
+                break
+            }
+        }
+        return isValid;
     }
 
     uploadPlaylist = () => {
+        let isValid = this.checkValidatePlaylistInput()
+        if (isValid) {
+            this.props.uploadPlaylist({
+                id: this.props.currentUser.id,
+                img: this.state.thumbnailPlaylist,
+                name: this.state.namePlaylist,
+            }
+            )
+        }
+    }
+
+    checkValidateSongInput = () => {
+        let isValid = true
+        let arrInput = ["nameSong", 'imgSong', "sourceSong"]
+        for (let i = 0; i < arrInput.length; i++) {
+            if (!this.state[arrInput[i]]) {
+                isValid = false
+                alert('Missing parameter ' + arrInput[i])
+                break
+            }
+        }
+        return isValid;
+    }
+
+    uploadSong = () => {
+        let isValid = this.checkValidateSongInput()
+        if (isValid) {
+            this.props.uploadSong({
+                UserId: this.props.currentUser.id,
+                Img: this.state.imgSong,
+                Name: this.state.nameSong,
+                Source: this.state.sourceSong,
+            }
+            )
+        }
     }
 
     render() {
-        let { isLoading } = this.props
+        let { isLoading, isLoadingAlbum } = this.props
         let { song, playlist } = this.state
         return (
             <>
                 <div>
-                    {isLoading === true && <Loader />}
+
                     <Modal className='upload-modal-container' isOpen={this.props.isOpen} toggle={() => { this.toggle() }} >
                         <ModalHeader toggle={() => { this.toggle() }}>Choose the thing what you wanna upload</ModalHeader>
                         <ModalBody>
+                            {isLoading === true || isLoadingAlbum === true && <Loader></Loader>}
                             <div className='upload-container'>
                                 <div className='upload'>
                                     <ul className='upload-list-item'>
@@ -79,10 +163,17 @@ class UploadPage extends Component {
                                     <div className='profile-content'>
                                         <div className='profile-content-left'>
                                             {
-                                                song === true && <UploadSongPage setSongData={this.setSongData} />
+                                                song === true && <UploadSongPage
+                                                    setSongImg={this.setSongImg}
+                                                    setSongSource={this.setSongSource}
+                                                    setSongName={this.setSongName}
+                                                />
                                             }
                                             {
-                                                playlist === true && <UploadPlaylistPage />
+                                                playlist === true && <UploadPlaylistPage
+                                                    setImgPlaylist={this.setImagePlaylist}
+                                                    setNamePlaylist={this.setNamePlaylist}
+                                                />
                                             }
                                         </div>
                                     </div>
@@ -93,10 +184,10 @@ class UploadPage extends Component {
                             {
                                 song === true ?
                                     <Button color="danger" onClick={() => { this.uploadSong() }}>
-                                        Upload
+                                        Upload Song
                                     </Button> :
                                     <Button color="danger" onClick={() => { this.uploadPlaylist() }}>
-                                        Upload
+                                        Upload Playlist
                                     </Button>
                             }
                             {' '}
@@ -114,7 +205,10 @@ class UploadPage extends Component {
 
 const mapStateToProps = state => {
     return {
+        isFailed: state.song.isFailed,
         isLoading: state.song.isLoading,
+        currentUser: state.user.currentUser,
+        isLoadingAlbum: state.album.isLoading,
     };
 };
 

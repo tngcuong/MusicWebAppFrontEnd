@@ -8,7 +8,8 @@ import {
     unLikeSong,
     top5likedSong,
     countLiked,
-    getSongDesByUserId
+    getSongDesByUserId,
+    GetRalatedSongByUserId
 } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
@@ -275,7 +276,7 @@ export const getSongDesByUserIdFailded = (error) => ({
     flag: error
 })
 
-export const uploadSongStart = (song, pageIndex, pageSize) => {
+export const uploadSongStart = (song) => {
     return async (dispatch, getState) => {
         try {
             dispatch({ type: actionTypes.UPLOAD_SONG_START })
@@ -288,7 +289,9 @@ export const uploadSongStart = (song, pageIndex, pageSize) => {
                 dispatch(uploadSongFailed())
             }
         } catch (error) {
-            console.log(error);
+            if (error && error.response && error.response.data) {
+                dispatch(uploadSongFailed(error.response.data.message))
+            }
         }
     }
 }
@@ -297,7 +300,36 @@ export const uploadSongSuccess = () => ({
     type: actionTypes.UPLOAD_SONG_SUCCESS
 })
 
-export const uploadSongFailed = () => ({
-    type: actionTypes.UPLOAD_SONG_FAILDED
+export const uploadSongFailed = (error) => ({
+    type: actionTypes.UPLOAD_SONG_FAILDED,
+    data: error
+})
+
+export const getRelatedSongStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_RELATED_SONG_START })
+            let data = await GetRalatedSongByUserId(id)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+
+                dispatch(getRelatedSongSuccess())
+            } else {
+                dispatch(getRelatedSongFailed())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(getRelatedSongFailed(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const getRelatedSongSuccess = () => ({
+    type: actionTypes.GET_RELATED_SONG_SUCCESS
+})
+
+export const getRelatedSongFailed = () => ({
+    type: actionTypes.GET_RELATED_SONG_FAILDED,
 })
 

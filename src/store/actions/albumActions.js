@@ -6,8 +6,10 @@ import {
     getDetailAlbumByUserId,
     toggleLikePLayList,
     deletePlayList,
-    uploadPlaylist
+    uploadPlaylist,
+    InsertSongToList
 } from '../../services/albumService';
+import AddSongToPlayList from '../../containers/Section/Profile/Partial/AddSongToPlayList';
 
 export const fetchAlbumSuccess = (data) => ({
     type: actionTypes.FETCH_ALBUM_SUCCESS,
@@ -167,7 +169,9 @@ export const uploadPlaylistStart = (playlist) => {
                 dispatch(uploadPlaylistFailded())
             }
         } catch (error) {
-            console.log(error);
+            if (error && error.response && error.response.data) {
+                dispatch(uploadPlaylistFailded(error.response.data.message))
+            }
         }
     }
 }
@@ -176,7 +180,36 @@ export const uploadPlaylistSuccess = () => ({
     type: actionTypes.UPLOAD_PLAYLIST_SUCCESS
 })
 
-export const uploadPlaylistFailded = () => ({
-    type: actionTypes.UPLOAD_PLAYLIST_FAILDED
+export const uploadPlaylistFailded = (data) => ({
+    type: actionTypes.UPLOAD_PLAYLIST_FAILDED,
+    error: data
+})
+
+export const AddSongToAlbumStart = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.ADD_SONG_TO_ALBUM_START })
+            let data = await InsertSongToList(data)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(AddSongToAlbumSuccess())
+
+            } else {
+                dispatch(AddSongToAlbumFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(AddSongToAlbumFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const AddSongToAlbumSuccess = () => ({
+    type: actionTypes.ADD_SONG_TO_ALBUM_SUCCESS
+})
+
+export const AddSongToAlbumFailded = () => ({
+    type: actionTypes.ADD_SONG_TO_ALBUM_FAILDED,
 })
 

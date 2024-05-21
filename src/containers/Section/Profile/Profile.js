@@ -23,6 +23,7 @@ import { updateCoverAvatar } from '../../../services/accountService';
 import EditProfile from './Partial/EditProfile';
 import UploadSong from './Partial/UploadPage';
 
+
 class Profile extends Component {
     constructor(props) {
         super(props);

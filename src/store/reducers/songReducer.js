@@ -15,6 +15,7 @@ const initialState = {
     numberCount: 0,
     songDes: [],
     isDeleted: false,
+    isFailed: true
 }
 
 const appReducer = (state = initialState, action) => {
@@ -195,16 +196,35 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.UPLOAD_SONG_START:
             state.isLoading = true
+            state.isFailed = true
             return {
                 ...state
             }
         case actionTypes.UPLOAD_SONG_SUCCESS:
             state.isLoading = false
+            state.isFailed = false
             toast.success('Upload song successfully')
             return {
                 ...state
             }
         case actionTypes.UPLOAD_SONG_FAILDED:
+            state.isLoading = false
+            state.isFailed = true
+            toast.error(action.data)
+            return {
+                ...state
+            }
+        case actionTypes.GET_RELATED_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_RELATED_SONG_SUCCESS:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.GET_RELATED_SONG_FAILDED:
             state.isLoading = false
             return {
                 ...state

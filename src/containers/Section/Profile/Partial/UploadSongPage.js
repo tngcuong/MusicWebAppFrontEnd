@@ -19,20 +19,29 @@ class UploadSongPage extends Component {
             previewImg: "",
             isOpenPreview: false,
             currentUser: {},
-            duration: 0
+            duration: 0,
+
         };
         this.audioElement = React.createRef();
+        this.audio = React.createRef()
     }
 
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.currentUser !== prevProps.currentUser) {
+        if (this.props.isFailed != prevProps.isFailed) {
+            
             this.setState({
-                currentUser: { ...this.props.currentUser },
+                Image: null,
+                Source: null,
+                Name: "",
+                previewImg: "",
+               
             })
+            this.audio.current.value = null
         }
     }
+
     openPreviewImage = () => {
         if (!this.state.previewImg) return
         this.setState({
@@ -40,20 +49,12 @@ class UploadSongPage extends Component {
         })
     }
 
-
     componentDidMount() {
-        this.setState({
-            idSong: this.props.idSong
-        })
+
     }
 
     toggle = () => {
         this.props.toggleFromParent()
-    }
-
-    deleteSong = () => {
-        this.props.deleteSong(this.props.idSong)
-        this.toggle()
     }
 
     handleChangeInput = (event, id) => {
@@ -62,6 +63,7 @@ class UploadSongPage extends Component {
         this.setState({
             ...copyState,
         })
+        this.props.setSongName(copyState[id])
     }
 
     handleChangeImage = (e) => {
@@ -73,10 +75,11 @@ class UploadSongPage extends Component {
                 Image: file,
                 previewImg: objUrl
             })
+            this.props.setSongImg(file)
         }
     }
 
-    handleChangeSource = (e) => {
+    handleChangeSource = async (e) => {
         let data = e.target.files
         let file = data[0]
         if (file) {
@@ -85,38 +88,17 @@ class UploadSongPage extends Component {
                 Source: file,
             })
             this.audioElement.current.src = objUrl;
-            this.handleLoadedMetadata()
+            await this.handleLoadedMetadata()
+            this.props.setSongSource(file, this.state.duration)
         }
     }
 
-    openPreviewImage = () => {
-        if (!this.state.previewImg) return
-        this.setState({
-            isOpenPreview: true
-        })
-    }
-
-    checkValidateInput = () => {
-        let isValid = true
-        let arrInput = ['Name', "Image", "Source"]
-        for (let i = 0; i < arrInput.length; i++) {
-            if (!this.state[arrInput[i]]) {
-                isValid = false
-                alert('Missing parameter ' + arrInput[i])
-                break
-            }
-        }
-        return isValid;
-    }
-
-    handleLoadedMetadata = () => {
+    handleLoadedMetadata = async () => {
         this.setState({ duration: this.audioElement.current.duration });
     };
 
 
     render() {
-        let { isLoading } = this.props
-        let { idSong } = this.state
         return (
             <>
                 <div className='upload-song-container'>
@@ -140,7 +122,7 @@ class UploadSongPage extends Component {
                     <div className='input-container'>
                         <label><FormattedMessage id="manage-song.source" /></label>
                         <div>
-                            <input type='file' onChange={(e) => { this.handleChangeSource(e) }} />
+                            <input ref={this.audio} type='file' onChange={(e) => { this.handleChangeSource(e) }} />
                         </div>
 
                     </div>
@@ -162,6 +144,7 @@ class UploadSongPage extends Component {
 
 const mapStateToProps = state => {
     return {
+        isFailed: state.song.isFailed,
         isLoading: state.song.isLoading,
         currentUser: state.user.currentUser,
     };
@@ -169,7 +152,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteSong: (id) => dispatch(actions.deleteSongStart(id))
     };
 };
 

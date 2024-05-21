@@ -12,6 +12,7 @@ import { withRouter } from 'react-router';
 import { getDetailAlbumByUserId } from '../../../services/albumService';
 import CustomScrollbars from '../../../components/CustomScrollbars'
 import DeleteAlbumBtn from './Partial/DeleteAlbumBtn';
+import AddSongToPlayList from './Partial/AddSongToPlayList';
 
 class PlayLists extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class PlayLists extends Component {
         this.state = {
             recentPLayList: [],
             isClick: false,
+            isOpenEditModal: false,
         }
     }
 
@@ -50,6 +52,10 @@ class PlayLists extends Component {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    openEditModal = ()=>{
+        
     }
 
     render() {
@@ -137,8 +143,14 @@ class PlayLists extends Component {
                                                         <div><CountLikedPLayList idPlayList={item.id}></CountLikedPLayList></div>
                                                     </div>
                                                     <div className='update'>
-                                                        <div className='btn-update'>
+                                                        <div className='btn-update' onClick={()=>{this.openEditModal()}}>
                                                             <i className="far fa-edit"></i>
+                                                            {this.state.isOpenEditModal === true && <AddSongToPlayList
+                                                                toggleFromParent={this.toggleEditModal}
+                                                                isOpen={this.state.isOpenEditModal}
+                                                                size="xl"
+                                                                centered
+                                                            ></AddSongToPlayList>}
                                                         </div>
                                                     </div>
                                                     {idUser === currentUser.id && <DeleteAlbumBtn idAlbum={item.id} />}
@@ -147,7 +159,9 @@ class PlayLists extends Component {
                                         </div>
                                     </div>
                                 )
+
                             })
+
                         }
 
                     </div>

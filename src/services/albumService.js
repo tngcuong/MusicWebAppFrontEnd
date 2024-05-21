@@ -37,7 +37,9 @@ const uploadPlaylist = (infoPlaylist) => {
     })
 }
 
-
+const InsertSongToList = (data) => {
+    return axios.post(`/api/PlayList/InsertSongToList`, data)
+}
 
 export {
     getAllAlbums,
@@ -46,5 +48,6 @@ export {
     toggleLikePLayList,
     countLiked,
     deletePlayList,
-    uploadPlaylist
+    uploadPlaylist,
+    InsertSongToList
 }
