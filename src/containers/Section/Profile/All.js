@@ -7,7 +7,6 @@ import Loader from "../../../components/Loader";
 import { FormattedMessage, useIntl, injectIntl } from 'react-intl'
 import { top5likedSong } from '../../../services/songService';
 import { calcuDate } from '../../../components/HOC/RandomColor';
-import WaveSurfer from "wavesurfer.js";
 import LikeSong from '../../Partial/LikeSong';
 import CountLiked from '../../Partial/CountLiked';
 import { withRouter } from 'react-router';

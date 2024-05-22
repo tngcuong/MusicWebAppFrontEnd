@@ -188,6 +188,7 @@ class Profile extends Component {
         const { ProfileUser, All, PopularTracks, Tracks, PlayLists, LikedTracks, LikedTracksUser, Followers } = this.state;
         const { currentUser } = this.props
         const idUser = this.props.match.params.profile
+        const coverAvater = this.state.ProfileUser?.coverAvatar
         return (
             <div>
                 {this.props.isLoadingAccount === true && <Loader></Loader>}
@@ -195,10 +196,11 @@ class Profile extends Component {
                 <div className='profile-container'>
 
                     <div className='profile-banner' style={{
-                        backgroundImage: `url("${ProfileUser.coverAvatar}")`,
+                        backgroundImage: coverAvater?.slice(0, 4) === 'https' ? `url("${coverAvater}")` : 'none',
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat'
+                        backgroundRepeat: 'no-repeat',
+                        backgroundColor: coverAvater?.slice(0, 4) === 'https' ? 'transparent' : `${coverAvater}`
                     }}>
                         <div className='profile-right'>
                             <div className='profile-avatar' style={{
