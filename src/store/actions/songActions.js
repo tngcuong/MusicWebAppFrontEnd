@@ -313,7 +313,7 @@ export const getRelatedSongStart = (id) => {
             console.log(data);
             if (data && data.errorCode === 200) {
 
-                dispatch(getRelatedSongSuccess())
+                dispatch(getRelatedSongSuccess(data.content.relatedSong))
             } else {
                 dispatch(getRelatedSongFailed())
             }
@@ -325,8 +325,9 @@ export const getRelatedSongStart = (id) => {
     }
 }
 
-export const getRelatedSongSuccess = () => ({
-    type: actionTypes.GET_RELATED_SONG_SUCCESS
+export const getRelatedSongSuccess = (data) => ({
+    type: actionTypes.GET_RELATED_SONG_SUCCESS,
+    data: data,
 })
 
 export const getRelatedSongFailed = () => ({

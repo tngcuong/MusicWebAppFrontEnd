@@ -5,14 +5,19 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Progress } from 're
 import * as actions from '../../../../store/actions';
 import { LANGUAGES } from '../../../../utils';
 import Loader from '../../../../components/Loader';
-import "./UploadPage.scss"
+import "./AddSongToPlayList.scss"
 import UploadSongPage from './UploadSongPage';
 import UploadPlaylistPage from './UploadPlaylistPage';
+import { withRouter } from 'react-router';
+import CheckCustom from '../../../Partial/CheckCustom';
 
-class UploadPage extends Component {
+class AddSongToPlayList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            album: {},
+            result: [],
+            currentId: ""
         };
 
     }
@@ -20,33 +25,94 @@ class UploadPage extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+        if (this.props.match.params.profile != prevProps.match.params.profile) {
+            this.props.getRelatedSong(this.props.match.params.profile)
+        }
 
+        if (this.props.playlist != prevProps.playlist) {
+            this.setState({
+                album: { ...this.props.playlist }
+            })
+        }
     }
 
     componentDidMount() {
-
+        this.props.getRelatedSong(this.props.match.params.profile)
+        this.setState({
+            album: { ...this.props.playlist }
+        })
     }
 
     toggle = () => {
         this.props.toggleFromParent()
     }
 
+    setIdPlaylist = (id) => {
+        this.setState({
+            currentId: id
+        })
+    }
+
+    updatePlayList = (data) => {
+        this.setState({
+            result: [...data]
+        })
+    }
+
+    handleUpdatePlayList = () => {
+        console.log(this.state.currentId);
+        this.props.updatePlayList({
+            idPlayList: this.state.currentId,
+            idSong: this.state.result
+        })
+    }
 
     render() {
-        let { isLoading, isLoadingAlbum } = this.props
-        let { song, playlist } = this.state
+        let { isLoading, isLoadingAlbum, relatedSong } = this.props
+        let { album } = this.state
+
         return (
             <>
-                <div className='add-to-list-container'>
+                <div className=''>
 
-                    <Modal className='upload-modal-container' isOpen={this.props.isOpen} toggle={() => { this.toggle() }} >
+                    <Modal className='add-to-list-container' isOpen={this.props.isOpen} toggle={() => { this.toggle() }} >
                         <ModalHeader toggle={() => { this.toggle() }}>Choose the song which you wanna add</ModalHeader>
                         <ModalBody>
+                            <div className='add-to-list-content'>
+                                <div className='song-list'>
+                                    {relatedSong && relatedSong.length > 0 && relatedSong.map((item, index) => {
+                                        return (
+                                            <div key={index} className='related-song'>
+                                                <span className='number-song'>{index + 1}</span>
+                                                <div className='img-song' style={{
+                                                    backgroundImage: `url("${item.image}")`,
+                                                    backgroundPosition: 'center center',
+                                                    backgroundSize: 'cover',
+                                                    backgroundRepeat: 'no-repeat'
+                                                }}></div>
 
+                                                <div className='info'>
+                                                    <div className='artist-name'>{item.user?.name} </div>
+                                                    <span> - </span>
+                                                    <div className='song-name'> {item.name}</div>
+                                                </div>
+                                                <div className='selected'>
+                                                    <CheckCustom
+                                                        item={item}
+                                                        playlist={album}
+                                                        updatePlayList={this.updatePlayList}
+                                                        setIdPlaylist={this.setIdPlaylist}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
                         </ModalBody>
                         <ModalFooter>
 
-                            <Button color="danger" onClick={() => { this.uploadSong() }}>
+                            <Button color="danger" onClick={() => { this.handleUpdatePlayList() }}>
                                 Save changes
                             </Button>
                             {' '}
@@ -65,13 +131,15 @@ class UploadPage extends Component {
 const mapStateToProps = state => {
     return {
         isLoadingAlbum: state.album.isLoading,
+        relatedSong: state.song.relatedSong
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        getRelatedSong: (userId) => dispatch(actions.getRelatedSongStart(userId)),
+        updatePlayList: (data) => dispatch(actions.AddSongToAlbumStart(data))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddSongToPlayList));

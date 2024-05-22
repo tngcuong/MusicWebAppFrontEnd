@@ -37,7 +37,7 @@ const uploadPlaylist = (infoPlaylist) => {
     })
 }
 
-const InsertSongToList = (data) => {
+const InsertSongToList = async (data) => {
     return axios.post(`/api/PlayList/InsertSongToList`, data)
 }
 

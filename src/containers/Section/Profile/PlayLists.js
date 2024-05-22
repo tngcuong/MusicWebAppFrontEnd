@@ -21,6 +21,7 @@ class PlayLists extends Component {
             recentPLayList: [],
             isClick: false,
             isOpenEditModal: false,
+            selectedItem: ""
         }
     }
 
@@ -54,12 +55,21 @@ class PlayLists extends Component {
         }
     }
 
-    openEditModal = ()=>{
-        
+    openEditModal = (id) => {
+        this.setState({
+            isOpenEditModal: true,
+            selectedItem: id
+        })
+    }
+
+    toggleEditModal = () => {
+        this.setState({
+            isOpenEditModal: !this.state.isOpenEditModal
+        })
     }
 
     render() {
-        const { recentPLayList } = this.state
+        const { recentPLayList, selectedItem } = this.state
         const { currentUser } = this.props
         const idUser = this.props.match.params.profile
         return (
@@ -143,20 +153,23 @@ class PlayLists extends Component {
                                                         <div><CountLikedPLayList idPlayList={item.id}></CountLikedPLayList></div>
                                                     </div>
                                                     <div className='update'>
-                                                        <div className='btn-update' onClick={()=>{this.openEditModal()}}>
+                                                        <div className='btn-update' onClick={() => { this.openEditModal(item.id) }}>
                                                             <i className="far fa-edit"></i>
-                                                            {this.state.isOpenEditModal === true && <AddSongToPlayList
-                                                                toggleFromParent={this.toggleEditModal}
-                                                                isOpen={this.state.isOpenEditModal}
-                                                                size="xl"
-                                                                centered
-                                                            ></AddSongToPlayList>}
+
                                                         </div>
                                                     </div>
+                                                    {this.state.isOpenEditModal === true && selectedItem == item.id && <AddSongToPlayList
+                                                        toggleFromParent={this.toggleEditModal}
+                                                        playlist={item}
+                                                        isOpen={this.state.isOpenEditModal}
+                                                        size="xl"
+                                                        centered
+                                                    ></AddSongToPlayList>}
                                                     {idUser === currentUser.id && <DeleteAlbumBtn idAlbum={item.id} />}
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 )
 

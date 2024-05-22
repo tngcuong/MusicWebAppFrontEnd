@@ -185,11 +185,11 @@ export const uploadPlaylistFailded = (data) => ({
     error: data
 })
 
-export const AddSongToAlbumStart = (data) => {
+export const AddSongToAlbumStart = (dataUpdate) => {
     return async (dispatch, getState) => {
         try {
             dispatch({ type: actionTypes.ADD_SONG_TO_ALBUM_START })
-            let data = await InsertSongToList(data)
+            let data = await InsertSongToList(dataUpdate)
             console.log(data);
             if (data && data.errorCode === 200) {
                 dispatch(AddSongToAlbumSuccess())

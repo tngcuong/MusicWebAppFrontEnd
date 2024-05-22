@@ -15,7 +15,8 @@ const initialState = {
     numberCount: 0,
     songDes: [],
     isDeleted: false,
-    isFailed: true
+    isFailed: true,
+    relatedSong: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -221,11 +222,13 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.GET_RELATED_SONG_SUCCESS:
             state.isLoading = false
+            state.relatedSong = [...action.data]
             return {
                 ...state
             }
         case actionTypes.GET_RELATED_SONG_FAILDED:
             state.isLoading = false
+            state.relatedSong = []
             return {
                 ...state
             }
