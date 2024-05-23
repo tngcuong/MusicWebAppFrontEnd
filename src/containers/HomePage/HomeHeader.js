@@ -13,7 +13,8 @@ class HomeHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: {}
+            currentUser: {},
+            searchText: ""
         }
     }
     handleChangeLanguage = (language) => {
@@ -58,10 +59,22 @@ class HomeHeader extends Component {
         this.props.history.push(`/profile/${this.state.currentUser.id}`)
     }
 
+    handleSearchValue = (e) => {
+        this.setState({
+            searchText: e.target.value
+        })
+    }
+
+
+
+    handleSearch = () => {
+        this.props.history.push(`/search/${this.state.searchText}`)
+    }
+
     render() {
         let { language, processLogout, currentUser } = this.props
         let isLogin = this.props.isLoggedIn
-        console.log(this.props);
+        let { searchText } = this.state
         return (
             <>
                 <div className='home-header-container'>
@@ -101,8 +114,11 @@ class HomeHeader extends Component {
                         </div>
                         <div className='center-content'>
                             <div className='search-header'>
-                                <input type='text' />
-                                <i className="fas fa-search"></i>
+                                <input type='text' value={searchText}
+                                    onChange={(e) => { this.handleSearchValue(e) }}
+
+                                />
+                                <i className="fas fa-search" onClick={() => { this.handleSearch() }}></i>
                             </div>
                         </div>
                         <div className='right-content'>

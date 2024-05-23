@@ -10,13 +10,14 @@ import UploadSongPage from './UploadSongPage';
 import UploadPlaylistPage from './UploadPlaylistPage';
 import { withRouter } from 'react-router';
 import CheckCustom from '../../../Partial/CheckCustom';
+import { result } from 'lodash';
 
 class AddSongToPlayList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             album: {},
-            result: [],
+            result: null,
             currentId: ""
         };
 
@@ -39,12 +40,16 @@ class AddSongToPlayList extends Component {
     componentDidMount() {
         this.props.getRelatedSong(this.props.match.params.profile)
         this.setState({
-            album: { ...this.props.playlist }
+            album: { ...this.props.playlist },
+            result: null
         })
     }
 
     toggle = () => {
         this.props.toggleFromParent()
+        this.setState({
+            result: null
+        })
     }
 
     setIdPlaylist = (id) => {
@@ -60,16 +65,21 @@ class AddSongToPlayList extends Component {
     }
 
     handleUpdatePlayList = () => {
-        console.log(this.state.currentId);
         this.props.updatePlayList({
-            idPlayList: this.state.currentId,
-            idSong: this.state.result
+            idPlayList: this.state.album.id,
+            idSong: this.state.result.map(o => o.id)
         })
+        this.setState({
+            result: null
+        })
+        if (this.props.isFailed) {
+            this.toggle()
+        }
     }
 
     render() {
         let { isLoading, isLoadingAlbum, relatedSong } = this.props
-        let { album } = this.state
+        let { album, result } = this.state
 
         return (
             <>
@@ -102,6 +112,7 @@ class AddSongToPlayList extends Component {
                                                         playlist={album}
                                                         updatePlayList={this.updatePlayList}
                                                         setIdPlaylist={this.setIdPlaylist}
+                                                        result={result}
                                                     />
                                                 </div>
                                             </div>
@@ -131,7 +142,8 @@ class AddSongToPlayList extends Component {
 const mapStateToProps = state => {
     return {
         isLoadingAlbum: state.album.isLoading,
-        relatedSong: state.song.relatedSong
+        relatedSong: state.song.relatedSong,
+        isFailed: state.album.isFailed,
     };
 };
 

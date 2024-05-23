@@ -15,13 +15,21 @@ class CheckCustom extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props !== prevProps) {
-            this.checkChecked();
+            if (this.props.result !== null) {
+                this.setState({
+                    item: { ...this.props.item },
+                    playlist: [...this.props.result],
+                }, this.checkChecked);
+            } else {
+                this.setState({
+                    item: { ...this.props.item },
+                    playlist: [...this.props.playlist.songList],
+                }, this.checkChecked);
+            }
+
         }
 
-        if (this.state.playlist !== prevState.playlist) {
-            this.checkChecked();
 
-        }
     }
 
     componentDidMount() {
@@ -42,30 +50,45 @@ class CheckCustom extends Component {
                 isChecked: false
             });
         }
-        console.log(this.state.playlist);
-        this.props.setIdPlaylist(this.props.playlist.id)
+
     }
 
     handleCheckboxClick = () => {
         const { item, playlist } = this.state;
-        if (playlist.find(i => i.id === item.id)) {
-            const playlistNew = playlist.filter(i => i.id !== item.id);
+        let { result } = this.props
+        let newPlaylist;
+        if (result !== null) {
+            if (result.find(i => i.id === item.id)) {
+                newPlaylist = result.filter(i => i.id !== item.id);
+            } else {
+                newPlaylist = [...result, item];
+            }
+
             this.setState({
-                playlist: playlistNew,
-                isChecked: false
+                playlist: newPlaylist,
+                isChecked: !this.state.isChecked
+            }, () => {
+                this.props.updatePlayList(newPlaylist);
             });
         } else {
-            const playlistNew = [...playlist, item];
+            if (playlist.find(i => i.id === item.id)) {
+                newPlaylist = playlist.filter(i => i.id !== item.id);
+            } else {
+                newPlaylist = [...playlist, item];
+            }
+
             this.setState({
-                playlist: playlistNew,
-                isChecked: true
+                playlist: newPlaylist,
+                isChecked: !this.state.isChecked
+            }, () => {
+                this.props.updatePlayList(this.state.playlist);
             });
         }
-        let playlistNew = playlist.map(obj => obj.id)
-        this.props.updatePlayList(playlistNew)
+
     }
 
     render() {
+        console.log(this.state.playlist);
         const { isChecked } = this.state;
         return (
             <div

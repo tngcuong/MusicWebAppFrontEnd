@@ -34,7 +34,7 @@ class PlayLists extends Component {
             await this.getRecentPlaylist(this.props.match.params.profile)
         }
 
-        if (this.props.isLiked !== prevProps.isLiked) {
+        if (this.props.isLiked !== prevProps.isLiked || this.props.isFailed !== prevProps.isFailed) {
             await this.getRecentPlaylist(this.props.match.params.profile)
         }
     }
@@ -192,7 +192,8 @@ const mapStateToProps = state => {
         isFirstMount: state.song.firstMount,
         isShowPlayer: state.song.isShowPlayer,
         currentUser: state.user.currentUser,
-        isLiked: state.album.isLiked
+        isLiked: state.album.isLiked,
+        isFailed: state.album.isFailed,
     };
 };
 

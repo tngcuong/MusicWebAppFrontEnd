@@ -128,17 +128,20 @@ const albumReducer = (state = initialState, action) => {
             }
         case actionTypes.ADD_SONG_TO_ALBUM_START:
             state.isLoading = true
+            state.isFailed = true
             return {
                 ...state
             }
         case actionTypes.ADD_SONG_TO_ALBUM_SUCCESS:
             state.isLoading = false
-            toast.success('Add song to playlist successfully')
+            state.isFailed = false
+            toast.success('Update song to playlist successfully')
             return {
                 ...state
             }
         case actionTypes.ADD_SONG_TO_ALBUM_FAILDED:
             state.isLoading = false
+            state.isFailed = true
             return {
                 ...state
             }

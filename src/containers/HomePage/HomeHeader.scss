@@ -69,7 +69,6 @@
 
 
             .search-header {
-                width          : fit-content;
                 display        : flex;
                 justify-content: center;
                 align-items    : center;
@@ -77,6 +76,10 @@
                 padding        : 10px;
                 border-radius  : 1rem;
                 background     : white;
+                overflow       : hidden;
+                white-space    : nowrap;
+                text-overflow  : ellipsis;
+                word-break     : normal;
 
                 i {
                     margin: 0 5px;

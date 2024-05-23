@@ -25,6 +25,7 @@ import CustomScrollbars from '../components/CustomScrollbars.js';
 import AlbumMusic from './Section/AlbumMusic.js';
 import MusicPlayer from './Partial/MusicPlayer.js';
 import Profile from './Section/Profile/Profile.js';
+import Search from './Search/Search.js';
 
 class App extends Component {
     interval;
@@ -75,6 +76,7 @@ class App extends Component {
                                         <Route path={path.HOMEPAGE} component={HomePage} />
                                         <Route path={path.DETAIL_ALBUM} component={AlbumMusic} />
                                         <Route path={path.PROFILE} component={Profile} />
+                                        <Route path={path.SEARCH} component={Search} />
                                     </Switch>
                                 </CustomScrollbars>
                             </div>

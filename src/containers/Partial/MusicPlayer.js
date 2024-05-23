@@ -282,7 +282,7 @@ class MusicPlayer extends Component {
         }
     }
 
-    goProfile = (id) =>{
+    goProfile = (id) => {
         this.props.history.push(`/profile/${id}`)
     }
 
@@ -317,7 +317,7 @@ class MusicPlayer extends Component {
                             {/* <img src={currentSong?.image} alt={currentSong?.name}></img> */}
                             <div className='info'>
                                 <span className='song-name'>{currentSong?.name}</span>
-                                <span className='song-username' onClick={()=>{this.goProfile(currentSong?.user.id)}} >{currentSong.user && currentSong.user.name}</span>
+                                <span className='song-username' onClick={() => { this.goProfile(currentSong?.user.id) }} >{currentSong.user && currentSong.user.name}</span>
                             </div>
                             <LikeSong idSong={currentSong.id}></LikeSong>
                             {/* <div>
