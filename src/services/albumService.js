@@ -41,6 +41,10 @@ const InsertSongToList = async (data) => {
     return axios.post(`/api/PlayList/InsertSongToList`, data)
 }
 
+const SearchPlaylistByName = async (name) => {
+    return axios.get(`/api/PlayList/SearchPlaylistByName?name=${name}`)
+}
+
 export {
     getAllAlbums,
     getDetailAlbumById,
@@ -49,5 +53,6 @@ export {
     countLiked,
     deletePlayList,
     uploadPlaylist,
-    InsertSongToList
+    InsertSongToList,
+    SearchPlaylistByName
 }

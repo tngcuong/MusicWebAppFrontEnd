@@ -54,6 +54,9 @@ const getFollowerByUserId = async (id) => {
     return axios.get(`api/User/GetFollowerByUserId?id=${id}`)
 }
 
+const SearchUserByName = async (name) => {
+    return axios.get(`/api/User/SearchPeopleByName?name=${name}`)
+}
 
 export {
     getAllUsers,
@@ -62,5 +65,6 @@ export {
     editUser,
     getCurrentUser,
     getUserById,
-    getFollowerByUserId
+    getFollowerByUserId,
+    SearchUserByName
 }
