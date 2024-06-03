@@ -59,7 +59,6 @@ class AlbumMusic extends Component {
 
     render() {
         let { detailAlbum } = this.state
-        console.log(this.props);
         return (
             <>
                 <HomeHeader isShowBanner={false} />

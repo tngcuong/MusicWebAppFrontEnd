@@ -9,7 +9,8 @@ import {
     top5likedSong,
     countLiked,
     getSongDesByUserId,
-    GetRalatedSongByUserId
+    GetRalatedSongByUserId,
+    SearchSongByName
 } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
@@ -334,3 +335,31 @@ export const getRelatedSongFailed = () => ({
     type: actionTypes.GET_RELATED_SONG_FAILDED,
 })
 
+export const SearchSongByNameStart = (name) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.SEARCH_SONG_BY_NAME_START })
+            let data = await SearchSongByName(name)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(SearchSongByNameSuccess(data.content))
+
+            } else {
+                dispatch(SearchSongByNameFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(SearchSongByNameFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const SearchSongByNameSuccess = (data) => ({
+    type: actionTypes.SEARCH_SONG_BY_NAME_SUCCESS,
+    data : [...data]
+})
+
+export const SearchSongByNameFailded = () => ({
+    type: actionTypes.SEARCH_SONG_BY_NAME_FAILED,
+})

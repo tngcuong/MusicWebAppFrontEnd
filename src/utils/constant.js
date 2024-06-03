@@ -7,7 +7,7 @@ export const path = {
     SIGNUP: '/sign-up',
     DETAIL_ALBUM: '/details-album/:album',
     PROFILE: '/profile/:profile',
-    SEARCH: '/search/:s',
+    SEARCH: '/search/:s?',
 };
 
 export const LANGUAGES = {

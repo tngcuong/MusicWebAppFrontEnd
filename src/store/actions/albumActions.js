@@ -7,7 +7,8 @@ import {
     toggleLikePLayList,
     deletePlayList,
     uploadPlaylist,
-    InsertSongToList
+    InsertSongToList,
+    SearchPlaylistByName
 } from '../../services/albumService';
 import AddSongToPlayList from '../../containers/Section/Profile/Partial/AddSongToPlayList';
 
@@ -213,3 +214,31 @@ export const AddSongToAlbumFailded = () => ({
     type: actionTypes.ADD_SONG_TO_ALBUM_FAILDED,
 })
 
+export const SearchAlbumByNameStart = (name) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.SEARCH_ALBUM_BY_NAME_START })
+            let data = await SearchPlaylistByName(name)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(SearchAlbumByNameSuccess(data.content))
+
+            } else {
+                dispatch(SearchAlbumByNameFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(SearchAlbumByNameFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const SearchAlbumByNameSuccess = (data) => ({
+    type: actionTypes.SEARCH_ALBUM_BY_NAME_SUCCESS,
+    data: data
+})
+
+export const SearchAlbumByNameFailded = () => ({
+    type: actionTypes.SEARCH_ALBUM_BY_NAME_FAILED,
+})

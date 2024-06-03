@@ -9,6 +9,9 @@ import "./Search.scss"
 import { withRouter } from 'react-router';
 import { result } from 'lodash';
 import HomeHeader from '../HomePage/HomeHeader';
+import Song from './Song';
+import Album from './Album';
+import People from './People';
 
 class AddSongToPlayList extends Component {
     constructor(props) {
@@ -17,7 +20,7 @@ class AddSongToPlayList extends Component {
             song: true,
             people: false,
             album: false,
-            searchText: ""
+            searchText: "",
         };
 
     }
@@ -26,13 +29,19 @@ class AddSongToPlayList extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.match.params.s !== prevProps.match.params.s) {
+            this.props.searchSongByName(this.props.match.params.s)
+            this.props.searchPeopleByName(this.props.match.params.s)
+            this.props.searchAlbumByName(this.props.match.params.s)
             this.setState({
-                searchText: this.props.match.params.s
+                searchText: this.props.match.params.s,
             })
         }
     }
 
     componentDidMount() {
+        this.props.searchSongByName(this.props.match.params.s)
+        this.props.searchPeopleByName(this.props.match.params.s)
+        this.props.searchAlbumByName(this.props.match.params.s)
         this.setState({
             searchText: this.props.match.params.s
         })
@@ -105,7 +114,15 @@ class AddSongToPlayList extends Component {
                                     </div>
                                 </div>
                                 <div className='search-content-container'>
-
+                                    {
+                                        song === true && <Song />
+                                    }
+                                    {
+                                        album === true && <Album />
+                                    }
+                                    {
+                                        people === true && <People />
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -122,13 +139,17 @@ const mapStateToProps = state => {
         isLoadingAlbum: state.album.isLoading,
         relatedSong: state.song.relatedSong,
         isFailed: state.album.isFailed,
+        searchSong: state.song.searchSong
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getRelatedSong: (userId) => dispatch(actions.getRelatedSongStart(userId)),
-        updatePlayList: (data) => dispatch(actions.AddSongToAlbumStart(data))
+        updatePlayList: (data) => dispatch(actions.AddSongToAlbumStart(data)),
+        searchSongByName: (name) => dispatch(actions.SearchSongByNameStart(name)),
+        searchPeopleByName: (name) => dispatch(actions.SearchPeopleByNameStart(name)),
+        searchAlbumByName: (name) => dispatch(actions.SearchAlbumByNameStart(name))
     };
 };
 

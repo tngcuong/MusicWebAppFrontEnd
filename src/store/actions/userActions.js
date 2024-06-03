@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
 import { getAllRoles } from '../../services/roleService';
-import { getCurrentUser, editUser, getUserById } from '../../services/userService';
+import { getCurrentUser, editUser, getUserById, SearchUserByName } from '../../services/userService';
 
 
 export const addUserSuccess = () => ({
@@ -122,4 +122,33 @@ export const getUserIdSuccess = (currentUser) => ({
 
 export const getUserIdFailed = () => ({
     type: actionTypes.GET_USER_ID_FAILED
+})
+
+export const SearchPeopleByNameStart = (name) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.SEARCH_PEOPLE_BY_NAME_START })
+            let data = await SearchUserByName(name)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(SearchPeopleByNameSuccess(data.content))
+
+            } else {
+                dispatch(SearchPeopleByNameFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(SearchPeopleByNameFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const SearchPeopleByNameSuccess = (data) => ({
+    type: actionTypes.SEARCH_PEOPLE_BY_NAME_SUCCESS,
+    data: data
+})
+
+export const SearchPeopleByNameFailded = () => ({
+    type: actionTypes.SEARCH_PEOPLE_BY_NAME_FAILED,
 })

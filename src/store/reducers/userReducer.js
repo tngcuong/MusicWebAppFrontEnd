@@ -4,7 +4,8 @@ const initialState = {
     roles: [],
     isLoading: false,
     currentUser: {},
-    user: {}
+    user: {},
+    searchUser: []
 }
 
 const userReducer = (state = initialState, action) => {
@@ -40,7 +41,7 @@ const userReducer = (state = initialState, action) => {
             }
         case actionTypes.GET_CURRENT_USER_SUCCESS:
             let copyStateGetCurrentUser = { ...state }
-            copyStateGetCurrentUser.currentUser = {...action.data};
+            copyStateGetCurrentUser.currentUser = { ...action.data };
             copyStateGetCurrentUser.isLoading = false
             return {
                 ...copyStateGetCurrentUser
@@ -74,6 +75,26 @@ const userReducer = (state = initialState, action) => {
         case actionTypes.GET_USER_ID_FAILED:
             state.isLoading = false
             state.user = {}
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_PEOPLE_BY_NAME_START:
+            state.isLoading = true
+            state.isFailed = true
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_PEOPLE_BY_NAME_SUCCESS:
+            state.isLoading = false
+            state.isFailed = false
+            state.searchUser = [...action.data]
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_PEOPLE_BY_NAME_FAILED:
+            state.isLoading = false
+            state.isFailed = true
+            state.searchUser = []
             return {
                 ...state
             }

@@ -10,7 +10,8 @@ const initialState = {
     isAlbum: true,
     currentAlbum: [],
     isLiked: false,
-    isFailed: true
+    isFailed: true,
+    searchAlbum: []
 }
 
 const albumReducer = (state = initialState, action) => {
@@ -142,6 +143,26 @@ const albumReducer = (state = initialState, action) => {
         case actionTypes.ADD_SONG_TO_ALBUM_FAILDED:
             state.isLoading = false
             state.isFailed = true
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_ALBUM_BY_NAME_START:
+            state.isLoading = true
+            state.isFailed = true
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_ALBUM_BY_NAME_SUCCESS:
+            state.isLoading = false
+            state.isFailed = false
+            state.searchAlbum = [...action.data]
+            return {
+                ...state
+            }
+        case actionTypes.SEARCH_ALBUM_BY_NAME_FAILED:
+            state.isLoading = false
+            state.isFailed = true
+            state.searchAlbum = []
             return {
                 ...state
             }

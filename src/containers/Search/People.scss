@@ -1,0 +1,98 @@
+.search-people-container {
+
+    .search-people-up-container {
+        margin: 0 30px;
+
+        .count-people {
+            font-weight: 400;
+            color      : #999;
+            font-family: Inter, sans-serif;
+            margin     : 18px 0 0;
+            line-height: 1.3;
+            font-size  : 14px;
+        }
+    }
+
+    .search-people-down-container {
+        .search-people-down-list {
+            .content {
+                margin : 15px 30px;
+                display: flex;
+
+                .image {
+                    display      : block;
+                    width        : 160px;
+                    height       : 160px;
+                    border-radius: 50%;
+                    box-shadow   : inset 0 0 0 1px rgba(0, 0, 0, .1);
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .details {
+                    margin-left: 15px;
+                    width      : 78%;
+
+                    .info {
+                        height         : 100%;
+                        display        : flex;
+                        flex-direction : column;
+                        justify-content: center;
+
+                        .name {
+                            font-size    : 16px;
+                            font-family  : Inter, sans-serif;
+                            font-weight  : 400;
+                            margin       : 18px 0 0;
+                            line-height  : 1.3;
+                            margin-bottom: 2px;
+
+                            &:hover {
+                                color : #333;
+                                cursor: pointer;
+                            }
+                        }
+
+                        .description {
+                            font-weight  : 100;
+                            color        : #999;
+                            margin-bottom: 10px;
+                        }
+
+                        .follower {
+                            font-weight  : 100;
+                            color        : #999;
+                            margin-bottom: 5px;
+                        }
+
+                        .btn-follow {
+                            font-family  : Inter, sans-serif;
+                            width        : 10%;
+                            border       : 1px solid #e5e5e5;
+                            border-radius: 4px;
+                            display      : flex;
+                            align-items  : center;
+                            padding      : 3px 5px;
+                            font-weight  : 100;
+
+                            .icon-follow {
+                                display     : block;
+                                width       : 16px;
+                                height      : 12px;
+                                margin-right: 5px;
+                            }
+
+                            .text-follow {}
+
+                            &:hover {
+                                border: 1px solid #333;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

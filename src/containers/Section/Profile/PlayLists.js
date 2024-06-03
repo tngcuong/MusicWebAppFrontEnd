@@ -189,7 +189,6 @@ const mapStateToProps = state => {
         song: state.song.currentSong,
         isPlaying: state.song.isPlaying,
         currentAlbum: state.album.currentAlbum,
-        isFirstMount: state.song.firstMount,
         isShowPlayer: state.song.isShowPlayer,
         currentUser: state.user.currentUser,
         isLiked: state.album.isLiked,
@@ -201,7 +200,6 @@ const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
-        firstMount: () => dispatch(actions.firstMount()),
         likeSong: (idUser, idSong) => dispatch(actions.likeSongStart(idUser, idSong)),
         unLikeSong: (idUser, idSong) => dispatch(actions.unLikeSongStart(idUser, idSong)),
         getCurrentUser: () => dispatch(actions.getCurrentUserStart())
