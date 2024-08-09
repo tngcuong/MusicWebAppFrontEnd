@@ -162,12 +162,12 @@ class HomeHeader extends Component {
                             <div className='header-banner-title2'>
                                 <FormattedMessage id="home-header.free-service" />
                             </div>
-                            <div className='search'>
+                            {/* <div className='search'>
                                 <i className="fas fa-search"></i>
                                 <FormattedMessage id="home-header.search-plh" > {placeholder =>
                                     <input type='text' placeholder={placeholder} />
                                 }</FormattedMessage>
-                            </div>
+                            </div> */}
                         </div>
                         <div className='content-down'>
                             <div className='options'>

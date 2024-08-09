@@ -26,6 +26,7 @@ import AlbumMusic from './Section/AlbumMusic.js';
 import MusicPlayer from './Partial/MusicPlayer.js';
 import Profile from './Section/Profile/Profile.js';
 import Search from './Search/Search.js';
+import { isEmpty } from '../components/HOC/RandomColor.js';
 
 class App extends Component {
     interval;
@@ -34,9 +35,16 @@ class App extends Component {
         clearInterval(this.interval);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.isLoggedIn && this.props.isLoggedIn == true && this.props.accountInfo) {
+            this.props.getRole();
+        }
+    }
 
     refreshToken = () => {
-        this.props.refreshToken()
+        if (this.props.isLoggedIn && this.props.isLoggedIn == true) {
+            this.props.refreshToken()
+        }
     }
 
     handlePersistorState = () => {
@@ -81,13 +89,6 @@ class App extends Component {
                                 </CustomScrollbars>
                             </div>
 
-                            {/* <ToastContainer
-                            className="toast-container" toastClassName="toast-item" bodyClassName="toast-item-body"
-                            autoClose={false} hideProgressBar={true} pauseOnHover={false}
-                            pauseOnFocusLoss={true} closeOnClick={false} draggable={false}
-                            closeButton={<CustomToastCloseButton />}
-                        /> */}
-
                             <ToastContainer
                                 position="top-right"
                                 autoClose={5000}
@@ -113,13 +114,16 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         started: state.app.started,
+        song: state.song.currentSong,
         isLoggedIn: state.account.isLoggedIn,
+        accountInfo: state.account.accountInfo
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        refreshToken: () => dispatch(actions.refreshTokenStart())
+        refreshToken: () => dispatch(actions.refreshTokenStart()),
+        getRole: () => dispatch(actions.getRoleStart())
     };
 };
 

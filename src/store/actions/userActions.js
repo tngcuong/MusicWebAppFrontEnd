@@ -1,6 +1,12 @@
 import actionTypes from './actionTypes';
 import { getAllRoles } from '../../services/roleService';
-import { getCurrentUser, editUser, getUserById, SearchUserByName } from '../../services/userService';
+import {
+    getCurrentUser,
+    editUser,
+    getUserById,
+    SearchUserByName,
+    toggleFollow
+} from '../../services/userService';
 
 
 export const addUserSuccess = () => ({
@@ -151,4 +157,32 @@ export const SearchPeopleByNameSuccess = (data) => ({
 
 export const SearchPeopleByNameFailded = () => ({
     type: actionTypes.SEARCH_PEOPLE_BY_NAME_FAILED,
+})
+
+export const FollowStart = (id, idUser) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.TOGGLE_FOLLOW_START })
+            let data = await toggleFollow(id, idUser)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(FollowSuccess(data.content))
+            } else {
+                dispatch(FollowFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(FollowFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const FollowSuccess = (data) => ({
+    type: actionTypes.TOGGLE_FOLLOW_SUCCESS,
+    data: data
+})
+
+export const FollowFailded = () => ({
+    type: actionTypes.TOGGLE_FOLLOW_FAILED,
 })

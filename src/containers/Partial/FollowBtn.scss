@@ -1,0 +1,46 @@
+.btn-follow {
+    font-family  : Inter, sans-serif;
+    width        : 10%;
+    border       : 1px solid #e5e5e5;
+    border-radius: 4px;
+    display      : flex;
+    align-items  : center;
+    padding      : 3px 5px;
+    font-weight  : 100;
+
+    .icon-follow {
+        display     : block;
+        width       : 16px;
+        height      : 12px;
+        margin-right: 5px;
+    }
+
+    .text-follow {}
+
+    &:hover {
+        border: 1px solid #333;
+    }
+}
+
+.btn-followed {
+    font-family  : Inter, sans-serif;
+    width        : 13%;
+    border       : 1px solid #3075e3;
+    border-radius: 4px;
+    display      : flex;
+    padding      : 3px 5px;
+    font-weight  : 100;
+
+    .icon-follow {
+        display     : block;
+        width       : 16px;
+        height      : 12px;
+        margin-right: 5px;
+    }
+
+    .text-follow {}
+
+    &:hover {
+        border: 1px solid #333;
+    }
+}

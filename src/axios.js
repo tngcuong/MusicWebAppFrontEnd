@@ -8,6 +8,15 @@ const instance = axios.create({
     withCredentials: true
 });
 
+instance.interceptors.request.use((config) => {
+    const info = JSON.parse(localStorage.getItem("persist:account"));
+    const token = info.accountInfo.replace(/"/g, '')
+    if (token) {
+        config.headers.Authorization = `bearer ${token}`;
+    }
+    return config;
+})
+
 // const createError = (httpStatusCode, statusCode, errorMessage, problems, errorCode = '') => {
 //     const error = new Error();
 //     error.httpStatusCode = httpStatusCode;

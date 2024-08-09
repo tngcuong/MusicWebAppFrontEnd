@@ -5,7 +5,8 @@ const initialState = {
     isLoading: false,
     currentUser: {},
     user: {},
-    searchUser: []
+    searchUser: [],
+    isFollow: false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -95,6 +96,24 @@ const userReducer = (state = initialState, action) => {
             state.isLoading = false
             state.isFailed = true
             state.searchUser = []
+            return {
+                ...state
+            }
+        case actionTypes.TOGGLE_FOLLOW_START:
+            state.isLoading = true
+            state.isFollow = !state.isFollow
+            return {
+                ...state
+            }
+        case actionTypes.TOGGLE_FOLLOW_SUCCESS:
+            state.isLoading = false
+            state.isFollow = !state.isFollow
+            return {
+                ...state
+            }
+        case actionTypes.TOGGLE_FOLLOW_FAILED:
+            state.isLoading = false
+            state.isFollow = !state.isFollow
             return {
                 ...state
             }

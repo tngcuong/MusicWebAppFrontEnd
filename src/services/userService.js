@@ -3,11 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 
 const getAllUsers = (pageIndex, pageSize) => {
     const token = JSON.parse(localStorage.getItem("persist:account"))
-    return axios.get(`api/User/GetAllUser?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
-        "headers": {
-            "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
-        }
-    })
+    return axios.get(`api/User/GetAllUser?pageIndex=${pageIndex}&pageSize=${pageSize}`)
 }
 
 const createNewUserService = (data) => {
@@ -55,8 +51,13 @@ const getFollowerByUserId = async (id) => {
 }
 
 const SearchUserByName = async (name) => {
-    return axios.get(`/api/User/SearchPeopleByName?name=${name}`)
+    return axios.get(`api/User/SearchPeopleByName?name=${name}`)
 }
+
+const toggleFollow = (id, idUser) => {
+    return axios.post(`api/User/ToggleFollowUser?id=${id}`, idUser)
+}
+
 
 export {
     getAllUsers,
@@ -66,5 +67,6 @@ export {
     getCurrentUser,
     getUserById,
     getFollowerByUserId,
-    SearchUserByName
+    SearchUserByName,
+    toggleFollow
 }

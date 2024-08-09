@@ -4,6 +4,7 @@ import { push } from "connected-react-router";
 import { withRouter } from 'react-router';
 import * as actions from "../../store/actions";
 import ConFirmSignUp from './ConFirmSignUp';
+import {randomUniqueString} from "../../components/HOC/RandomColor"
 import './SignUp.scss';
 import Loader from '../../components/Loader';
 import { FormattedMessage } from 'react-intl';
@@ -19,6 +20,7 @@ class SignUp extends Component {
             password: '',
             isShowPassword: false,
             errMessage: '',
+            otpId: ""
         }
     }
 
@@ -49,7 +51,8 @@ class SignUp extends Component {
             this.props.handleRegister({
                 "userName": this.state.username,
                 "password": this.state.password,
-                "email": this.state.email
+                "email": this.state.email,
+                "otpId": this.state.otpId,
             })
         }
     }
@@ -57,6 +60,12 @@ class SignUp extends Component {
     componentDidUpdate(preprops, prestates) {
         if (this.props.registerSuccess !== preprops.registerSuccess && this.props.registerSuccess === true) {
             this.toggleSignupModal()
+        }
+
+        if(this.state.isOpenModal !== prestates.isOpenModal){
+            this.setState({
+                otpId : randomUniqueString(16)
+            })
         }
 
         if (this.props.verify == true) {
@@ -78,6 +87,9 @@ class SignUp extends Component {
 
     componentDidMount() {
         this.props.showPlayer(false)
+        this.setState({
+            otpId : randomUniqueString(16)
+        })
     }
 
     render() {
@@ -90,7 +102,8 @@ class SignUp extends Component {
                     data={{
                         "username": this.state.username,
                         "password": this.state.password,
-                        "email": this.state.email
+                        "email": this.state.email,
+                        "otpId": this.state.otpId,
                     }}
                     toggleFromParent={this.toggleSignupModal}
                     isOpen={this.state.isOpenModal}

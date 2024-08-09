@@ -15,7 +15,6 @@ class LikePlayList extends Component {
         if (this.state.isLiked === !prevState.isLiked) {
             this.props.getCurrentUser()
         }
-
     }
 
     toggleLikeSong = async () => {
@@ -37,7 +36,6 @@ class LikePlayList extends Component {
                         :
                         <i className="far fa-heart" onClick={() => this.toggleLikeSong()} ></i>
                     }
-
                 </span>
 
             </div>

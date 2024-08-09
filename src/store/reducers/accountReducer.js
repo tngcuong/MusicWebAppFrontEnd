@@ -1,6 +1,5 @@
 import actionTypes from '../actions/actionTypes';
 import { toast } from 'react-toastify';
-import { withRouter } from 'react-router';
 
 const initialState = {
     isLoggedIn: false,
@@ -8,25 +7,24 @@ const initialState = {
     isLoading: false,
     registerSuccess: false,
     verify: false,
-    isApiFailded: false
+    isApiFailded: false,
+    role: ""
 }
 
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ACCOUNT_LOGIN_START:
-            state.isLoading = true
             return {
                 ...state,
                 isLoading: true
             }
         case actionTypes.ACCOUNT_LOGIN_SUCCESS:
-            state.isLoading = false
             toast.success('Login success')
             return {
                 ...state,
+                accountInfo: action.accountInfo,
                 isLoggedIn: true,
                 isLoading: false,
-                accountInfo: action.accountInfo
             }
         case actionTypes.ACCOUNT_LOGIN_FAIL:
             state.isLoading = false
@@ -35,13 +33,29 @@ const appReducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: false,
                 accountInfo: null,
-                isLoading: false
+            }
+        case actionTypes.GET_ROLE_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case actionTypes.GET_ROLE_SUCCESS:
+            state.isLoading = false
+            state.role = action.data
+            return {
+                ...state,
+            }
+        case actionTypes.GET_ROLE_FAILED:
+            state.isLoading = false
+            return {
+                ...state,
             }
         case actionTypes.PROCESS_LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,
-                accountInfo: null
+                accountInfo: null,
+                role: ""
             }
         case actionTypes.REGISTER_START:
             return {
@@ -66,7 +80,7 @@ const appReducer = (state = initialState, action) => {
         case actionTypes.VERIFY_START:
             return {
                 ...state,
-                isLoading: true
+                isLoading: false
             }
         case actionTypes.VERIFY_SUCCESS:
             toast.success('Verify success')

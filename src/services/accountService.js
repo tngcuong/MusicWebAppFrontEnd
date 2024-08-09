@@ -2,8 +2,7 @@ import axios from "../axios"
 
 const handleLogin = (userName, password) => {
     var param = JSON.stringify({ "userName": userName, "password": password })
-    return axios.post('api/Account/Login', param, {
-    })
+    return axios.post('api/Account/Login', param)
 }
 
 const handleRegister = (data) => {
@@ -57,8 +56,14 @@ const updateProfile = (infoUpdate) => {
     formData.append("Avatar", infoUpdate.img);
     formData.append("Name", infoUpdate.name);
     formData.append("Description", infoUpdate.description);
-    const token = JSON.parse(localStorage.getItem("persist:account"))
     return axios.put(`api/Account/UpdateInfo`, formData, {
+
+    })
+}
+
+const getRoleByCurrentUser = () => {
+    const token = JSON.parse(localStorage.getItem("persist:account"))
+    return axios.get(`/api/Role/GetRoleNameByCurrentUser`,{
         "headers": {
             "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
         }
@@ -72,5 +77,6 @@ export {
     refreshToken,
     updateAvatar,
     updateCoverAvatar,
-    updateProfile
+    updateProfile,
+    getRoleByCurrentUser
 } 

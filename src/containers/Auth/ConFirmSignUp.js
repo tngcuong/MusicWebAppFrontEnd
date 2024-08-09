@@ -16,6 +16,7 @@ class ConFirmSignUp extends Component {
             username: '',
             password: '',
             errMessage: '',
+            otpId: "",
             arrInput: ['', '', '', '', '', '']
         }
     }
@@ -24,7 +25,8 @@ class ConFirmSignUp extends Component {
         this.setState({
             email: this.props.data.email,
             username: this.props.data.username,
-            password: this.props.data.password
+            password: this.props.data.password,
+            otpId: this.props.data.otpId,
         })
     }
 
@@ -45,7 +47,8 @@ class ConFirmSignUp extends Component {
                 "userName": this.state.username,
                 "password": this.state.password,
                 "email": this.state.email,
-                "otp":result
+                "otp":result,
+                "otpId":this.state.otpId
             })
         } else {
             alert('Please enter OTP in all fields');
@@ -64,7 +67,6 @@ class ConFirmSignUp extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <>
                 <Modal isOpen={this.props.isOpen} toggle={() => { this.toggle() }} centered>

@@ -9,7 +9,11 @@ import HomeHeader from '../HomePage/HomeHeader';
 import CustomScrollbars from '../../components/CustomScrollbars';
 import HomeFooter from '../HomePage/HomeFooter';
 import MusicPlayer from '../Partial/MusicPlayer';
+import CountLikedPLayList from '../Partial/CountLikedPLayList';
+import LikePlayList from '../Partial/LikePlayList';
+import FollowBtn from '../Partial/FollowBtn';
 import { getRandomColor, totalTime, calcuDate } from '../../components/HOC/RandomColor';
+
 
 import "./AlbumMusic.scss";
 
@@ -117,8 +121,10 @@ class AlbumMusic extends Component {
                     <div className='album-content'>
                         <div className='left'>
                             <div className='album-action'>
-                                <div className='like'> <span><i className="far fa-heart"></i></span>Like</div>
-                                <div className='liked'> <span><i className="fas fa-heart"></i></span>10</div>
+                                <div className='like'> <LikePlayList idPlayList={detailAlbum.id} />
+                                    <div><CountLikedPLayList idPlayList={detailAlbum.id}></CountLikedPLayList></div>
+                                </div>
+
                             </div>
                             <div className='album-info'>
                                 <div className='album-content-left'>
@@ -134,11 +140,13 @@ class AlbumMusic extends Component {
                                         {detailAlbum.createBy && detailAlbum.createBy.name}
                                     </div>
                                     <div className='album-info-quantity'>
-                                        <i className="fas fa-user-friends"></i> 100
                                     </div>
-                                    <div className='album-info-btn-follow'>
-                                        <button className='btn-follow'>Follow</button>
-                                    </div>
+                                    {
+                                        this.props.currentUser.id !== detailAlbum.createById ??
+                                        <FollowBtn idUser={detailAlbum.createById} />
+                                    }
+
+
                                 </div>
                                 <CustomScrollbars style={{ height: '100vh', width: '100%' }}>
                                     <div className='album-content-center'>
@@ -248,7 +256,8 @@ const mapStateToProps = state => {
     return {
         detailAlbum: state.album.detailAlbum,
         isPlaying: state.album.isPlaying,
-        userAlbums: state.album.userAlbums
+        userAlbums: state.album.userAlbums,
+        currentUser: state.user.currentUser,
     };
 };
 

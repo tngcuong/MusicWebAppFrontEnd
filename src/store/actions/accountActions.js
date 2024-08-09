@@ -6,7 +6,8 @@ import {
     refreshToken,
     updateAvatar,
     updateCoverAvatar,
-    updateProfile
+    updateProfile,
+    getRoleByCurrentUser
 } from "../../services/accountService";
 import { toast } from 'react-toastify';
 
@@ -20,6 +21,36 @@ export const accountLoginFail = (error) => ({
     data: error
 })
 
+export const getRoleSuccess = (data) => ({
+    type: actionTypes.GET_ROLE_SUCCESS,
+    data: data
+})
+
+export const getRoleFail = (error) => ({
+    type: actionTypes.GET_ROLE_FAILED,
+    data: error
+})
+
+export const getRoleStart = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_ROLE_START })
+            let data = await getRoleByCurrentUser()
+            console.log(data, "role");
+            if (data && data.errorCode === 200) {
+                dispatch(getRoleSuccess(data.content))
+            } else {
+                dispatch(getRoleFail())
+            }
+        } catch (error) {
+            console.log(error.response);
+            if (error && error.response && error.response.data) {
+                dispatch(getRoleFail(error.response.data.message))
+            }
+        }
+    }
+}
+
 export const processLogout = () => ({
     type: actionTypes.PROCESS_LOGOUT
 })
@@ -31,7 +62,8 @@ export const accountLoginStart = (userName, password) => {
             let data = await handleLogin(userName, password)
             console.log(data);
             if (data && data.errorCode === 200) {
-                dispatch(accountLoginSuccess(data.content.token))
+                await dispatch(accountLoginSuccess(data.content.token))
+                
             } else {
                 dispatch(accountLoginFail(data.error))
             }
