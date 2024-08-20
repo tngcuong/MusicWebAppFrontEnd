@@ -8,6 +8,7 @@ export const path = {
     DETAIL_ALBUM: '/details-album/:album',
     PROFILE: '/profile/:profile',
     SEARCH: '/search/:s?',
+    DETAIL_SONG: '/details-song/:id',
 };
 
 export const LANGUAGES = {

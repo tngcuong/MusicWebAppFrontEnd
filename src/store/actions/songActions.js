@@ -10,7 +10,8 @@ import {
     countLiked,
     getSongDesByUserId,
     GetRalatedSongByUserId,
-    SearchSongByName
+    SearchSongByName,
+    getSongById,
 } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
@@ -25,11 +26,11 @@ export const fetchSongFailed = () => ({
 export const fetchSongStart = (pageIndex, pageSize) => {
     return async (dispatch, getState) => {
         try {
-            dispatch({ type: actionTypes.FETCH_ROLE_START })
+            dispatch({ type: actionTypes.FETCH_SONG_START })
             let data = await getAllSongs(pageIndex, pageSize)
             console.log(data);
             if (data && data.errorCode === 200) {
-                dispatch(fetchSongSuccess(data.content.data))
+                dispatch(fetchSongSuccess(data.content))
             } else {
                 dispatch(fetchSongFailed())
             }
@@ -250,11 +251,11 @@ export const getCountNumberFailded = (error) => ({
     flag: error
 })
 
-export const getSongDesByUserIdStart = (idUser) => {
+export const getSongDesByUserIdStart = (idUser, pageIndex, pageSize) => {
     return async (dispatch, getState) => {
         try {
             dispatch({ type: actionTypes.GET_SONG_DES_BY_ID_START })
-            let data = await getSongDesByUserId(idUser)
+            let data = await getSongDesByUserId(idUser, pageIndex, pageSize)
             console.log(data);
             if (data && data.errorCode === 200) {
                 dispatch(getSongDesByUserIdSuccess(data.content))
@@ -357,9 +358,38 @@ export const SearchSongByNameStart = (name) => {
 
 export const SearchSongByNameSuccess = (data) => ({
     type: actionTypes.SEARCH_SONG_BY_NAME_SUCCESS,
-    data : [...data]
+    data: [...data]
 })
 
 export const SearchSongByNameFailded = () => ({
     type: actionTypes.SEARCH_SONG_BY_NAME_FAILED,
+})
+
+export const getSongByIdStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_SONG_BY_ID_START })
+            let data = await getSongById(id)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(getSongByIdSuccess(data.content))
+
+            } else {
+                dispatch(getSongByIdFail())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(getSongByIdFail(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const getSongByIdSuccess = (data) => ({
+    type: actionTypes.GET_SONG_BY_ID_SUCCESS,
+    data: data
+})
+
+export const getSongByIdFail = () => ({
+    type: actionTypes.GET_SONG_BY_ID_FAILED,
 })

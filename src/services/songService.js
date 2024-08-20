@@ -53,6 +53,10 @@ const SearchSongByName = async (name) => {
     return axios.get(`/api/Song/SearchSongByName?name=${name}`)
 }
 
+const getSongById = (id) => {
+    return axios.get(`/api/Song/GetSongById?id=${id}`)
+}
+
 export {
     unLikeSong,
     likeSong,
@@ -65,5 +69,6 @@ export {
     getSongDesByUserId,
     getLikedSongByUserId,
     GetRalatedSongByUserId,
-    SearchSongByName
+    SearchSongByName,
+    getSongById
 }

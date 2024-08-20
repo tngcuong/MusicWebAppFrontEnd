@@ -49,7 +49,8 @@
             "system-administrator": {
                 "header": "Quản trị hệ thống",
                 "user-manage": "Người sử dụng",
-                "song-manage": "Nhạc"
+                "song-manage": "Nhạc",
+                "comment-manage": "Duyệt bình luận"
             },
             "staticst": {
                 "header": "Thống kê",
@@ -57,6 +58,19 @@
                 "staticst-by-listen": "Lượt nghe"
             }
         }
+    },
+    "manage-comment":{
+        "add-title": "Add new song",
+        "add": "Add",
+        "image": "Ảnh của người đăng",
+        "name": "Tên người đăng",
+        "createAt": "Tạo lúc",
+        "content":"Nội dung",
+        "isApproved":"Trạng thái duyệt",
+        "action": "Hành động",
+        "title": "Quản lý bình luận",
+        "cancel": "Thoát",
+        "upload-img": "Upload image"
     },
     "manage-song": {
         "add-title": "Thêm bài hát mới",

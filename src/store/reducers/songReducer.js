@@ -17,7 +17,9 @@ const initialState = {
     isDeleted: false,
     isFailed: true,
     relatedSong: [],
-    searchSong: []
+    searchSong: [],
+    detailSong: {},
+    pageCount: 0
 }
 
 const appReducer = (state = initialState, action) => {
@@ -30,8 +32,10 @@ const appReducer = (state = initialState, action) => {
 
         case actionTypes.FETCH_SONG_SUCCESS:
             let copyState = { ...state }
-            copyState.songs = [...action.data]
+            copyState.songs = [...action.data.data]
             copyState.isLoading = false
+            copyState.pageCount = action.data.totalPages
+            
             return {
                 ...copyState
             }
@@ -185,7 +189,7 @@ const appReducer = (state = initialState, action) => {
             }
         case actionTypes.GET_SONG_DES_BY_ID_SUCCESS:
             state.isLoading = false
-            state.songDes = action.data
+            state.songDes = action.data.data
             return {
                 ...state
             }
@@ -250,6 +254,22 @@ const appReducer = (state = initialState, action) => {
             state.isLoading = false
             state.isFailed = true
             state.searchSong = []
+            return {
+                ...state
+            }
+        case actionTypes.GET_SONG_BY_ID_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_SONG_BY_ID_SUCCESS:
+            state.isLoading = false
+            state.detailSong = action.data
+            return {
+                ...state
+            }
+        case actionTypes.GET_SONG_BY_ID_FAILED:
+            state.isLoading = false
             return {
                 ...state
             }

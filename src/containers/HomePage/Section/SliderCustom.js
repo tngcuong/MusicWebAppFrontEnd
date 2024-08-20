@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import './SliderCustom.scss';
 import { FormattedMessage } from 'react-intl';
@@ -28,6 +29,11 @@ class SliderCustom extends Component {
             })
         }
     }
+
+    handleToDetailSong = (id) => {
+        this.props.history.push(`/details-song/${id}`)
+    }
+
 
     playSong = async (song) => {
         let { isPlaying,currentSong } = this.props
@@ -64,7 +70,7 @@ class SliderCustom extends Component {
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                             onClick={() => { this.playSong(item) }} />
-                                        <div onClick={() => { this.playSong(item) }} className='album-name' >{item.name}</div>
+                                        <div onClick={() => { this.handleToDetailSong(item.id) }} className='album-name' >{item.name}</div>
                                     </div>
                                 )
                             })}
@@ -115,4 +121,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SliderCustom);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SliderCustom));

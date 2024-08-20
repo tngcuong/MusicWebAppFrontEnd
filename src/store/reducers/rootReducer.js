@@ -7,6 +7,7 @@ import userReducer from "./userReducer";
 import accountReducer from "./accountReducer";
 import songReducer from "./songReducer";
 import albumReducer from "./albumReducer";
+import commentReducer from './commentRuducer';
 
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
@@ -26,7 +27,7 @@ const adminPersistConfig = {
 const accountPersistConfig = {
     ...persistCommonConfig,
     key: 'account',
-    whitelist: ['isLoggedIn', 'accountInfo']
+    whitelist: ['isLoggedIn', 'accountInfo', 'role']
 };
 
 const appPersistConfig = {
@@ -47,6 +48,11 @@ const ablumPersistConfig = {
     whitelist: ['currentAlbum']
 };
 
+const commentPersistConfig = {
+    ...persistCommonConfig,
+    key: 'comment',
+    whitelist: []
+};
 
 
 
@@ -56,5 +62,6 @@ export default (history) => combineReducers({
     app: persistReducer(appPersistConfig, appReducer),
     user: userReducer,
     song: persistReducer(songPersistConfig, songReducer),
-    album: persistReducer(ablumPersistConfig, albumReducer)
+    album: persistReducer(ablumPersistConfig, albumReducer),
+    comment: persistReducer(commentPersistConfig, commentReducer)
 })

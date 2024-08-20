@@ -30,22 +30,22 @@ const calcuDate = (date) => {
 
     if (daysDiff > 2629744) {
         if (Math.floor(daysDiff / 2629744) > 1) {
-            result = `${Math.floor(daysDiff / 2629744)} months`;
+          return result = `${Math.floor(daysDiff / 2629744)} months`;
         }
         result = `${Math.floor(daysDiff / 2629744)} month`;
     } else if (daysDiff > 86400) {
         if (Math.floor(daysDiff / 86400) > 1) {
-            result = `${Math.floor(daysDiff / 86400)} day`;
+            return  result = `${Math.floor(daysDiff / 86400)} day`;
         }
         result = `${Math.floor(daysDiff / 86400)} days`;
     } else if (daysDiff > 3600) {
         if (Math.floor(daysDiff / 3600) > 1) {
-            result = `${Math.floor(daysDiff / 3600)} hours`;
+            return  result = `${Math.floor(daysDiff / 3600)} hours`;
         }
         result = `${Math.floor(daysDiff / 3600)} hour`;
     } else {
         if (Math.floor(daysDiff / 60) > 1) {
-            result = `${Math.floor(daysDiff / 60)} minutes`;
+            return  result = `${Math.floor(daysDiff / 60)} minutes`;
         }
         result = `${Math.floor(daysDiff / 60)} minute`;
     }

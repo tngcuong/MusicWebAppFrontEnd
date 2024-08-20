@@ -49,7 +49,9 @@
             "system-administrator": {
                 "header": "System Administrator",
                 "user-manage": "User",
-                "song-manage": "Song"
+                "song-manage": "Song",
+                "comment-manage": "Comment manage",
+                "playlist-manage": "Playlist manage"
             },
             "staticst": {
                 "header": "Staticst",
@@ -60,6 +62,19 @@
                 "header": "System-parameter"
             }
         }
+    },
+    "manage-comment":{
+        "add-title": "Add new song",
+        "add": "Add",
+        "image": "User's avatar",
+        "name": "User's name",
+        "createAt": "Create at",
+        "content":"Content",
+        "isApproved":"Approved",
+        "action": "Actions",
+        "title": "Comment manage",
+        "cancel": "Cancel",
+        "upload-img": "Upload image"
     },
     "manage-song": {
         "add-title": "Add new song",

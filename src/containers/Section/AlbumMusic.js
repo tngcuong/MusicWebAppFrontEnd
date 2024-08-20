@@ -121,8 +121,8 @@ class AlbumMusic extends Component {
                     <div className='album-content'>
                         <div className='left'>
                             <div className='album-action'>
-                                <div className='like'> <LikePlayList idPlayList={detailAlbum.id} />
-                                    <div><CountLikedPLayList idPlayList={detailAlbum.id}></CountLikedPLayList></div>
+                                <div className='like'> <LikePlayList idPlayList={this.props.match.params.album} />
+                                    <div><CountLikedPLayList idPlayList={this.props.match.params.album}></CountLikedPLayList></div>
                                 </div>
 
                             </div>
@@ -142,7 +142,7 @@ class AlbumMusic extends Component {
                                     <div className='album-info-quantity'>
                                     </div>
                                     {
-                                        this.props.currentUser.id !== detailAlbum.createById ??
+                                        this.props.currentUser.id !== detailAlbum.createById &&
                                         <FollowBtn idUser={detailAlbum.createById} />
                                     }
 

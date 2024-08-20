@@ -6,7 +6,7 @@ import { history } from '../redux'
 import { ToastContainer } from 'react-toastify';
 
 
-import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authentication';
+import { userIsAuthenticated, userIsNotAuthenticated, userIsNotAdmin, userIsAdmin } from '../hoc/authentication';
 
 import { path } from '../utils'
 
@@ -26,6 +26,7 @@ import AlbumMusic from './Section/AlbumMusic.js';
 import MusicPlayer from './Partial/MusicPlayer.js';
 import Profile from './Section/Profile/Profile.js';
 import Search from './Search/Search.js';
+import SongDetail from './Section/SongDetail.js';
 import { isEmpty } from '../components/HOC/RandomColor.js';
 
 class App extends Component {
@@ -38,6 +39,7 @@ class App extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.isLoggedIn && this.props.isLoggedIn == true && this.props.accountInfo) {
             this.props.getRole();
+
         }
     }
 
@@ -80,11 +82,12 @@ class App extends Component {
                                         <Route path={path.HOME} exact component={(Home)} />
                                         <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                         <Route path={path.SIGNUP} component={userIsNotAuthenticated(SingUp)} />
-                                        <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
+                                        <Route path={path.SYSTEM} component={userIsAuthenticated(userIsAdmin(System))} />
                                         <Route path={path.HOMEPAGE} component={HomePage} />
                                         <Route path={path.DETAIL_ALBUM} component={AlbumMusic} />
                                         <Route path={path.PROFILE} component={Profile} />
                                         <Route path={path.SEARCH} component={Search} />
+                                        <Route path={path.DETAIL_SONG} component={SongDetail} />
                                     </Switch>
                                 </CustomScrollbars>
                             </div>
@@ -116,7 +119,8 @@ const mapStateToProps = state => {
         started: state.app.started,
         song: state.song.currentSong,
         isLoggedIn: state.account.isLoggedIn,
-        accountInfo: state.account.accountInfo
+        accountInfo: state.account.accountInfo,
+        role: state.account.role
     };
 };
 

@@ -152,12 +152,14 @@ class PlayLists extends Component {
                                                         ></LikePlayList>
                                                         <div><CountLikedPLayList idPlayList={item.id}></CountLikedPLayList></div>
                                                     </div>
-                                                    <div className='update'>
-                                                        <div className='btn-update' onClick={() => { this.openEditModal(item.id) }}>
-                                                            <i className="far fa-edit"></i>
+                                                    {idUser === currentUser.id &&
+                                                        <div className='update'>
+                                                            <div className='btn-update' onClick={() => { this.openEditModal(item.id) }}>
+                                                                <i className="far fa-edit"></i>
 
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
                                                     {this.state.isOpenEditModal === true && selectedItem == item.id && <AddSongToPlayList
                                                         toggleFromParent={this.toggleEditModal}
                                                         playlist={item}

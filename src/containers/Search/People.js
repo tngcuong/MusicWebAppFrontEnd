@@ -35,6 +35,7 @@ class People extends Component {
 
     render() {
         const { People } = this.state
+        const { currentUser, isLoggedIn } = this.props
         return (
             <div className='search-people-container'>
                 {this.props.isLoadingAccount === true && <Loader></Loader>}
@@ -67,7 +68,7 @@ class People extends Component {
                                                 <div className='follower'>
                                                     <i className="fas fa-user-friends"></i> {item.followers} {item.followers > 1 ? "followers" : "follower"}
                                                 </div>
-                                                <FollowBtn idUser={item.id} />
+                                                {isLoggedIn == true && currentUser.id !== item.id && <FollowBtn idUser={item.id} />}
                                             </div>
 
                                         </div>
@@ -85,7 +86,9 @@ class People extends Component {
 
 const mapStateToProps = state => {
     return {
-        searchUser: state.user.searchUser
+        searchUser: state.user.searchUser,
+        currentUser: state.user.currentUser,
+        isLoggedIn: state.account.isLoggedIn
     };
 };
 

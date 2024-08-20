@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { getAllSongs } from '../../../../services/songService';
 import Loader from '../../../../components/Loader';
-
+import Paging from '../../../../components/Paging/Paging';
 import * as actions from '../../../../store/actions';
 import ModalAddSong from './ModalAddSong';
+
 class SongManage extends Component {
 
     constructor(props) {
@@ -57,6 +58,13 @@ class SongManage extends Component {
         })
     }
 
+    handleChangePage = async (pageIndex) => {
+        await this.setState({
+            currentPage: pageIndex
+        });
+        this.props.getSongStart(this.state.currentPage, this.state.pageSize);
+    };
+
     render() {
         let { arrSongs } = this.state
 
@@ -93,9 +101,9 @@ class SongManage extends Component {
                                         <td><img style={{ height: 20 }} src={item.image}></img></td>
                                         <td>{item.name}</td>
                                         <td>
-                                            <button
+                                            {/* <button
                                                 onClick={() => { this.handleEditSong(item) }}
-                                                className='btn-edit'><i className="fas fa-pen-square"></i></button>
+                                                className='btn-edit'><i className="fas fa-pen-square"></i></button> */}
                                             <button
                                                 onClick={() => { this.handleDeleteSong(item.id) }}
                                                 className='btn-delete'><i className="fas fa-trash"></i></button>
@@ -104,8 +112,16 @@ class SongManage extends Component {
                                 )
                             })
                             }
+
                         </tbody>
                     </table>
+                    {arrSongs.length > 0 && <Paging
+                        pageIndex={this.state.currentPage}
+                        pageSize={this.state.pageSize}
+                        pageCount={this.props.pageCount}
+                        changePage={this.handleChangePage}
+                    ></Paging>
+                    }
                 </div>
             </div>
 
@@ -119,6 +135,7 @@ const mapStateToProps = state => {
         language: state.app.language,
         songs: state.song.songs,
         isLoading: state.song.isLoading,
+        pageCount: state.song.pageCount
     };
 };
 
