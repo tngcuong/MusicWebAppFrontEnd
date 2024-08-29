@@ -7,6 +7,7 @@ import Loader from '../../../../components/Loader';
 import Paging from '../../../../components/Paging/Paging';
 import * as actions from '../../../../store/actions';
 import ModalAddSong from './ModalAddSong';
+import moment from 'moment';
 
 class SongManage extends Component {
 
@@ -19,7 +20,8 @@ class SongManage extends Component {
             songEdit: {},
             currentPage: 1,
             pageSize: 5,
-            pageCount: 1
+            pageCount: 1,
+            songsLoaded: false,
         }
     }
 
@@ -27,6 +29,21 @@ class SongManage extends Component {
         this.setState({
             isOpenModal: !this.state.isOpenModal
         })
+    }
+
+    getAllSongFromManage = async () => {
+        try {
+            let res = await getAllSongs(this.state.currentPage, this.state.pageSize);
+            if (res && res.errorCode === 200) {
+                await this.setState({
+                    arrSongs: res.content.data,
+                    pageCount: res.content.totalPages
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 
     handleAddNewSong = () => {
@@ -44,6 +61,10 @@ class SongManage extends Component {
             this.setState({
                 arrSongs: [...this.props.songs]
             })
+        }
+
+        if (this.state.currentPage !== prevState.currentPage) {
+            this.props.getSongStart(this.state.currentPage, this.state.pageSize)
         }
     }
 
@@ -64,6 +85,7 @@ class SongManage extends Component {
         });
         this.props.getSongStart(this.state.currentPage, this.state.pageSize);
     };
+
 
     render() {
         let { arrSongs } = this.state
@@ -91,6 +113,9 @@ class SongManage extends Component {
                                 <th>#</th>
                                 <th><FormattedMessage id="manage-song.image" /></th>
                                 <th><FormattedMessage id="manage-song.name" /></th>
+                                <th>Tên người đăng</th>
+                                <th>Tạo lúc</th>
+                                <th></th>
                                 <th><FormattedMessage id="manage-song.action" /></th>
                             </tr>
 
@@ -98,8 +123,29 @@ class SongManage extends Component {
                                 return (
                                     <tr key={item.id} className='user-content'>
                                         <td>{index + 1}</td>
-                                        <td><img style={{ height: 20 }} src={item.image}></img></td>
+                                        <td style={{ width: "10%", textAlign: "center" }}>
+                                            <div
+                                                style={{
+                                                    width: "50px",
+                                                    height: "50px",
+                                                    backgroundImage: `url(${item.image})`,
+                                                    backgroundSize: "cover",
+                                                    backgroundPosition: "center",
+                                                    backgroundColor: "#f0f0f0",
+                                                    display: "inline-block"
+                                                }}
+                                            >
+                                            </div>
+                                        </td>
                                         <td>{item.name}</td>
+                                        <td>{item.user?.name}</td>
+                                        <td>{item.createAt}</td>
+                                        <td style={{ width: "20%", textAlign: "center" }}>
+                                            <audio preload='auto' controls >
+                                                <source src={item.source} type="audio/mpeg" />
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        </td>
                                         <td>
                                             {/* <button
                                                 onClick={() => { this.handleEditSong(item) }}

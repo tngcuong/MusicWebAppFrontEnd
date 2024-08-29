@@ -12,6 +12,7 @@ import {
     GetRalatedSongByUserId,
     SearchSongByName,
     getSongById,
+    getRandomSong
 } from '../../services/songService';
 
 export const fetchSongSuccess = (songs) => ({
@@ -393,3 +394,32 @@ export const getSongByIdSuccess = (data) => ({
 export const getSongByIdFail = () => ({
     type: actionTypes.GET_SONG_BY_ID_FAILED,
 })
+
+export const GetRandomSongStart = (size) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_RANDOM_SONG_START })
+            let data = await getRandomSong(size)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(GetRandomSongSuccess(data.content))
+            } else {
+                dispatch(GetRandomSongFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(GetRandomSongFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const GetRandomSongSuccess = (data) => ({
+    type: actionTypes.GET_RANDOM_SONG_SUCCESS,
+    data: data
+})
+
+export const GetRandomSongFailded = () => ({
+    type: actionTypes.GET_RANDOM_SONG_FAILED,
+})
+

@@ -124,6 +124,10 @@ class SongDetail extends Component {
                                 ></LikeSong>
                                 <div><CountLiked idSong={this.props.match.params.id}></CountLiked></div>
                             </div>
+
+                            <a className='download' href={detailSong.source} >
+                                <i className="far fa-arrow-alt-circle-down"></i>
+                            </a>
                         </div>
                     </div>
                     <div className='content'>

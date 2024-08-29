@@ -12,6 +12,7 @@ import About from './Section/About';
 import HomeFooter from './HomeFooter';
 import MusicPlayer from '../Partial/MusicPlayer';
 import Feature from './Section/Feature';
+import GetRandomSong from './Section/GetRandomSong';
 
 class HomePage extends Component {
     constructor(props) {
@@ -48,6 +49,7 @@ class HomePage extends Component {
                     </div>
                     <div className='content-right'>
                         <Feature />
+                        <GetRandomSong />
                     </div>
                 </div>
             </div>

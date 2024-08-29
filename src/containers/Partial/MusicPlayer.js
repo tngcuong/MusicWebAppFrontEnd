@@ -9,6 +9,8 @@ import { FormattedMessage, useIntl, injectIntl } from 'react-intl'
 import { likeSong } from '../../services/songService';
 import LikeSong from './LikeSong';
 import { withRouter } from 'react-router';
+import NameUser from './NameUser';
+import NameSong from './NameSong';
 
 let intervalId
 class MusicPlayer extends Component {
@@ -247,16 +249,46 @@ class MusicPlayer extends Component {
         })
     }
 
-    handleProgress = (e) => {
+    handleProgress = async (e) => {
         const progressRect = this.state.progressRef.current.getBoundingClientRect()
         const percent = Math.round((e.clientX - progressRect.left) * 10000 / progressRect.width) / 100
         this.state.timeRef.current.style.cssText = `right: ${100 - percent}%`;
         let currentTime = this.state.currentSong.durationTime * percent / 100
-        this.setState({
+
+        await this.setState({
             currentTime: currentTime,
+        }, async () => {
+            await this.setCurrentTimeSong(currentTime)
         })
-        this.state.sourceMusic.currentTime = currentTime
+
+
+        console.log(this.state.currentTime, this.state.sourceMusic.currentTime, "duration");
     }
+
+    setCurrentTimeSong = async (time) => {
+        try {
+            this.state.sourceMusic.currentTime = time
+
+        } catch (err) {
+            console.log(err);
+
+        }
+
+    }
+
+    // handleProgress(event) {
+    //     const audioElement = this.state.sourceMusic.current;
+    //     const { duration } = audioElement;
+
+    //     if (duration > 0) {
+    //         const clickX = event.nativeEvent.offsetX;
+    //         const width = this.progressRef.current.clientWidth;
+    //         const progress = (clickX / width) * duration;
+
+    //         audioElement.currentTime = progress;
+    //         this.setState({ currentTime: progress });
+    //     }
+    // }
 
     toggleSongModal = () => {
         this.setState({
@@ -299,6 +331,7 @@ class MusicPlayer extends Component {
         const { currentSong, volume, isShuffle, isRepeat } = this.state;
         const { isPlaying, song, isShowPlayer, currentUser } = this.props;
         const { intl } = this.props;
+        console.log(currentSong, "sas");
 
         return (
             <>
@@ -316,8 +349,10 @@ class MusicPlayer extends Component {
                             </div>
                             {/* <img src={currentSong?.image} alt={currentSong?.name}></img> */}
                             <div className='info'>
-                                <span className='song-name'>{currentSong?.name}</span>
-                                <span className='song-username' onClick={() => { this.goProfile(currentSong?.user.id) }} >{currentSong.user && currentSong.user.name}</span>
+                                <span className='song-name'><NameSong song={currentSong} /></span>
+                                <span>
+                                    <NameUser user={currentSong?.user} />
+                                </span>
                             </div>
                             <LikeSong idSong={currentSong.id}></LikeSong>
                             {/* <div>

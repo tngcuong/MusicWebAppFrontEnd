@@ -40,78 +40,82 @@
         }
 
         .container-up-content {
+            padding: 1rem 0;
 
-            padding    : 1rem 0;
-            display    : flex;
-            align-items: center;
+            .container {
+                display: flex;
 
-            .avatar {
-                width              : 50px;
-                height             : 50px;
-                border-radius      : 50%;
-                background-position: center center;
-                background-size    : cover;
-                background-repeat  : no-repeat;
-            }
+                .avatar {
+                    width              : 50px;
+                    height             : 50px;
+                    border-radius      : 50%;
+                    background-position: center center;
+                    background-size    : cover;
+                    background-repeat  : no-repeat;
+                }
 
-            .name {
-                margin-left: 10px;
-                font-weight: 100;
-            }
-
-            .info-song {
-                .info {
-                    display    : flex;
-                    align-items: center;
+                .name {
                     margin-left: 10px;
-
-                    .follower,
-                    .tracks {
-                        display     : flex;
-                        align-items : center;
-                        margin-right: 10px;
-                        font-weight : 100;
-                        color       : #999;
-
-                        i {
-                            margin-right: 4px;
-                        }
-                    }
-
-                    .tracks {
-                        a {
-                            width : 14.5px;
-                            height: 17px;
-                        }
-
-                    }
-
-
-                }
-            }
-
-            .btn-follow {
-                display        : flex;
-                justify-content: flex-start;
-                width          : 62%;
-                gap            : 5px;
-                gap            : -18px;
-                padding-left   : 162px;
-                font-weight    : 100;
-                opacity        : 0.5;
-
-                .icon-follow {
-                    width : 17px;
-                    height: 17px;
-                }
-
-                &:hover {
-                    cursor     : pointer;
-                    opacity    : 1;
                     font-weight: 100;
                 }
-            }
 
+                .info-song {
+                    .info {
+                        display    : flex;
+                        align-items: center;
+                        margin-left: 10px;
+
+                        .follower,
+                        .tracks {
+                            display     : flex;
+                            align-items : center;
+                            margin-right: 10px;
+                            font-weight : 100;
+                            color       : #999;
+
+                            i {
+                                margin-right: 4px;
+                            }
+                        }
+
+                        .tracks {
+                            a {
+                                width : 14.5px;
+                                height: 17px;
+                            }
+
+                        }
+
+                        .follower {
+                            div {
+                                
+                            }
+                        }
+                    }
+                }
+
+                .btn-follow {
+                    display        : flex;
+                    justify-content: flex-start;
+                    width          : 62%;
+                    gap            : 5px;
+                    gap            : -18px;
+                    padding-left   : 162px;
+                    font-weight    : 100;
+                    opacity        : 0.5;
+
+                    .icon-follow {
+                        width : 17px;
+                        height: 17px;
+                    }
+
+                    &:hover {
+                        cursor     : pointer;
+                        opacity    : 1;
+                        font-weight: 100;
+                    }
+                }
+            }
         }
     }
 

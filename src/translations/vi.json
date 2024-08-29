@@ -50,7 +50,8 @@
                 "header": "Quản trị hệ thống",
                 "user-manage": "Người sử dụng",
                 "song-manage": "Nhạc",
-                "comment-manage": "Duyệt bình luận"
+                "comment-manage": "Duyệt bình luận",
+                "playlist-manage": "Quản lý playlist"
             },
             "staticst": {
                 "header": "Thống kê",
@@ -59,14 +60,14 @@
             }
         }
     },
-    "manage-comment":{
+    "manage-comment": {
         "add-title": "Add new song",
         "add": "Add",
         "image": "Ảnh của người đăng",
         "name": "Tên người đăng",
         "createAt": "Tạo lúc",
-        "content":"Nội dung",
-        "isApproved":"Trạng thái duyệt",
+        "content": "Nội dung",
+        "isApproved": "Trạng thái duyệt",
         "action": "Hành động",
         "title": "Quản lý bình luận",
         "cancel": "Thoát",
@@ -118,5 +119,11 @@
         "like": "Yêu thích",
         "liked": "Đã thích",
         "mute": "Tắt tiếng"
+    },
+    "feature": {
+        "artist-should-know": "Nghệ sĩ bạn nên biết",
+        "refresh": "Làm mới",
+        "song-maybe-like": "Bài hát có thể bạn sẽ thích",
+        "view-all": "Xem tất cả"
     }
 }

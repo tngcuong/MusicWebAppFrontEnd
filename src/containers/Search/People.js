@@ -7,10 +7,12 @@ import moment from 'moment';
 import "./People.scss";
 
 import { calcuDate } from '../../components/HOC/RandomColor';
-import CountLiked from '../Partial/CountLiked';
 import Loader from '../../components/Loader';
 import LikeSong from '../Partial/LikeSong';
 import FollowBtn from '../Partial/FollowBtn';
+import NameUser from '../Partial/NameUser';
+import CountFollower from '../Partial/CountFollower';
+
 class People extends Component {
     constructor(props) {
         super(props);
@@ -60,13 +62,13 @@ class People extends Component {
                                         <div className='details'>
                                             <div className='info'>
                                                 <h2 className='name'>
-                                                    {item.name}
+                                                    <NameUser user={item} />
                                                 </h2>
                                                 <div className='description'>
                                                     {item.description}
                                                 </div>
                                                 <div className='follower'>
-                                                    <i className="fas fa-user-friends"></i> {item.followers} {item.followers > 1 ? "followers" : "follower"}
+                                                    <i className="fas fa-user-friends"></i> <CountFollower idUser={item.id} /> 
                                                 </div>
                                                 {isLoggedIn == true && currentUser.id !== item.id && <FollowBtn idUser={item.id} />}
                                             </div>

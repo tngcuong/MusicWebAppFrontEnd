@@ -12,6 +12,7 @@ import CustomScrollbars from '../../../../components/CustomScrollbars'
 import DeleteAlbumBtn from '../../../Section/Profile/Partial/DeleteAlbumBtn';
 import AddSongToPlayListManage from './AddSongToPlayListManage';
 import ModalAddPlayList from './ModalAddPlayList';
+import Paging from '../../../../components/Paging/Paging';
 
 class PlaylistManage extends Component {
     constructor(props) {
@@ -41,6 +42,10 @@ class PlaylistManage extends Component {
 
         if (this.props.isLiked !== prevProps.isLiked || this.props.isFailed !== prevProps.isFailed) {
             await this.props.getAllAlbums(this.state.currentPage, this.state.pageSize)
+        }
+
+        if (this.state.currentPage !== prevState.currentPage) {
+            this.props.getAllAlbums(this.state.currentPage, this.state.pageSize)
         }
     }
 
@@ -84,6 +89,12 @@ class PlaylistManage extends Component {
             isOpenModal: !this.state.isOpenModal
         })
     }
+
+    handleChangePage = async (pageIndex) => {
+        await this.setState({
+            currentPage: pageIndex
+        });
+    };
 
     render() {
         const { recentPLayList, selectedItem } = this.state
@@ -209,7 +220,13 @@ class PlaylistManage extends Component {
                                 })
 
                             }
-
+                            {recentPLayList.length > 0 && <Paging
+                                pageIndex={this.state.currentPage}
+                                pageSize={this.state.pageSize}
+                                pageCount={this.props.pageCount}
+                                changePage={this.handleChangePage}
+                            ></Paging>
+                            }
                         </div>
                     </div>
                 </div>
@@ -229,7 +246,8 @@ const mapStateToProps = state => {
         isLiked: state.album.isLiked,
         isFailed: state.album.isFailed,
         albums: state.album.albums,
-        isLoading: state.album.isLoading
+        isLoading: state.album.isLoading,
+        pageCount: state.album.pageCount
     };
 };
 

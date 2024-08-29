@@ -10,6 +10,8 @@ import { calcuDate } from '../../components/HOC/RandomColor';
 import CountLiked from '../Partial/CountLiked';
 import Loader from '../../components/Loader';
 import LikeSong from '../Partial/LikeSong';
+import NameSong from '../Partial/NameSong';
+import NameUser from '../Partial/NameUser';
 
 class Song extends Component {
     constructor(props) {
@@ -67,9 +69,9 @@ class Song extends Component {
                                                     </div>
                                                     <div className='name'>
                                                         <div className='artist'>
-                                                            <a href=''>{item.user?.name}</a>
+                                                            <a href=''><NameUser user={item.user} /></a>
                                                         </div>
-                                                        <a className='name-song'>{item.name}</a>
+                                                        <a className='name-song'><NameSong song={item} /></a>
                                                     </div>
                                                     <div className='time-make'>
                                                         <span>{calcuDate(item.createAt)} ago</span>

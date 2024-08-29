@@ -5,7 +5,8 @@ import {
     editUser,
     getUserById,
     SearchUserByName,
-    toggleFollow
+    toggleFollow,
+    getRandomUser
 } from '../../services/userService';
 
 
@@ -185,4 +186,33 @@ export const FollowSuccess = (data) => ({
 
 export const FollowFailded = () => ({
     type: actionTypes.TOGGLE_FOLLOW_FAILED,
+})
+
+
+export const GetRandomUserStart = (size) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.GET_RANDOM_USER_START })
+            let data = await getRandomUser(size)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(GetRandomUserSuccess(data.content))
+            } else {
+                dispatch(GetRandomUserFailded())
+            }
+        } catch (error) {
+            if (error && error.response && error.response.data) {
+                dispatch(GetRandomUserFailded(error.response.data.message))
+            }
+        }
+    }
+}
+
+export const GetRandomUserSuccess = (data) => ({
+    type: actionTypes.GET_RANDOM_USER_SUCCESS,
+    data: data
+})
+
+export const GetRandomUserFailded = () => ({
+    type: actionTypes.GET_RANDOM_USER_FAILED,
 })

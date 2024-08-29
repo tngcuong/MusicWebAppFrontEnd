@@ -11,7 +11,8 @@ const initialState = {
     currentAlbum: [],
     isLiked: false,
     isFailed: true,
-    searchAlbum: []
+    searchAlbum: [],
+    pageCount: 0
 }
 
 const albumReducer = (state = initialState, action) => {
@@ -23,8 +24,9 @@ const albumReducer = (state = initialState, action) => {
             }
         case actionTypes.FETCH_ALBUM_SUCCESS:
             let copyState = { ...state }
-            copyState.albums = [...action.data]
+            copyState.albums = [...action.data.data]
             copyState.isLoading = false
+            copyState.pageCount = action.data.totalPages
             return {
                 ...copyState,
             }

@@ -13,9 +13,13 @@ import CountLikedPLayList from '../Partial/CountLikedPLayList';
 import LikePlayList from '../Partial/LikePlayList';
 import FollowBtn from '../Partial/FollowBtn';
 import { getRandomColor, totalTime, calcuDate } from '../../components/HOC/RandomColor';
+import NameUser from '../Partial/NameUser';
+import NamePlayList from '../Partial/NamePlayList';
+import NameSong from '../Partial/NameSong';
 
 
 import "./AlbumMusic.scss";
+import NamePlaylist from '../Partial/NamePlayList';
 
 class AlbumMusic extends Component {
     constructor(props) {
@@ -54,6 +58,10 @@ class AlbumMusic extends Component {
             })
         }
 
+        if (this.props.match.params.album !== preProps.match.params.album) {
+            this.props.getDetailAlbum(this.props.match.params.album)
+        }
+
         if (this.props.userAlbums != preProps.userAlbums) {
             this.setState({
                 userAlbums: [...this.props.userAlbums]
@@ -85,7 +93,7 @@ class AlbumMusic extends Component {
                                 }</div>
                                 <div className='title-artist'>
                                     <div className='title'>&ensp;{detailAlbum.name}</div>
-                                    <div className='artist'>&ensp; By {detailAlbum.createBy && detailAlbum.createBy.name} &ensp;</div>
+                                    <div className='artist'>&ensp; By {detailAlbum.createBy && <NameUser user={detailAlbum.createBy} />} &ensp;</div>
                                 </div>
                             </div>
                             <div className='album-info-down'>
@@ -137,7 +145,7 @@ class AlbumMusic extends Component {
 
                                     </div>
                                     <div className='album-info-name'>
-                                        {detailAlbum.createBy && detailAlbum.createBy.name}
+                                        {detailAlbum.createBy && <NameUser user={detailAlbum.createBy} />}
                                     </div>
                                     <div className='album-info-quantity'>
                                     </div>
@@ -164,9 +172,9 @@ class AlbumMusic extends Component {
                                                         }}></div>
                                                         <div className='track-number'>{index + 1}</div>
                                                         <div className='artist-info'>
-                                                            <span className='track-artist'>{item.user?.name}</span>
+                                                            <span className='track-artist'>{item.user?.name && <NameUser user={detailAlbum.createBy} />}</span>
                                                             <span> - </span>
-                                                            <span className='track-name'>{item.name}</span>
+                                                            <span className='track-name'>{item.name && <NameSong song={item} />}</span>
                                                         </div>
 
                                                         <div className='track-play'><i className="fas fa-play"></i></div>
@@ -217,13 +225,13 @@ class AlbumMusic extends Component {
 
                                                         <div className='user-album-info'>
                                                             <div className='artist'>
-                                                                {item.createBy?.name}
+                                                                {item.createBy && <NameUser user={item.createBy} />}
                                                             </div>
                                                             <div className='user-album-name'>
-                                                                {item.name}
+                                                                {item.name && <NamePlaylist playlist={item} />}
                                                             </div>
                                                             <div className='user-album-liked'>
-                                                                <i className="fas fa-heart"></i> 100
+                                                                <i className="fas fa-heart"></i> <CountLikedPLayList idPlayList={item.id} />
                                                             </div>
                                                         </div>
                                                     </div>

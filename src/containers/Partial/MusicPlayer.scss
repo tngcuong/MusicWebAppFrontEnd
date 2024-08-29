@@ -24,7 +24,10 @@
             flex-direction: column;
 
             .song-name {
-                font-weight: 700;
+                a {
+                    font-weight: 700;
+                }
+
             }
 
             .song-username {

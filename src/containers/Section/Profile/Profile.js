@@ -189,6 +189,7 @@ class Profile extends Component {
         const { currentUser } = this.props
         const idUser = this.props.match.params.profile
         const coverAvater = this.state.ProfileUser?.coverAvatar
+        console.log(coverAvater);
 
         return (
             <div>
@@ -196,13 +197,16 @@ class Profile extends Component {
                 <HomeHeader isShowBanner={false} />
                 <div className='profile-container'>
 
-                    <div className='profile-banner' style={{
-                        backgroundImage: coverAvater?.slice(0, 5) === 'https' ? `url("${coverAvater}")` : 'none',
-                        backgroundPosition: 'center center',
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: coverAvater?.slice(0, 5) === 'https' ? 'transparent' : `${coverAvater}`
-                    }}>
+                    <div
+                        className="profile-banner"
+                        style={{
+                            backgroundImage: coverAvater?.slice(0, 5) === 'https' ? `url("${coverAvater}")` : coverAvater?.startsWith('linear-gradient') ? coverAvater : 'none',
+                            backgroundPosition: 'center center',
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundColor: coverAvater?.slice(0, 5) === 'https' || coverAvater?.startsWith('linear-gradient') ? 'transparent' : `${coverAvater}`,
+                        }}
+                    >
                         <div className='profile-right'>
                             <div className='profile-avatar' style={{
                                 backgroundImage: `url("${ProfileUser.avatar}")`,

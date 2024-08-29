@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import * as actions from '../../../store/actions';
 import SliderImage1 from '../../../assets/Slider/portfolio-1.jpg'
-
+import NamePlayList from '../../Partial/NamePlayList';
 
 
 class Carousel extends Component {
@@ -43,9 +43,9 @@ class Carousel extends Component {
 
     setAlbum = async (item) => {
         this.props.setCurrentAlbum(item)
-        if( item.length > 0){
-           await this.props.setCurrentSong(item[0])
-           await this.props.playSong(true)
+        if (item.length > 0) {
+            await this.props.setCurrentSong(item[0])
+            await this.props.playSong(true)
         }
     }
 
@@ -73,7 +73,7 @@ class Carousel extends Component {
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                             onClick={() => { this.setAlbum(item.songList) }} />
-                                        <div className='album-name' onClick={() => { this.handleToDetailAlbum(item) }}>{item.name}</div>
+                                        <div className='album-name' ><NamePlayList playlist={item} /></div>
                                     </div>
                                 )
                             })}

@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import * as actions from '../../../store/actions';
 import Slider from 'react-slick'
 import SliderImage1 from '../../../assets/Slider/portfolio-1.jpg'
+import NameSong from '../../Partial/NameSong';
 
 class SliderCustom extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class SliderCustom extends Component {
 
 
     playSong = async (song) => {
-        let { isPlaying,currentSong } = this.props
+        let { isPlaying, currentSong } = this.props
 
 
         if (JSON.stringify(this.props.currentSong) !== JSON.stringify(song)) {
@@ -70,7 +71,7 @@ class SliderCustom extends Component {
                                             backgroundRepeat: 'no-repeat'
                                         }}
                                             onClick={() => { this.playSong(item) }} />
-                                        <div onClick={() => { this.handleToDetailSong(item.id) }} className='album-name' >{item.name}</div>
+                                        <div className='album-name' ><NameSong song={item} /></div>
                                     </div>
                                 )
                             })}

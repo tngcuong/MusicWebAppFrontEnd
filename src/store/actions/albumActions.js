@@ -26,9 +26,9 @@ export const fetchAlbumStart = (pageIndex, pageSize) => {
         try {
             dispatch({ type: actionTypes.FETCH_ALBUM_START })
             let data = await getAllAlbums(pageIndex, pageSize)
-            console.log(data);
+
             if (data && data.errorCode === 200) {
-                dispatch(fetchAlbumSuccess(data.content.data))
+                dispatch(fetchAlbumSuccess(data.content))
             } else {
                 dispatch(fetchAlbumFailed())
             }

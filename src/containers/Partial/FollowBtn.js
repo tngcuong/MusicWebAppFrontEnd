@@ -34,7 +34,7 @@ class FollowBtn extends Component {
         const { idUser, currentUser } = this.props;
         return (
             <>
-                <div>
+                <div className='follow-container'>
                     {currentUser && currentUser.following && currentUser.following.includes(idUser) ?
 
                         <div className='btn-followed' onClick={() => this.toggleFollow()}>

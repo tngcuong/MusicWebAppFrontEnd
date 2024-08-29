@@ -1,76 +1,91 @@
 import React, { Component } from "react";
 import "./Feature.scss";
+import { FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
+import CountFollower from "../../Partial/CountFollower";
 
 class Feature extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            arrUsers: [],
+            refresh: false
+        }
+    }
 
+    componentDidMount() {
+        this.props.getRandomUser(3);
+    }
+
+    refreshRandomUser = () => {
+        this.setState({
+            refresh: !this.state.refresh
+        })
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.randomUser !== this.props.randomUser) {
+            this.setState({
+                arrUsers: [...this.props.randomUser]
+            })
+        }
+
+        if (prevState.refresh !== this.state.refresh) {
+            this.props.getRandomUser(3);
         }
     }
 
     render() {
+        const { arrUsers } = this.state
+
         return (
             <div className="feature-container">
                 <div className="container-up">
                     <div className="container-up-header">
                         <div className="header-icon">
-                            <i className="fas fa-user-friends"></i><span>Artist you should follow</span>
+                            <i className="fas fa-user-friends"></i><span><FormattedMessage id={"feature.artist-should-know"} /></span>
                         </div>
-                        <div className="btn-refresh">
-                            <i className="fas fa-sync"></i><span>Refresh</span>
+                        <div className="btn-refresh" onClick={() => { this.refreshRandomUser() }}>
+                            <i className="fas fa-sync"></i><span><FormattedMessage id={"feature.refresh"} /></span>
                         </div>
                     </div>
                     <div className="container-up-content">
-                        <div className="avatar" style={{
-                            backgroundImage: `url("https://i1.sndcdn.com/avatars-9zUywCtaJFz7CniW-pDCoHQ-t120x120.jpg")`,
-                            backgroundPosition: 'center center',
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat'
-                        }}>
-
-                        </div>
-                        <div className="info-song">
-                            <div className="name">
-                                Ha
-                            </div>
-                            <div className="info">
-                                <div className="follower">
-                                    <i className="fas fa-user-friends"></i> <span>100</span>
-                                </div>
-                                <div className="tracks">
-                                    <a style={{
-                                        backgroundImage: `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCI+CiAgICA8cmVjdCB4PSI1IiB5PSIxMiIgZmlsbD0icmdiKDM0LCAzNCwgMzQpIiB3aWR0aD0iMiIgaGVpZ2h0PSI0Ii8+CiAgICA8cmVjdCB4PSIyMSIgeT0iMTIiIGZpbGw9InJnYigzNCwgMzQsIDM0KSIgd2lkdGg9IjIiIGhlaWdodD0iNCIvPgogICAgPHJlY3QgeD0iMTciIHk9IjEwIiBmaWxsPSJyZ2IoMzQsIDM0LCAzNCkiIHdpZHRoPSIyIiBoZWlnaHQ9IjgiLz4KICAgIDxyZWN0IHg9IjkiIHk9IjgiIGZpbGw9InJnYigzNCwgMzQsIDM0KSIgd2lkdGg9IjIiIGhlaWdodD0iMTIiLz4KICAgIDxyZWN0IHg9IjEzIiB5PSI1IiBmaWxsPSJyZ2IoMzQsIDM0LCAzNCkiIHdpZHRoPSIyIiBoZWlnaHQ9IjE4Ii8+Cjwvc3ZnPgo=")`,
+                        {arrUsers && arrUsers.map((item, index) => {
+                            return (
+                                <div key={item.id} className="container">
+                                    <div className="avatar" style={{
+                                        backgroundImage: `url("${item.avatar}")`,
                                         backgroundPosition: 'center center',
                                         backgroundSize: 'cover',
                                         backgroundRepeat: 'no-repeat'
-                                    }}></a>
-                                    <span>2</span>
+                                    }}>
+
+                                    </div>
+                                    <div className="info-song">
+                                        <div className="name">
+                                            {item.name}
+                                        </div>
+                                        <div className="info">
+                                            <div className="follower">
+                                                <i className="fas fa-user-friends"></i> <CountFollower idUser={item.id} />
+                                            </div>
+                                            <div className="tracks">
+                                                <a style={{
+                                                    backgroundImage: `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCI+CiAgICA8cmVjdCB4PSI1IiB5PSIxMiIgZmlsbD0icmdiKDM0LCAzNCwgMzQpIiB3aWR0aD0iMiIgaGVpZ2h0PSI0Ii8+CiAgICA8cmVjdCB4PSIyMSIgeT0iMTIiIGZpbGw9InJnYigzNCwgMzQsIDM0KSIgd2lkdGg9IjIiIGhlaWdodD0iNCIvPgogICAgPHJlY3QgeD0iMTciIHk9IjEwIiBmaWxsPSJyZ2IoMzQsIDM0LCAzNCkiIHdpZHRoPSIyIiBoZWlnaHQ9IjgiLz4KICAgIDxyZWN0IHg9IjkiIHk9IjgiIGZpbGw9InJnYigzNCwgMzQsIDM0KSIgd2lkdGg9IjIiIGhlaWdodD0iMTIiLz4KICAgIDxyZWN0IHg9IjEzIiB5PSI1IiBmaWxsPSJyZ2IoMzQsIDM0LCAzNCkiIHdpZHRoPSIyIiBoZWlnaHQ9IjE4Ii8+Cjwvc3ZnPgo=")`,
+                                                    backgroundPosition: 'center center',
+                                                    backgroundSize: 'cover',
+                                                    backgroundRepeat: 'no-repeat'
+                                                }}></a>
+                                                <span>{item.listSong.length}</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div className="container-down">
-                    <div className="container-down-header">
-                        <div><i className="fas fa-heart"></i> <span>9 likes</span></div>
-                        <div className="view-all">View all</div>
-                    </div>
-                    <div className="container-down-content">
-                        <div className='track-avatar' style={{
-                            backgroundImage: `url("https://musicwebapp.blob.core.windows.net/65e052d2db16cb6da786b727/660e4d44a7321572fd7528ea-319075813_5721223647958010_4242088866700155513_n.jpg")`,
-                            backgroundPosition: 'center center',
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat'
-                        }}></div>
-                        <div className='artist-info'>
-                            <div className="name">Lucas</div>
-                            <div className="name-song">Hello</div>
-                            <div className="like"><i className="fas fa-heart"></i> <span>9 </span></div>
-                        </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
@@ -78,4 +93,16 @@ class Feature extends React.Component {
     }
 }
 
-export default Feature;
+const mapStateToProps = state => {
+    return {
+        randomUser: state.user.randomUser,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getRandomUser: (size) => dispatch(actions.GetRandomUserStart(size))
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Feature));

@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import "./CountLiked.scss";
+import "./CountFollower.scss";
 import * as actions from '../../store/actions';
-import { countLiked } from '../../services/songService';
+import { countFollowerByUserId } from '../../services/userService';
 
-class CountLiked extends Component {
+class CountFollower extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            countLiked: 0
+            countFollower: 0,
         };
     }
 
     async componentDidMount() {
-        await this.countLiked()
+        await this.countFollower()
     }
 
     async componentDidUpdate(prevProps, prevState) {
-        if (this.props.isLiked === !prevProps.isLiked) {
-            await this.countLiked()
+        if (this.props.isFollow === !prevProps.isFollow) {
+            await this.countFollower()
         }
     }
 
-    countLiked = async () => {
-        const { idSong } = this.props;
+    countFollower = async () => {
+        const { idUser } = this.props;
         try {
-            let data = await countLiked(idSong)
+            let data = await countFollowerByUserId(idUser)
             if (data && data.errorCode === 200) {
                 this.setState({
-                    countLiked: data.content.liked
+                    countFollower: data.content
                 })
             } else {
                 console.log("count error");
@@ -39,11 +39,12 @@ class CountLiked extends Component {
     }
 
     render() {
-        const { countLiked } = this.state;
+        const { countFollower } = this.state;
         return (
             <div>
-                    <p>{countLiked}</p>
-
+                <span>
+                    {countFollower}
+                </span>
             </div>
         );
     }
@@ -52,16 +53,14 @@ class CountLiked extends Component {
 const mapStateToProps = state => {
     return {
         song: state.song.currentSong,
-        isLiked: state.song.isLiked,
-        numberCount: state.song.numberCount
+        isFollow: state.user.isFollow,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        countLike: (idSong) => dispatch(actions.getCountNumberStart(idSong)),
         getCurrentUser: () => dispatch(actions.getCurrentUserStart()),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CountLiked);
+export default connect(mapStateToProps, mapDispatchToProps)(CountFollower);

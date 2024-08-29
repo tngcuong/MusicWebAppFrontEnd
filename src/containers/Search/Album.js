@@ -13,6 +13,9 @@ import LikeSong from '../Partial/LikeSong';
 import LikePlayList from '../Partial/LikePlayList';
 import CountLikedPLayList from '../Partial/CountLikedPLayList';
 import CustomScrollbars from '../../components/CustomScrollbars';
+import NamePlayList from '../Partial/NamePlayList';
+import NameUser from '../Partial/NameUser';
+import NameSong from '../Partial/NameSong';
 
 
 class Album extends Component {
@@ -73,7 +76,7 @@ class Album extends Component {
                                                         <div className='artist'>
                                                             <a href=''>{item.user?.name}</a>
                                                         </div>
-                                                        <a className='name-song'>{item.name}</a>
+                                                        <a className='name-song'><NamePlayList playlist={item} /></a>
                                                     </div>
                                                     <div className='time-make'>
                                                         <span>{calcuDate(item.createAt)} ago</span>
@@ -97,9 +100,9 @@ class Album extends Component {
                                                                                 }}></div>
                                                                                 <span className='number-song'>{subIndex + 1}</span>
                                                                                 <div className='info'>
-                                                                                    <div className='artist-name'>{subItem.user?.name} </div>
+                                                                                    <div className='artist-name'><NameUser user={subItem.user} /></div>
                                                                                     <span> - </span>
-                                                                                    <div className='song-name'> {subItem.name}</div>
+                                                                                    <div className='song-name'><NameSong song={subItem} /></div>
                                                                                 </div>
 
                                                                             </div>

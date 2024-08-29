@@ -65,9 +65,9 @@ class App extends Component {
 
     componentDidMount() {
         this.handlePersistorState();
-        this.interval = setInterval(() => {
-            this.refreshToken();
-        }, 7 * 60 * 1000);
+        // this.interval = setInterval(() => {
+        //     this.refreshToken();
+        // }, 7 * 60 * 1000);
     }
 
     render() {

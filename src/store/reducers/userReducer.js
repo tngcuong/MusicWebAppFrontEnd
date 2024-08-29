@@ -6,6 +6,7 @@ const initialState = {
     currentUser: {},
     user: {},
     searchUser: [],
+    randomUser: [],
     isFollow: false
 }
 
@@ -114,6 +115,22 @@ const userReducer = (state = initialState, action) => {
         case actionTypes.TOGGLE_FOLLOW_FAILED:
             state.isLoading = false
             state.isFollow = !state.isFollow
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_USER_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_USER_SUCCESS:
+            state.isLoading = false
+            state.randomUser = [...action.data]
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_USER_FAILED:
+            state.isLoading = false
             return {
                 ...state
             }

@@ -57,6 +57,10 @@
                     .artist {
                         background-color: black;
                         color           : white;
+
+                        a {
+                            color: white;
+                        }
                     }
                 }
             }
@@ -411,7 +415,10 @@
                             margin-left: 1rem;
 
                             .artist {
-                                color: #999;
+                                song-username {
+                                    color          : #999 !important;
+                                    text-decoration: none;
+                                }
                             }
 
                             .user-album-name {
@@ -423,7 +430,13 @@
                             }
 
                             .user-album-liked {
-                                color: #999;
+                                display: flex;
+                                color  : #999;
+
+                                div {
+                                    margin-left: 5px;
+                                    margin-top : -2px;
+                                }
                             }
                         }
 

@@ -58,6 +58,13 @@ const toggleFollow = (id, idUser) => {
     return axios.post(`api/User/ToggleFollowUser?id=${id}`, idUser)
 }
 
+const countFollowerByUserId = (id) => {
+    return axios.get(`api/User/CountFollowerByUserId?id=${id}`)
+}
+
+const getRandomUser = (size) => {
+    return axios.get(`api/User/GetRandomUser?size=${size}`)
+}
 
 export {
     getAllUsers,
@@ -68,5 +75,7 @@ export {
     getUserById,
     getFollowerByUserId,
     SearchUserByName,
-    toggleFollow
+    toggleFollow,
+    countFollowerByUserId,
+    getRandomUser
 }

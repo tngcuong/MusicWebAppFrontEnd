@@ -57,6 +57,11 @@ const getSongById = (id) => {
     return axios.get(`/api/Song/GetSongById?id=${id}`)
 }
 
+const getRandomSong = (size) => {
+    return axios.get(`/api/Song/GetRandomSong?size=${size}`)
+}
+
+
 export {
     unLikeSong,
     likeSong,
@@ -70,5 +75,6 @@ export {
     getLikedSongByUserId,
     GetRalatedSongByUserId,
     SearchSongByName,
-    getSongById
+    getSongById,
+    getRandomSong
 }

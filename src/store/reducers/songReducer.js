@@ -19,7 +19,8 @@ const initialState = {
     relatedSong: [],
     searchSong: [],
     detailSong: {},
-    pageCount: 0
+    pageCount: 0,
+    randomSong: []
 }
 
 const appReducer = (state = initialState, action) => {
@@ -35,7 +36,7 @@ const appReducer = (state = initialState, action) => {
             copyState.songs = [...action.data.data]
             copyState.isLoading = false
             copyState.pageCount = action.data.totalPages
-            
+
             return {
                 ...copyState
             }
@@ -269,6 +270,22 @@ const appReducer = (state = initialState, action) => {
                 ...state
             }
         case actionTypes.GET_SONG_BY_ID_FAILED:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_SONG_SUCCESS:
+            state.isLoading = false
+            state.randomSong = [...action.data]
+            return {
+                ...state
+            }
+        case actionTypes.GET_RANDOM_SONG_FAILED:
             state.isLoading = false
             return {
                 ...state

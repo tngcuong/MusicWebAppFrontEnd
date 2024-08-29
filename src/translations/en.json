@@ -63,14 +63,14 @@
             }
         }
     },
-    "manage-comment":{
+    "manage-comment": {
         "add-title": "Add new song",
         "add": "Add",
         "image": "User's avatar",
         "name": "User's name",
         "createAt": "Create at",
-        "content":"Content",
-        "isApproved":"Approved",
+        "content": "Content",
+        "isApproved": "Approved",
         "action": "Actions",
         "title": "Comment manage",
         "cancel": "Cancel",
@@ -123,5 +123,11 @@
         "liked": "Liked",
         "volume": "Volume",
         "mute": "Mute"
+    },
+    "feature": {
+        "artist-should-know": "Artist you should know",
+        "refresh": "Refresh",
+        "song-maybe-like":"Song maybe you like",
+        "view-all":"View all"
     }
 }
