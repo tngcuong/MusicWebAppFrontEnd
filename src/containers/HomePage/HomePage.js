@@ -46,11 +46,13 @@ class HomePage extends Component {
                     <div className='content-left'>
                         <Slider settings={settings} />
                         <Carousel settings={settings} />
+
                     </div>
                     <div className='content-right'>
                         <Feature />
                         <GetRandomSong />
                     </div>
+                    <HomeFooter />
                 </div>
             </div>
         );
