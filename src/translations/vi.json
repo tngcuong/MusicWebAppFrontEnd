@@ -51,7 +51,8 @@
                 "user-manage": "Người sử dụng",
                 "song-manage": "Nhạc",
                 "comment-manage": "Duyệt bình luận",
-                "playlist-manage": "Quản lý playlist"
+                "playlist-manage": "Quản lý playlist",
+                "category-manage": "Quản lý thể loại"
             },
             "staticst": {
                 "header": "Thống kê",
@@ -82,7 +83,9 @@
         "action": "Thao tác",
         "title": "Quản lý bài hát",
         "cancel": "Thoát",
-        "upload-img": "Tải ảnh lên"
+        "upload-img": "Tải ảnh lên",
+        "createAt": "Tạo lúc",
+        "creator": "Người tạo"
     },
     "manage-user": {
         "add-title": "Thêm mới người dùng",
@@ -90,13 +93,26 @@
         "edit": "Cập nhật thông tin người dùng",
         "save": "Lưu thay đổi",
         "cancel": "Thoát",
-        "avatar": "ẢNh đại diện",
+        "avatar": "Ảnh đại diện",
         "name": "Tên",
         "username": "Tên tài khoản",
         "email": "Email",
         "role": "Quyền",
         "action": "Thao tác",
-        "title": "QUản lý người dùng"
+        "title": "Quản lý người dùng"
+    },
+    "manage-category": {
+        "add-title": "Thêm mới thể loại",
+        "add": "Thêm",
+        "edit": "Cập nhật thông tin thể loại",
+        "save": "Lưu thay đổi",
+        "cancel": "Thoát",
+        "image": "Ảnh đại diện",
+        "name": "Tên",
+        "upload-img": "Tải ảnh lên",
+        "action": "Thao tác",
+        "createAt": "Tạo lúc",
+        "title": "Quản lý thể loại"
     },
     "nav": {
         "profile": "Hồ sơ cá nhân",
@@ -125,5 +141,24 @@
         "refresh": "Làm mới",
         "song-maybe-like": "Bài hát có thể bạn sẽ thích",
         "view-all": "Xem tất cả"
-    }
+    },
+    "song-detail": {
+        "add-already": "Bài hát này đã có trong playlist",
+        "add-success": "Thêm vào playlist thành công",
+        "another-song": "Các bài hát khác của người dùng này",
+        "view-all": "Xem tất cả"
+    },
+    "follow": {
+        "followed": "Đã theo dõi",
+        "follow": "Theo dõi"
+    },
+    "comment": {
+        "write": "Bình luận",
+        "approve": "Bình luận này đang chờ duyệt"
+    },
+    "playlist-detail": {
+        "another-playlist": "Các playlist khác của người dùng này",
+        "view-all": "Xem tất cả"
+    },
+    "search": {}
 }

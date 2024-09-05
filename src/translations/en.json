@@ -51,7 +51,8 @@
                 "user-manage": "User",
                 "song-manage": "Song",
                 "comment-manage": "Comment manage",
-                "playlist-manage": "Playlist manage"
+                "playlist-manage": "Playlist manage",
+                "category-manage": "Category manage"
             },
             "staticst": {
                 "header": "Staticst",
@@ -85,7 +86,9 @@
         "action": "Actions",
         "title": "Song manage",
         "cancel": "Cancel",
-        "upload-img": "Upload image"
+        "upload-img": "Upload image",
+        "createAt": "Create at",
+        "creator": "Creator"
     },
     "manage-user": {
         "add-title": "Create a new user",
@@ -100,6 +103,19 @@
         "role": "Role",
         "action": "Actions",
         "title": "User manage"
+    },
+    "manage-category": {
+        "add-title": "Add category",
+        "add": "Add",
+        "edit": "Update category",
+        "save": "Save change",
+        "cancel": "Cancel",
+        "image": "Image",
+        "name": "Name",
+        "upload-img": "Upload image",
+        "action": "Action",
+        "createAt": "Create at",
+        "title": "Category manage"
     },
     "nav": {
         "profile": "Profile",
@@ -127,7 +143,25 @@
     "feature": {
         "artist-should-know": "Artist you should know",
         "refresh": "Refresh",
-        "song-maybe-like":"Song maybe you like",
-        "view-all":"View all"
+        "song-maybe-like": "Song maybe you like",
+        "view-all": "View all"
+    },
+    "song-detail": {
+        "add-already": "This song is already in the playlist",
+        "add-success": "Song added to playlist successfully",
+        "another-song": "Another song of this artist",
+        "view-all": "View all"
+    },
+    "follow": {
+        "followed": "Followed",
+        "follow": "Follow"
+    },
+    "comment": {
+        "write": "Write a comment",
+        "approve": "This comment is awaiting approval"
+    },
+    "playlist-detail": {
+        "another-playlist": "Another playlist of this artist",
+        "view-all": "View all"
     }
 }

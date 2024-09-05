@@ -10,7 +10,6 @@ export const userIsAuthenticated = connectedRouterRedirect({
 });
 
 export const userIsNotAuthenticated = connectedRouterRedirect({
-    // Want to redirect the user when they are authenticated
     authenticatedSelector: state => !state.account.isLoggedIn,
     wrapperDisplayName: 'UserIsNotAuthenticated',
     redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/',
@@ -18,13 +17,13 @@ export const userIsNotAuthenticated = connectedRouterRedirect({
 });
 
 export const userIsAdmin = connectedRouterRedirect({
-    authenticatedSelector: state => state.account.role === "Admin",
+    authenticatedSelector: state => state.account.isLoggedIn && state.account.role === "Admin",
     wrapperDisplayName: 'UserIsAdmin',
-    redirectPath: '/system/home'
+    redirectPath: '/'
 });
 
 export const userIsNotAdmin = connectedRouterRedirect({
-    authenticatedSelector: state => state.account.role !== "Admin",
+    authenticatedSelector: state => !state.account.isLoggedIn || state.account.role !== "Admin",
     wrapperDisplayName: 'UserIsNotAdmin',
-    redirectPath: '/'
+    redirectPath: '/system/home'
 });
