@@ -61,6 +61,14 @@ const getRandomSong = (size) => {
     return axios.get(`/api/Song/GetRandomSong?size=${size}`)
 }
 
+const getAllSongAdmin = async (pageIndex, pageSize) => {
+    return axios.get(`api/Song/GetSongAdmin?pageIndex=${pageIndex}&pageSize=${pageSize}`)
+}
+
+const toggleApproveSong = (id) => {
+    return axios.put(`/api/Song/ToggleApproveSongById?id=${id}`)
+}
+
 
 export {
     unLikeSong,
@@ -76,5 +84,7 @@ export {
     GetRalatedSongByUserId,
     SearchSongByName,
     getSongById,
-    getRandomSong
+    getRandomSong,
+    getAllSongAdmin,
+    toggleApproveSong
 }

@@ -9,6 +9,7 @@ export const adminMenu = [
                     { name: 'menu.system.system-administrator.song-manage', link: '/system/song-manage' },
                     { name: 'menu.system.system-administrator.comment-manage', link: '/system/comment-manage' },
                     { name: 'menu.system.system-administrator.playlist-manage', link: '/system/playlist-manage' },
+                    { name: 'menu.system.system-administrator.category-manage', link: '/system/category-manage' },
                 ]
             },
             // { name: 'menu.system.system-parameter.header', link: '/system/system-parameter' },

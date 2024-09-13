@@ -3,36 +3,35 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import * as actions from '../../../../store/actions';
-import ModalEditUser from './ModalEditUser';
-import ModalUser from './ModalUser';
-import { getAllUsers, editUser, deleteUserService, createNewUserService } from '../../../../services/userService';
+import ModalEditCategory from './ModalEditCategory';
+import ModalCategory from './ModalCategory';
+import { addCategory, deleteCategoryById, getAllCategory, getCategoryBySongId, updateCategory } from '../../../../services/categoryService';
 import Paging from '../../../../components/Paging/Paging';
 
 
-import "./UserManage.scss";
-class UserManage extends Component {
+import "./CategoryManage.scss";
+class CategoryManage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            arrUsers: [],
+            arrCate: [],
             isOpenModal: false,
             isOpenEditModal: false,
-            userEdit: {},
+            cateEdit: {},
             currentPage: 1,
             pageSize: 5,
             pageCount: 1,
-            arrRoles: [],
             isDelete: false
         }
     }
 
-    getAllUserFromManage = async () => {
+    getAllCateFromManage = async () => {
         try {
-            let res = await getAllUsers(this.state.currentPage, this.state.pageSize);
+            let res = await getAllCategory(this.state.currentPage, this.state.pageSize);
             if (res && res.errorCode === 200) {
                 await this.setState({
-                    arrUsers: res.content.data,
+                    arrCate: res.content.data,
                     pageCount: res.content.totalPages
                 });
 
@@ -48,36 +47,35 @@ class UserManage extends Component {
         await this.setState({
             currentPage: pageIndex
         })
-        await this.getAllUserFromManage()
+        await this.getAllCateFromManage()
     }
 
     async componentDidMount() {
-        await this.getAllUserFromManage()
-        this.props.getRoleStart()
+        await this.getAllCateFromManage()
     }
 
-    handleAddNewUser = () => {
+    handleAddNewCate = () => {
         this.setState({
             isOpenModal: true
         })
     }
 
-    toggleUsersModal = () => {
+    toggleCateModal = () => {
         this.setState({
             isOpenModal: !this.state.isOpenModal
         })
     }
 
-    toggleEditUsersModal = () => {
+    toggleEditCateModal = () => {
         this.setState({
             isOpenEditModal: !this.state.isOpenEditModal
         })
     }
 
-    createNewUser = async (data) => {
+    createNewCate = async (data) => {
         try {
-            let res = await createNewUserService(data);
-            await this.getAllUserFromManage()
+            let res = await addCategory(data);
+            await this.getAllCateFromManage()
             this.setState({
                 isOpenModal: false
             })
@@ -87,27 +85,28 @@ class UserManage extends Component {
         }
     }
 
-    handleEditUser = (user) => {
+    handleEditCate = (cate) => {
         this.setState({
             isOpenEditModal: true,
-            userEdit: user
+            cateEdit: cate
         })
     }
 
-    doEditUser = async (user) => {
-        this.props.updateUser(user)
-        await this.getAllUserFromManage()
-        this.setState({
-            isOpenEditModal: false
-        })
+    editCategory = async (cate) => {
+        try {
+            let res = await updateCategory(cate.id, cate)
+            await this.getAllCateFromManage()
+            this.setState({
+                isOpenEditModal: false
+            })
+        } catch (err) {
+
+        }
+
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.role !== this.props.role) {
-            this.setState({
-                arrRoles: this.props.role
-            })
-        }
+
 
         if (prevProps.isDelete !== this.props.isDelete) {
 
@@ -115,11 +114,11 @@ class UserManage extends Component {
 
     }
 
-    handleDeleteUser = async (user) => {
+    handleDeleteCate = async (cate) => {
         try {
-            let data = await deleteUserService(user.id)
+            let data = await deleteCategoryById(cate.id)
             if (data && data.errorCode === 200) {
-                await this.getAllUserFromManage()
+                await this.getAllCateFromManage()
                 alert("deleted successfully")
                 this.setState({
                     isDelete: !this.state.isDelete
@@ -131,35 +130,33 @@ class UserManage extends Component {
     }
 
     render() {
-        let { arrUsers, arrRoles } = this.state
+        let { arrCate } = this.state
         return (
 
             <div className="user-container">
-                {this.state.isOpenModal && <ModalUser
-                    arrRoles={arrRoles}
-                    toggleFromParent={this.toggleUsersModal}
+                {this.state.isOpenModal && <ModalCategory
+                    toggleFromParent={this.toggleCateModal}
                     isOpen={this.state.isOpenModal}
                     size="xl"
-                    createUser={this.createNewUser}
+                    createCategory={this.createNewCate}
                     centered
-                ></ModalUser>}
+                ></ModalCategory>}
                 {this.state.isOpenEditModal &&
-                    <ModalEditUser
-                        arrRoles={arrRoles}
-                        toggleFromParent={this.toggleEditUsersModal}
+                    <ModalEditCategory
+                        toggleFromParent={this.toggleEditCateModal}
                         isOpen={this.state.isOpenEditModal}
-                        currentUser={this.state.userEdit}
+                        currentCategory={this.state.cateEdit}
                         size="xl"
                         centered
-                        editUser={this.doEditUser}
+                        editCategory={this.editCategory}
                     >
-                    </ModalEditUser>
+                    </ModalEditCategory>
                 }
 
-                <div className='title text-center'>Quản lý người dùng</div>
+                <div className='title text-center'>Quản lý thể loại</div>
                 <div className='mx-1'>
                     <button
-                        onClick={() => { this.handleAddNewUser() }}
+                        onClick={() => { this.handleAddNewCate() }}
                         className='btn btn-primary px-3'><i className="fas fa-user-plus"></i></button>
                 </div>
                 <div className='users-table mt-3 mx-1'>
@@ -167,15 +164,13 @@ class UserManage extends Component {
                         <tbody>
                             <tr>
                                 <th>#</th>
-                                <th><FormattedMessage id="manage-user.avatar" /></th>
-                                <th><FormattedMessage id="manage-user.name" /></th>
-                                <th><FormattedMessage id="manage-user.username" /></th>
-                                <th><FormattedMessage id="manage-user.email" /></th>
-                                <th><FormattedMessage id="manage-user.role" /></th>
-                                <th><FormattedMessage id="manage-user.action" /></th>
+                                <th><FormattedMessage id="manage-category.image" /></th>
+                                <th><FormattedMessage id="manage-category.name" /></th>
+                                <th><FormattedMessage id="manage-category.createAt" /></th>
+                                <th><FormattedMessage id="manage-category.action" /></th>
                             </tr>
 
-                            {arrUsers && arrUsers.map((item, index) => {
+                            {arrCate && arrCate.map((item, index) => {
                                 return (
                                     <tr key={item.id} className='user-content'>
                                         <td>{index + 1}</td>
@@ -184,7 +179,7 @@ class UserManage extends Component {
                                                 style={{
                                                     width: "50px",
                                                     height: "50px",
-                                                    backgroundImage: `url(${item.avatar})`,
+                                                    backgroundImage: `url(${item.image})`,
                                                     backgroundSize: "cover",
                                                     backgroundPosition: "center",
                                                     backgroundColor: "#f0f0f0",
@@ -194,15 +189,13 @@ class UserManage extends Component {
                                             </div>
                                         </td>
                                         <td>{item.name}</td>
-                                        <td>{item.username}</td>
-                                        <td>{item.email}</td>
-                                        <td>{item.role}</td>
+                                        <td>{item.createAt}</td>
                                         <td>
                                             <button
-                                                onClick={() => { this.handleEditUser(item) }}
+                                                onClick={() => { this.handleEditCate(item) }}
                                                 className='btn-edit'><i className="fas fa-user-edit"></i></button>
                                             <button
-                                                onClick={() => { this.handleDeleteUser(item) }}
+                                                onClick={() => { this.handleDeleteCate(item) }}
                                                 className='btn-delete'><i className="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -211,7 +204,7 @@ class UserManage extends Component {
                             }
                         </tbody>
                     </table>
-                    {arrUsers.length > 0 && <Paging
+                    {arrCate.length > 0 && <Paging
                         pageIndex={this.state.currentPage}
                         pageSize={this.state.pageSize}
                         pageCount={this.state.pageCount}
@@ -228,7 +221,7 @@ class UserManage extends Component {
 
 const mapStateToProps = state => {
     return {
-        role: state.user.roles,
+
     };
 };
 
@@ -239,4 +232,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManage);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryManage);

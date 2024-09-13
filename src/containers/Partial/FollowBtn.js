@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import "./FollowBtn.scss";
 import * as actions from '../../store/actions';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 class FollowBtn extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ class FollowBtn extends Component {
 
 
     render() {
-        const { idUser, currentUser } = this.props;
+        const { idUser, currentUser, intl } = this.props;
         return (
             <>
                 <div className='follow-container'>
@@ -41,7 +42,7 @@ class FollowBtn extends Component {
                             <span className="icon-follow"
                             ><i className='fas fa-user-friends'></i></span>
                             <span className="text-follow">
-                                Followed
+                                {intl.formatMessage({ id: 'follow.followed' })}
                             </span>
                         </div>
                         :
@@ -53,7 +54,7 @@ class FollowBtn extends Component {
                                 backgroundRepeat: 'no-repeat'
                             }}></span>
                             <span className="text-follow">
-                                Follow
+                                {intl.formatMessage({ id: 'follow.follow' })}
                             </span>
                         </div>
                     }
@@ -77,4 +78,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FollowBtn);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FollowBtn));

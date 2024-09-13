@@ -20,11 +20,49 @@ const initialState = {
     searchSong: [],
     detailSong: {},
     pageCount: 0,
-    randomSong: []
+    randomSong: [],
+    songAdmin: [],
+    isApproved: false
 }
 
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.TOGGLE_APPROVE_SONG_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+
+        case actionTypes.TOGGLE_APPROVE_SONG_FAILED:
+            state.isApproved = !state.isApproved
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.TOGGLE_APPROVE_SONG_SUCCESS:
+            state.isApproved = !state.isApproved
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_SONG_ADMIN_START:
+            state.isLoading = true
+            return {
+                ...state
+            }
+
+        case actionTypes.FETCH_SONG_ADMIN_FAILED:
+            state.isLoading = false
+            return {
+                ...state
+            }
+        case actionTypes.FETCH_SONG_ADMIN_SUCCESS:
+            state.songAdmin = [...action.data.data]
+            state.pageCount = action.data.totalPages
+            state.isLoading = false
+            return {
+                ...state
+            }
         case actionTypes.FETCH_SONG_START:
             state.isLoading = true
             return {
@@ -35,7 +73,11 @@ const appReducer = (state = initialState, action) => {
             let copyState = { ...state }
             copyState.songs = [...action.data.data]
             copyState.isLoading = false
-            copyState.pageCount = action.data.totalPages
+            if (action.data.pageIndex > action.data.totalPages) {
+                copyState.pageCount = 1
+            } else {
+                copyState.pageCount = action.data.totalPages
+            }
 
             return {
                 ...copyState

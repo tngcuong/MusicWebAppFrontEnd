@@ -73,12 +73,24 @@ class All extends Component {
         const { waveformRef, isClick, recentSong } = this.state
         const { top5likedSong, currentUser } = this.props
         const idUser = this.props.match.params.profile
+
+        const hasSongs = (top5likedSong && top5likedSong.length > 0) || (recentSong && recentSong.length > 0);
+
+        if (!hasSongs) {
+            return (
+                <div className="profile-all">
+                    <div className="no-songs-message">No songs found</div>
+                </div>
+            );
+        }
         return (
             <div className="profile-all">
                 <div className='spotlight'>
-                    <div className='spotlight-header'>
-                        <h2>Spotlight</h2>
-                    </div>
+                    {top5likedSong && top5likedSong.length > 0 &&
+                        <div className='spotlight-header'>
+                            <h2>Spotlight</h2>
+                        </div>
+                    }
                     <div className='spotlight-content'>
                         {
                             top5likedSong && top5likedSong.length > 0 &&
@@ -137,9 +149,12 @@ class All extends Component {
                     </div>
                 </div>
                 <div className='recent'>
-                    <div className='recent-header'>
-                        <h2>Recent</h2>
-                    </div>
+                    {recentSong && recentSong.length > 0 &&
+                        <div className='recent-header'>
+                            <h2>Recent</h2>
+                        </div>
+                    }
+
                     <div className='recent-content'>
                         {
                             recentSong && recentSong.length > 0 &&

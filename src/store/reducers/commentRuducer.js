@@ -7,7 +7,8 @@ const initialState = {
     addComment: false,
     approvedComment: [],
     unApprovedComment: [],
-    isReload: false
+    isReload: false,
+    pageCount: 0,
 }
 
 const commentReducer = (state = initialState, action) => {
@@ -52,6 +53,7 @@ const commentReducer = (state = initialState, action) => {
         case actionTypes.GET_APPROVED_COMMENT_SUCCESS:
             state.isLoading = false
             state.approvedComment = [...action.data.data]
+            state.pageCount = action.data.totalPages
             return {
                 ...state,
             }
@@ -68,6 +70,7 @@ const commentReducer = (state = initialState, action) => {
         case actionTypes.GET_UNAPPROVED_COMMENT_SUCCESS:
             state.isLoading = false
             state.unApprovedComment = [...action.data.data]
+            state.pageCount = action.data.totalPages
             return {
                 ...state,
             }

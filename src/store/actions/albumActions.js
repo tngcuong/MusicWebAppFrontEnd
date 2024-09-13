@@ -162,7 +162,7 @@ export const uploadPlaylistStart = (playlist) => {
         try {
             dispatch({ type: actionTypes.UPLOAD_PLAYLIST_START })
             let data = await uploadPlaylist(playlist)
-            console.log(data);
+
             if (data && data.errorCode === 200) {
                 dispatch(uploadPlaylistSuccess())
 
@@ -242,3 +242,14 @@ export const SearchAlbumByNameSuccess = (data) => ({
 export const SearchAlbumByNameFailded = () => ({
     type: actionTypes.SEARCH_ALBUM_BY_NAME_FAILED,
 })
+
+export const CLearCurrentPlaylist = () => ({
+    type: actionTypes.CLEAR_CURRENT_ALBUM,
+})
+
+export const AddSongToCurrentPlaylist = (song) => ({
+    type: actionTypes.ADD_SONG_TO_CURRENT_ALBUM,
+    data: song
+})
+
+

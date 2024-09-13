@@ -23,6 +23,8 @@ import { updateCoverAvatar } from '../../../services/accountService';
 import EditProfile from './Partial/EditProfile';
 import UploadSong from './Partial/UploadPage';
 import FollowBtn from '../../Partial/FollowBtn';
+import NameSong from '../../Partial/NameSong';
+import NameUser from '../../Partial/NameUser';
 
 class Profile extends Component {
     constructor(props) {
@@ -225,7 +227,7 @@ class Profile extends Component {
                                     />
                                 }
                                 {idUser === currentUser.id &&
-                                    <div className='btn-upload-avatar'>
+                                    <div className='btn-upload-avatar' onClick={(e) => e.stopPropagation()}>
                                         <label className='lb-upload-avatar' htmlFor='upload-avatar'><i className="fas fa-camera"></i> Upload image </label>
                                         <input
                                             onChange={(e) => { this.handleChangeAvatar(e) }}
@@ -349,18 +351,23 @@ class Profile extends Component {
                                     </table>
                                 </div>
                                 <div className='profile-liked-song'>
-                                    <div className='liked-song-stat'>
-                                        <a className='link-liked-song'>
-                                            <div>
-                                                <span><i className="fas fa-heart"></i></span>
-                                                <span>{LikedTracksUser.length}</span>
-                                            </div>
-                                            <span className='view-all'>View All</span>
-                                        </a>
-                                    </div>
+
+                                    {LikedTracksUser && LikedTracksUser.length > 0 &&
+                                        <div className='liked-song-stat'>
+                                            <a className='link-liked-song'>
+                                                <div>
+                                                    <span><i className="fas fa-heart"></i></span>
+                                                    <span>{LikedTracksUser.length}</span>
+                                                </div>
+                                                {/* <span className='view-all'>View All</span> */}
+                                            </a>
+                                        </div>
+                                    }
+
+
                                     <div className='list-liked-song'>
                                         <div className='list'>
-                                            {LikedTracksUser.length && LikedTracksUser.length > 0 &&
+                                            {LikedTracksUser && LikedTracksUser.length > 0 &&
                                                 LikedTracksUser.slice(0, 3).map((item, index) => {
                                                     return (
                                                         <div className='liked-song' key={item.id}>
@@ -375,8 +382,8 @@ class Profile extends Component {
                                                             </div>
                                                             <div className='details'>
                                                                 <div className='name'>
-                                                                    <p className='artist-name'>{item.user?.name}</p>
-                                                                    <p className='song-name'>{item.name}</p>
+                                                                    <p className='artist-name'>{item.user?.name && <NameUser user={item.user} />}</p>
+                                                                    <p className='song-name'>{item.name && <NameSong song={item} />}</p>
                                                                 </div>
                                                                 <div className='count-like'>
                                                                     <i className="fas fa-heart"></i>
@@ -395,12 +402,12 @@ class Profile extends Component {
                                                 <div>
                                                     <span> <i className="fas fa-user-friends"></i><span>Fans also like</span></span>
                                                 </div>
-                                                <span className='view-all'>View All</span>
+                                                {/* <span className='view-all'>View All</span> */}
                                             </a>
                                         </div>
                                         <div className='list-follower'>
                                             <div className='list'>
-                                                {Followers.length && Followers.length > 0 &&
+                                                {Followers && Followers.length > 0 &&
                                                     Followers.slice(0, 3).map((item, index) => {
                                                         return (
                                                             <div className='follower' key={item.id}>
@@ -415,7 +422,7 @@ class Profile extends Component {
                                                                 </div>
                                                                 <div className='details-follower'>
                                                                     <div className='name'>
-                                                                        <p className='follower-name'>{item.name}</p>
+                                                                        <p className='follower-name'>{item.name && <NameUser user ={item}/>}</p>
                                                                         <div className='details'>
                                                                             <div className='detail-track'>
                                                                                 <a style={{
@@ -424,7 +431,7 @@ class Profile extends Component {
                                                                                     backgroundSize: 'cover',
                                                                                     backgroundRepeat: 'no-repeat'
                                                                                 }}></a>
-                                                                                <p className='count-track'>{item.listSong?.length}</p>
+                                                                                <p className='count-track'>{item.listSong?.length > 0 && item.listSong?.length}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>

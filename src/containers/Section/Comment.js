@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 import moment from 'moment';
@@ -21,7 +21,8 @@ class Comment extends Component {
         super(props);
         this.state = {
             comment: [],
-            content: ""
+            content: "",
+            hoveredCommentId: null
         }
     }
 
@@ -56,6 +57,10 @@ class Comment extends Component {
             });
         }
 
+        if (this.props.songId != preProps.songId) {
+            this.props.getCommentBySong(this.props.songId)
+        }
+
     }
 
     handleAddComment = () => {
@@ -77,10 +82,13 @@ class Comment extends Component {
             content: e.target.value
         })
     }
+    handleDeleteComment = (id) => {
+        this.props.deleteComment(id)
+    }
 
     render() {
-        let { comment, content } = this.state
-        let { currentUser, isLoggedIn } = this.props
+        let { comment, content, hoveredCommentId } = this.state
+        let { currentUser, isLoggedIn, intl } = this.props
 
         return (
             <>
@@ -94,7 +102,7 @@ class Comment extends Component {
                                 value={this.state.content}
                                 type="text"
                                 onChange={(e) => this.handleContent(e)}
-                                placeholder="Write a comment"
+                                placeholder={intl.formatMessage({ id: 'comment.write' })}
                                 className="comment-input" />
                             <button className="send-button" onClick={() => this.handleAddComment()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -107,7 +115,11 @@ class Comment extends Component {
                     <div className="comment-list">
                         {comment && comment.length > 0 && comment.map((item, index) => {
                             return (
-                                <div className='comment'>
+                                <div
+                                    className='comment'
+                                    onMouseEnter={() => this.setState({ hoveredCommentId: item.id })} // Thiết lập hoveredCommentId khi hover
+                                    onMouseLeave={() => this.setState({ hoveredCommentId: null })} // Đặt lại hoveredCommentId khi không hover
+                                >
                                     <div className="avatar">
                                         <img src={item.user?.avatar} alt={item.user?.name} className="avatar-image" />
                                         <div className="avatar-fallback">{item.user?.name}</div>
@@ -118,8 +130,14 @@ class Comment extends Component {
                                             <div className="timestamp">{calcuDate(item.createAt)} ago</div>
                                         </div>
                                         <div className="comment-text">
-                                            {item.isApproved == false ? "Bình luận đang chờ duyệt" : item.content}
+                                            {item.isApproved == false ? intl.formatMessage({ id: 'comment.approve' }) : item.content}
                                         </div>
+                                        {currentUser.id === item.user.id && hoveredCommentId == item.id && (
+                                            <button className="delete-icon" onClick={() => this.handleDeleteComment(item.id)}>
+                                                { }
+                                                <i className="fas fa-trash"></i>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             )
@@ -154,7 +172,8 @@ const mapDispatchToProps = dispatch => {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         getDetailSong: (id) => dispatch(actions.getSongByIdStart(id)),
         getCommentBySong: (id) => dispatch(actions.GetCommentBySongStart(id)),
-        handleAddComment: (data) => dispatch(actions.AddCommentStart(data))
+        handleAddComment: (data) => dispatch(actions.AddCommentStart(data)),
+        deleteComment: (id) => dispatch(actions.DeleteCommentStart(id))
     };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Comment));

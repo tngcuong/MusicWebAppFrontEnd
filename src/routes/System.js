@@ -6,6 +6,7 @@ import SongManage from '../containers/System/Admin/Song/SongManage';
 import CommentManage from '../containers/System/Admin/Comment/CommentManage';
 import PlayListManage from '../containers/System/Admin/PlayList/PlayListManage';
 import Header from '../containers/Header/Header';
+import CategoryManage from '../containers/System/Admin/Category/CategoryManage';
 
 class System extends Component {
     render() {
@@ -17,6 +18,7 @@ class System extends Component {
                 <div div className="system-container" >
                     <div className="system-list">
                         <Switch>
+                            <Route path="/system/category-manage" component={CategoryManage} />
                             <Route path="/system/comment-manage" component={CommentManage} />
                             <Route path="/system/user-manage" component={UserManage} />
                             <Route path="/system/song-manage" component={SongManage} />

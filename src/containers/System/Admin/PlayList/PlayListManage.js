@@ -158,26 +158,27 @@ class PlaylistManage extends Component {
                                                         <CustomScrollbars>
                                                             <div className='list-song'>
                                                                 <div className='sub-list-song'>
-                                                                    {item.songList && item.songList.length > 0
-                                                                        && item.songList.map((subItem, subIndex) => {
-                                                                            return (
-                                                                                <div className='song' key={subItem.id}>
-                                                                                    <div className='img-song' style={{
-                                                                                        backgroundImage: `url("${subItem.image == null ? "" : subItem.image}")`,
-                                                                                        backgroundPosition: 'center center',
-                                                                                        backgroundSize: 'cover',
-                                                                                        backgroundRepeat: 'no-repeat'
-                                                                                    }}></div>
-                                                                                    <span className='number-song'>{subIndex + 1}</span>
-                                                                                    <div className='info'>
-                                                                                        <div className='artist-name'>{subItem.user?.name} </div>
-                                                                                        <span> - </span>
-                                                                                        <div className='song-name'> {subItem.name}</div>
+                                                                    {item.songList && item.songList.length > 0 &&
+                                                                        item.songList
+                                                                            .filter(subItem => subItem.user.id != null)
+                                                                            .map((subItem, subIndex) => {
+                                                                                return (
+                                                                                    <div className='song' key={subItem.id}>
+                                                                                        <div className='img-song' style={{
+                                                                                            backgroundImage: `url("${subItem.image || ''}")`,
+                                                                                            backgroundPosition: 'center center',
+                                                                                            backgroundSize: 'cover',
+                                                                                            backgroundRepeat: 'no-repeat'
+                                                                                        }}></div>
+                                                                                        <span className='number-song'>{subIndex + 1}</span>
+                                                                                        <div className='info'>
+                                                                                            <div className='artist-name'>{subItem.user.name}</div>
+                                                                                            <span> - </span>
+                                                                                            <div className='song-name'>{subItem.name}</div>
+                                                                                        </div>
                                                                                     </div>
-
-                                                                                </div>
-                                                                            )
-                                                                        })
+                                                                                )
+                                                                            })
                                                                     }
                                                                 </div>
 

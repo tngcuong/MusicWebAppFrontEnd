@@ -17,13 +17,13 @@ export const userIsNotAuthenticated = connectedRouterRedirect({
 });
 
 export const userIsAdmin = connectedRouterRedirect({
-    authenticatedSelector: state => state.account.isLoggedIn && state.account.role === "Admin",
+    authenticatedSelector: state => state.account.role === "Admin",
     wrapperDisplayName: 'UserIsAdmin',
     redirectPath: '/'
 });
 
 export const userIsNotAdmin = connectedRouterRedirect({
-    authenticatedSelector: state => !state.account.isLoggedIn || state.account.role !== "Admin",
+    authenticatedSelector: state => state.account.role !== "Admin",
     wrapperDisplayName: 'UserIsNotAdmin',
     redirectPath: '/system/home'
 });

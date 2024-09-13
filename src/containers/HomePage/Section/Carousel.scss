@@ -1,0 +1,134 @@
+$primary-color   : #f1c40f;
+$background-color: #ffffff;
+$text-color      : #1a1a1a;
+$muted-color     : #1a1a1a;
+$hover-color     : #f39c12;
+
+.carousel {
+    padding         : 2rem 0;
+    background-color: $background-color;
+
+    &__container {
+        max-width: 1200px;
+        margin   : 0 auto;
+        padding  : 0 1rem;
+    }
+
+    &__header {
+        display        : flex;
+        justify-content: space-between;
+        align-items    : center;
+        margin-bottom  : 1.5rem;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        color    : $primary-color;
+        margin   : 0;
+    }
+
+    &__more-btn {
+        display    : flex;
+        align-items: center;
+        background : none;
+        border     : none;
+        color      : $text-color;
+        font-size  : 1rem;
+        cursor     : pointer;
+        transition : color 0.3s ease;
+
+        &:hover {
+            color: $primary-color;
+        }
+
+        svg {
+            margin-left: 0.5rem;
+        }
+    }
+
+    &__content {
+        .slick-track {
+            display     : flex;
+            margin-left : -0.5rem;
+            margin-right: -0.5rem;
+        }
+
+        .slick-slide {
+            height    : auto;
+            padding   : 0 0.5rem;
+            box-sizing: border-box;
+        }
+    }
+
+    &__item {
+        height: 100%;
+    }
+
+    &__item-inner {
+        display       : flex;
+        flex-direction: column;
+        height        : 100%;
+    }
+
+    &__image {
+        position           : relative;
+        width              : 100%;
+        padding-top        : 100%; // 1:1 Aspect Ratio
+        background-size    : cover;
+        background-position: center;
+        border-radius      : 8px;
+        overflow           : hidden;
+        cursor             : pointer;
+        transition         : transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05);
+
+            .carousel__overlay {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__overlay {
+        position        : absolute;
+        top             : 0;
+        left            : 0;
+        right           : 0;
+        bottom          : 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        opacity         : 0;
+        transition      : opacity 0.3s ease;
+    }
+
+    &__play-icon {
+        color: $primary-color;
+    }
+
+    &__album-name {
+        margin-top   : 0.5rem;
+        font-size    : 0.9rem;
+        color        : $text-color;
+        text-align   : center;
+        white-space  : nowrap;
+        overflow     : hidden;
+        text-overflow: ellipsis;
+
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .carousel {
+        &__title {
+            font-size: 1.2rem;
+        }
+
+        &__more-btn {
+            font-size: 0.9rem;
+        }
+    }
+}

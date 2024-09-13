@@ -103,7 +103,6 @@ class ModalAddSong extends Component {
             }
             )
         }
-        console.log(this.state.Source);
     }
 
     componentDidMount() {

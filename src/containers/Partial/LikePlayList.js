@@ -12,9 +12,11 @@ class LikePlayList extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.isLiked === !prevState.isLiked) {
+        const { idPlayList, currentUser } = this.props;
+        if (this.state.isLiked != prevState.isLiked) {
             this.props.getCurrentUser()
         }
+
     }
 
     toggleLikeSong = async () => {

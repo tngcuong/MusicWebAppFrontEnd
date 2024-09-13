@@ -88,6 +88,11 @@ class MusicPlayer extends Component {
 
         }
 
+        if (this.props.isShowPlayer == false) {
+            await this.state.sourceMusic.pause();
+            clearInterval(intervalId)
+        }
+
     }
 
     endMusic = () => {
@@ -262,7 +267,7 @@ class MusicPlayer extends Component {
         })
 
 
-        console.log(this.state.currentTime, this.state.sourceMusic.currentTime, "duration");
+
     }
 
     setCurrentTimeSong = async (time) => {
@@ -331,7 +336,6 @@ class MusicPlayer extends Component {
         const { currentSong, volume, isShuffle, isRepeat } = this.state;
         const { isPlaying, song, isShowPlayer, currentUser } = this.props;
         const { intl } = this.props;
-        console.log(currentSong, "sas");
 
         return (
             <>

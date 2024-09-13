@@ -11,12 +11,19 @@ class PlayList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            itemRef: React.createRef()
+            itemRef: React.createRef(),
+            currentAlbum: []
         }
     }
 
     componentDidMount() {
 
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.currentAlbum != this.props.currentAlbum) {
+            this.setState({ currentAlbum: [...this.props.currentAlbum] })
+        }
     }
 
     playSong = (item) => {
@@ -33,12 +40,22 @@ class PlayList extends Component {
         this.props.toggleFromParent()
     }
 
+    handleClearPlaylist = () => {
+        this.props.clearCurrentPlaylist()
+    }
+
     render() {
+        let { currentAlbum } = this.state
+
+        console.log(currentAlbum, "playlist");
+
+
+
         return (
             <div className='playList-container'>
                 <div className='header-playList'>
                     <span className='next-playList'>Next Up</span>
-                    <button className='btn-clear'>Clear</button>
+                    <button className='btn-clear' onClick={() => { this.handleClearPlaylist() }}>Clear</button>
                     <button className='btn-close' onClick={() => { this.toggle() }}></button>
                 </div>
                 <CustomScrollbars style={{ width: '100%' }}>
@@ -116,7 +133,8 @@ const mapStateToProps = state => {
     return {
         currentAlbum: state.album.currentAlbum,
         song: state.song.currentSong,
-        isPlaying: state.song.isPlaying
+        isPlaying: state.song.isPlaying,
+        isAddAlbum: state.album.isAddAlbum
     };
 };
 
@@ -124,6 +142,7 @@ const mapDispatchToProps = dispatch => {
     return {
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
+        clearCurrentPlaylist: () => dispatch(actions.CLearCurrentPlaylist()),
     };
 };
 

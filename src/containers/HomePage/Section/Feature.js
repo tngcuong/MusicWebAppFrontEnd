@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 import CountFollower from "../../Partial/CountFollower";
+import NameUser from "../../Partial/NameUser";
 
 class Feature extends React.Component {
     constructor(props) {
@@ -65,7 +66,7 @@ class Feature extends React.Component {
                                     </div>
                                     <div className="info-song">
                                         <div className="name">
-                                            {item.name}
+                                            {item && <NameUser user ={item} />}
                                         </div>
                                         <div className="info">
                                             <div className="follower">

@@ -291,6 +291,17 @@
                 .album-content-center {
                     width: 100%;
 
+                    .playing {
+                        background-color: #999;
+                    }
+
+                    .song {
+
+                        .play-button,
+                        .pause-button {
+                            left: 5% !important;
+                        }
+                    }
 
                     .list-song {
                         height        : 3.5rem;
@@ -329,13 +340,18 @@
                         }
 
                         .track-play {
-                            color: #999;
+                            color       : #999;
+                            margin-right: 10px;
                         }
 
                         &:hover {
                             background-color: #f2f2f2;
                         }
 
+                    }
+
+                    .current-song {
+                        opacity: 1;
                     }
                 }
             }
@@ -363,10 +379,21 @@
                         width : 2rem;
                     }
 
+                    .another {
+                        white-space  : nowrap;
+                        overflow     : hidden;
+                        text-overflow: ellipsis;
+                        max-width    : 200px;
+                        display      : inline-block;
+                    }
+
                     .view-all {
-                        float : right;
-                        margin: 0 1rem;
-                        cursor: pointer;
+                        float        : right;
+                        margin       : 0 1rem;
+                        cursor       : pointer;
+                        white-space  : nowrap;
+                        overflow     : hidden;
+                        text-overflow: ellipsis;
 
                         &:hover {
                             color: black;

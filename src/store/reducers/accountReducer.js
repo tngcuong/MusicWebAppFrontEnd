@@ -19,6 +19,7 @@ const appReducer = (state = initialState, action) => {
                 isLoading: true
             }
         case actionTypes.ACCOUNT_LOGIN_SUCCESS:
+            window.location.reload()
             toast.success('Login success')
             return {
                 ...state,

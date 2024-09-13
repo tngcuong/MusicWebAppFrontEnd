@@ -151,7 +151,7 @@ class UploadPage extends Component {
                     <Modal className='upload-modal-container' isOpen={this.props.isOpen} toggle={() => { this.toggle() }} >
                         <ModalHeader toggle={() => { this.toggle() }}>Choose the thing what you wanna upload</ModalHeader>
                         <ModalBody>
-                            {isLoading === true || isLoadingAlbum === true && <Loader></Loader>}
+                            {(isLoading === true || isLoadingAlbum === true) && <Loader />}
                             <div className='upload-container'>
                                 <div className='upload'>
                                     <ul className='upload-list-item'>

@@ -72,6 +72,16 @@ class PlayLists extends Component {
         const { recentPLayList, selectedItem } = this.state
         const { currentUser } = this.props
         const idUser = this.props.match.params.profile
+
+        const hasSongs = (recentPLayList && recentPLayList.length > 0);
+
+        if (!hasSongs) {
+            return (
+                <div className="profile-all">
+                    <div className="no-songs-message">No playlists found</div>
+                </div>
+            );
+        }
         return (
             <div className="profile-playLists">
                 <div className='spotlight'>

@@ -1,0 +1,27 @@
+.song {
+    position: relative;
+}
+
+.song .play-button,
+.song .pause-button {
+    position        : absolute;
+    top             : 50%;
+    left            : 50%;
+    transform       : translate(-50%, -50%);
+    opacity         : 0;
+    transition      : opacity 0.3s ease;
+    border          : none;
+    background-color: rgba(217, 203, 17, 0.26);
+}
+
+.song:hover .play-button {
+    opacity: 1;
+}
+
+.song.playing .pause-button {
+    opacity: 1;
+}
+
+.song.playing .play-button {
+    display: none;
+}

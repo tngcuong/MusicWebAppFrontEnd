@@ -20,6 +20,10 @@ class CountFollower extends Component {
         if (this.props.isFollow === !prevProps.isFollow) {
             await this.countFollower()
         }
+
+        if (this.props.idUser != prevProps.idUser) {
+            await this.countFollower()
+        }
     }
 
     countFollower = async () => {

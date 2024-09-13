@@ -20,6 +20,10 @@ class CountLiked extends Component {
         if (this.props.isLiked === !prevProps.isLiked) {
             await this.countLiked()
         }
+
+        if (this.props.idPlayList != prevProps.idPlayList) {
+            await this.countLiked()
+        }
     }
 
     countLiked = async () => {

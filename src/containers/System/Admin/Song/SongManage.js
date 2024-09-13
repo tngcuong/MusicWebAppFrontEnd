@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { FormattedMessage } from 'react-intl';
-import { getAllSongs } from '../../../../services/songService';
+import { getAllSongs, getAllSongAdmin } from '../../../../services/songService';
 import Loader from '../../../../components/Loader';
 import Paging from '../../../../components/Paging/Paging';
 import * as actions from '../../../../store/actions';
 import ModalAddSong from './ModalAddSong';
 import moment from 'moment';
+import "./SongManage.scss";
 
 class SongManage extends Component {
 
@@ -33,7 +34,7 @@ class SongManage extends Component {
 
     getAllSongFromManage = async () => {
         try {
-            let res = await getAllSongs(this.state.currentPage, this.state.pageSize);
+            let res = await getAllSongAdmin(this.state.currentPage, this.state.pageSize);
             if (res && res.errorCode === 200) {
                 await this.setState({
                     arrSongs: res.content.data,
@@ -66,6 +67,10 @@ class SongManage extends Component {
         if (this.state.currentPage !== prevState.currentPage) {
             this.props.getSongStart(this.state.currentPage, this.state.pageSize)
         }
+
+        if (this.props.isApproved !== prevProps.isApproved) {
+            this.props.getSongStart(this.state.currentPage, this.state.pageSize)
+        }
     }
 
     handleDeleteSong = (id) => {
@@ -84,6 +89,11 @@ class SongManage extends Component {
             currentPage: pageIndex
         });
         this.props.getSongStart(this.state.currentPage, this.state.pageSize);
+    };
+
+
+    handleToggleApproval = (id) => {
+        this.props.handleToggleApproval(id);
     };
 
 
@@ -113,9 +123,10 @@ class SongManage extends Component {
                                 <th>#</th>
                                 <th><FormattedMessage id="manage-song.image" /></th>
                                 <th><FormattedMessage id="manage-song.name" /></th>
-                                <th>Tên người đăng</th>
-                                <th>Tạo lúc</th>
+                                <th><FormattedMessage id="manage-song.creator" /></th>
+                                <th><FormattedMessage id="manage-song.createAt" /></th>
                                 <th></th>
+                                <th><FormattedMessage id="manage-song.approve" /></th>
                                 <th><FormattedMessage id="manage-song.action" /></th>
                             </tr>
 
@@ -145,6 +156,23 @@ class SongManage extends Component {
                                                 <source src={item.source} type="audio/mpeg" />
                                                 Your browser does not support the audio element.
                                             </audio>
+                                        </td>
+                                        <td>
+                                            <div className="toggle-switch">
+                                                <button
+                                                    type="button"
+                                                    className={`toggle-button ${item.isPrivate == true ? "bg-primary" : "bg-muted"}`}
+                                                    onClick={() => this.handleToggleApproval(item.id)}
+                                                >
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className={`toggle-thumb ${item.isPrivate == true ? "translate-x-5" : "translate-x-0"}`}
+                                                    />
+                                                </button>
+                                                <span className={`toggle-label ${item.isPrivate == true ? "text-primary" : "text-muted-foreground"}`}>
+                                                    {item.isPrivate == true ? "Approved" : "UnApproved"}
+                                                </span>
+                                            </div>
                                         </td>
                                         <td>
                                             {/* <button
@@ -179,17 +207,19 @@ class SongManage extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-        songs: state.song.songs,
+        songs: state.song.songAdmin,
         isLoading: state.song.isLoading,
-        pageCount: state.song.pageCount
+        pageCount: state.song.pageCount,
+        isApproved: state.song.isApproved
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getSongStart: (pageIndex, pageSize) => dispatch(actions.fetchSongStart(pageIndex, pageSize)),
+        getSongStart: (pageIndex, pageSize) => dispatch(actions.fetchSongAdminStart(pageIndex, pageSize)),
         deleteSongStart: (id, pageIndex, pageSize) => dispatch(actions.deleteSongStart(id, pageIndex, pageSize)),
         createASong: (data, pageIndex, pageSize) => dispatch(actions.addSongStart(data, pageIndex, pageSize)),
+        handleToggleApproval: (id) => dispatch(actions.ToggleApproveSongStart(id))
     };
 };
 

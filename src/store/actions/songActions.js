@@ -12,8 +12,64 @@ import {
     GetRalatedSongByUserId,
     SearchSongByName,
     getSongById,
+    getAllSongAdmin,
+    toggleApproveSong,
     getRandomSong
 } from '../../services/songService';
+
+export const fetchSongAdminSuccess = (songs) => ({
+    type: actionTypes.FETCH_SONG_ADMIN_SUCCESS,
+    data: songs
+})
+
+export const fetchSongAdminFailed = () => ({
+    type: actionTypes.FETCH_SONG_ADMIN_FAILED
+})
+
+export const fetchSongAdminStart = (pageIndex, pageSize) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.FETCH_SONG_ADMIN_START })
+            let data = await getAllSongAdmin(pageIndex, pageSize)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(fetchSongAdminSuccess(data.content))
+            } else {
+                dispatch(fetchSongAdminFailed())
+            }
+        } catch (error) {
+            dispatch(fetchSongAdminFailed())
+            console.log(error);
+        }
+    }
+}
+
+export const ToggleApproveSongSuccess = (songs) => ({
+    type: actionTypes.TOGGLE_APPROVE_SONG_SUCCESS,
+})
+
+export const ToggleApproveSongFail = () => ({
+    type: actionTypes.TOGGLE_APPROVE_SONG_FAILED
+})
+
+export const ToggleApproveSongStart = (id) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.TOGGLE_APPROVE_SONG_START })
+            let data = await toggleApproveSong(id)
+            console.log(data);
+            if (data && data.errorCode === 200) {
+                dispatch(ToggleApproveSongSuccess(data.content))
+            } else {
+                dispatch(ToggleApproveSongFail())
+            }
+        } catch (error) {
+            dispatch(ToggleApproveSongFail())
+            console.log(error);
+        }
+    }
+}
+
 
 export const fetchSongSuccess = (songs) => ({
     type: actionTypes.FETCH_SONG_SUCCESS,
@@ -284,7 +340,7 @@ export const uploadSongStart = (song) => {
         try {
             dispatch({ type: actionTypes.UPLOAD_SONG_START })
             let data = await createASong(song)
-            console.log(data);
+
             if (data && data.errorCode === 200) {
 
                 dispatch(uploadSongSuccess())

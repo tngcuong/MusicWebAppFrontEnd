@@ -12,11 +12,25 @@ const initialState = {
     isLiked: false,
     isFailed: true,
     searchAlbum: [],
-    pageCount: 0
+    pageCount: 0,
+    isClearAlbum: false,
+    isAddAlbum: false,
 }
 
 const albumReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.ADD_SONG_TO_CURRENT_ALBUM:
+            state.isAddAlbum = !state.isAddAlbum
+            state.currentAlbum = [...state.currentAlbum, action.data]
+            return {
+                ...state,
+            }
+        case actionTypes.CLEAR_CURRENT_ALBUM:
+            state.isClearAlbum = !state.isClearAlbum
+            state.currentAlbum = []
+            return {
+                ...state,
+            }
         case actionTypes.FETCH_ALBUM_START:
             state.isLoading = true;
             return {

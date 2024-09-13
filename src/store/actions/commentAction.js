@@ -73,7 +73,7 @@ export const GetApprovedCommentStart = (pageIndex, pageSize) => {
             dispatch({ type: actionTypes.GET_APPROVED_COMMENT_START })
             let data = await getApprovedComment(pageIndex, pageSize)
             console.log(data);
-            if (data && data.errorCode === 200) {
+            if (data && (data.errorCode === 200 || data.errorCode === 204)) {
                 dispatch(GetApprovedCommentSuccess(data.content))
             } else {
                 dispatch(GetApprovedCommentFailed())
@@ -102,7 +102,7 @@ export const GetUnApprovedCommentStart = (pageIndex, pageSize) => {
             dispatch({ type: actionTypes.GET_UNAPPROVED_COMMENT_START })
             let data = await getUnApprovedComment(pageIndex, pageSize)
             console.log(data);
-            if (data && data.errorCode === 200) {
+            if (data && (data.errorCode === 200 || data.errorCode === 204)) {
                 dispatch(GetUnApprovedCommentSuccess(data.content))
             } else {
                 dispatch(GetUnApprovedCommentFailed())

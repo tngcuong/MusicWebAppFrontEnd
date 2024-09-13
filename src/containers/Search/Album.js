@@ -89,7 +89,7 @@ class Album extends Component {
                                                         <div className='list-song'>
                                                             <div className='sub-list-song'>
                                                                 {item.songList && item.songList.length > 0
-                                                                    && item.songList.map((subItem, subIndex) => {
+                                                                    && item.songList.filter(subItem => subItem.user.id != null).map((subItem, subIndex) => {
                                                                         return (
                                                                             <div className='song' key={subItem.id}>
                                                                                 <div className='img-song' style={{

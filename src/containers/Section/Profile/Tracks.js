@@ -58,6 +58,16 @@ class Tracks extends Component {
         const { recentSong } = this.state
         const { currentUser } = this.props
         const idUser = this.props.match.params.profile
+
+        const hasSongs = (recentSong && recentSong.length > 0);
+
+        if (!hasSongs) {
+            return (
+                <div className="profile-all">
+                    <div className="no-songs-message">No songs found</div>
+                </div>
+            );
+        }
         return (
             <div className="profile-tracks">
                 <div className='spotlight'>

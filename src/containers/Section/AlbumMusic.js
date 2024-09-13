@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 import { withRouter } from 'react-router';
@@ -16,10 +16,10 @@ import { getRandomColor, totalTime, calcuDate } from '../../components/HOC/Rando
 import NameUser from '../Partial/NameUser';
 import NamePlayList from '../Partial/NamePlayList';
 import NameSong from '../Partial/NameSong';
-
-
 import "./AlbumMusic.scss";
 import NamePlaylist from '../Partial/NamePlayList';
+import SongHover from '../Partial/SongHover';
+
 
 class AlbumMusic extends Component {
     constructor(props) {
@@ -35,13 +35,27 @@ class AlbumMusic extends Component {
     }
 
     componentDidMount() {
+        this.props.showPlayer(true)
         this.props.getDetailAlbum(this.props.match.params.album)
     }
 
     setCurrentAlbum = async (item, index) => {
-        this.props.setCurrentAlbum(this.state.detailAlbum.songList)
-        await this.props.setCurrentSong(item)
-        await this.props.playSong(true)
+        let { currentSong, isPlaying, intl, currentAlbum } = this.props
+        if (this.areAlbumsEqual(currentAlbum, this.state.detailAlbum.songList.filter(items => items.user.id != null))) {
+            if (currentSong.id == item.id) {
+                if (isPlaying == true) {
+                    await this.props.playSong(false)
+                } else {
+                    await this.props.playSong(true)
+                }
+            } else {
+                await this.props.setCurrentSong(item)
+            }
+        } else {
+            this.props.setCurrentAlbum(this.state.detailAlbum.songList.filter(items => items.user.id != null))
+            await this.props.setCurrentSong(this.state.detailAlbum.songList.filter(items => items.user.id != null)[0])
+            await this.props.playSong(true)
+        }
     }
 
     componentDidUpdate(preProps, prevState) {
@@ -49,8 +63,8 @@ class AlbumMusic extends Component {
             this.setState({
                 detailAlbum: { ...this.props.detailAlbum },
                 bg: getRandomColor(),
-                totalSong: this.props.detailAlbum.songList ? this.props.detailAlbum.songList.length : 0,
-                totalTime: totalTime(this.props.detailAlbum.songList),
+                totalSong: this.props.detailAlbum.songList ? this.props.detailAlbum.songList.filter(item => item.user.id != null).length : 0,
+                totalTime: totalTime(this.props.detailAlbum.songList.filter(item => item.user.id != null)),
                 createAt: calcuDate(this.props.detailAlbum.createAt)
             }, () => {
                 this.props.getAlbumByUserId(this.state.detailAlbum?.createById)
@@ -58,7 +72,7 @@ class AlbumMusic extends Component {
             })
         }
 
-        if (this.props.match.params.album !== preProps.match.params.album) {
+        if (this.props.match.params.album != preProps.match.params.album) {
             this.props.getDetailAlbum(this.props.match.params.album)
         }
 
@@ -69,8 +83,35 @@ class AlbumMusic extends Component {
         }
     }
 
+    setAlbum = async (item) => {
+        let { currentSong, isPlaying, intl, currentAlbum } = this.props
+        if (this.areAlbumsEqual(currentAlbum, item.filter(item => item.user.id != null))) {
+            if (isPlaying == true) {
+                await this.props.playSong(false)
+            } else {
+                await this.props.playSong(true)
+            }
+
+        } else {
+            this.props.setCurrentAlbum(item.filter(item => item.user.id != null))
+            await this.props.setCurrentSong(item[0])
+            await this.props.playSong(true)
+        }
+    }
+
+    areAlbumsEqual = (album1, album2) => {
+        if (!album1 || !album2) return false;
+        if (album1.length !== album2.length) return false;
+
+        const sortedAlbum1 = [...album1].sort((a, b) => a.id - b.id);
+        const sortedAlbum2 = [...album2].sort((a, b) => a.id - b.id);
+
+        return sortedAlbum1.every((song, index) => song.id === sortedAlbum2[index].id);
+    }
+
     render() {
         let { detailAlbum } = this.state
+        let { currentSong, isPlaying, intl, currentAlbum } = this.props
         return (
             <>
                 <HomeHeader isShowBanner={false} />
@@ -86,11 +127,11 @@ class AlbumMusic extends Component {
                         <div className='album-banner-left'>
 
                             <div className='album-info-up'>
-                                <div className='play'>{
-                                    this.props.isPlaying == false ?
-                                        <i className="fas fa-play-circle"></i> :
-                                        <i className="fas fa-pause-circle"></i>
-                                }</div>
+                                <div className='play'>
+                                    {this.props.isPlaying == false && this.areAlbumsEqual(currentAlbum, detailAlbum.songList?.filter(item => item.user.id != null)) ?
+                                        <i className="fas fa-play-circle" onClick={() => this.setAlbum(detailAlbum.songList)}></i> :
+                                        <i className="fas fa-pause-circle" onClick={() => this.setAlbum(detailAlbum.songList)}></i>}
+                                </div>
                                 <div className='title-artist'>
                                     <div className='title'>&ensp;{detailAlbum.name}</div>
                                     <div className='artist'>&ensp; By {detailAlbum.createBy && <NameUser user={detailAlbum.createBy} />} &ensp;</div>
@@ -161,23 +202,25 @@ class AlbumMusic extends Component {
                                         {
 
                                             detailAlbum?.songList &&
-                                            detailAlbum.songList?.map((item, index) => {
+                                            detailAlbum.songList?.filter(item => item.user.id != null).map((item, index) => {
                                                 return (
-                                                    <div className='list-song' key={item.id} onClick={() => this.setCurrentAlbum(item, index)}>
+                                                    <div className={`song list-song  ${isPlaying == true && currentSong.id == item.id && 'playing'}`} key={item.id} onClick={() => this.setCurrentAlbum(item, index)}>
                                                         <div className='track-avatar' style={{
                                                             backgroundImage: `url("${item.image}")`,
                                                             backgroundPosition: 'center center',
                                                             backgroundSize: 'cover',
                                                             backgroundRepeat: 'no-repeat'
-                                                        }}></div>
+                                                        }}>
+                                                            <SongHover />
+                                                        </div>
                                                         <div className='track-number'>{index + 1}</div>
                                                         <div className='artist-info'>
-                                                            <span className='track-artist'>{item.user?.name && <NameUser user={detailAlbum.createBy} />}</span>
+                                                            <span className='track-artist' onClick={(e) => e.stopPropagation()}>{item.user?.name && <NameUser user={detailAlbum.createBy} />}</span>
                                                             <span> - </span>
-                                                            <span className='track-name'>{item.name && <NameSong song={item} />}</span>
+                                                            <span className='track-name' onClick={(e) => e.stopPropagation()}>{item.name && <NameSong song={item} />}</span>
                                                         </div>
 
-                                                        <div className='track-play'><i className="fas fa-play"></i></div>
+                                                        <div className='track-play'>  {moment.utc(item.durationTime * 1000).format("mm:ss")}</div>
                                                         <div></div>
                                                     </div>
                                                 )
@@ -198,8 +241,8 @@ class AlbumMusic extends Component {
                                         backgroundSize: 'cover',
                                         backgroundRepeat: 'no-repeat'
                                     }}></div>
-                                    <span>Playlists from this user</span>
-                                    <span className='view-all'>View all</span>
+                                    <span className='another'>{intl.formatMessage({ id: 'playlist-detail.another-playlist' })}</span>
+                                    <span className='view-all' onClick={() => { this.handleViewAll(detailAlbum.createBy.id) }}>{intl.formatMessage({ id: 'playlist-detail.view-all' })}</span>
                                 </div>
                                 <div className='content-relative'>
                                     {this.state.userAlbums && this.state.userAlbums?.map((item, index) => {
@@ -246,7 +289,7 @@ class AlbumMusic extends Component {
 
                             <div className=''></div>
                         </div>
-                    </div>
+                    </div >
 
 
                 </div >
@@ -263,9 +306,11 @@ class AlbumMusic extends Component {
 const mapStateToProps = state => {
     return {
         detailAlbum: state.album.detailAlbum,
-        isPlaying: state.album.isPlaying,
+        isPlaying: state.song.isPlaying,
         userAlbums: state.album.userAlbums,
         currentUser: state.user.currentUser,
+        currentAlbum: state.album.currentAlbum,
+        currentSong: state.song.currentSong
     };
 };
 
@@ -276,6 +321,7 @@ const mapDispatchToProps = dispatch => {
         setCurrentAlbum: (album) => dispatch(actions.setCurrentAlbum(album)),
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
         playSong: (flag) => dispatch(actions.playMusic(flag)),
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
     };
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AlbumMusic));
+export default injectIntl(withRouter(connect(mapStateToProps, mapDispatchToProps)(AlbumMusic)));

@@ -11,7 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 import * as actions from '../../../store/actions';
 import SliderImage1 from '../../../assets/Slider/portfolio-1.jpg'
 import NamePlayList from '../../Partial/NamePlayList';
-
+import SongHover from '../../Partial/SongHover';
 
 class Carousel extends Component {
     constructor(props) {
@@ -42,7 +42,7 @@ class Carousel extends Component {
 
 
     setAlbum = async (item) => {
-        this.props.setCurrentAlbum(item)
+        this.props.setCurrentAlbum(item.filter(item => item.user.id != null))
         if (item.length > 0) {
             await this.props.setCurrentSong(item[0])
             await this.props.playSong(true)
@@ -50,60 +50,43 @@ class Carousel extends Component {
     }
 
     render() {
-        let { arrAlbums } = this.state
+        let { arrAlbums } = this.state;
         return (
             <div className='section-share section-carousel'>
                 <div className='section-container'>
                     <div className='section-header'>
                         <span className='title-section'>Playlist noi bat</span>
-                        <button className='btn-section'>Xem them</button>
+                        {/* <button className='btn-section'>Xem them</button> */}
                     </div>
                     <div className='section-content'>
                         <Slider {...this.props.settings}>
                             {arrAlbums && arrAlbums.map((item, index) => {
                                 return (
-
-                                    <div className='section-customize' key={item.id}>
-                                        <div className='bg-image section-slider' style={{
-                                            width: "150px",
-                                            height: "150px",
-                                            backgroundImage: `url("${item.thumbnail}")`,
-                                            backgroundPosition: 'center center',
-                                            backgroundSize: 'cover',
-                                            backgroundRepeat: 'no-repeat'
-                                        }}
-                                            onClick={() => { this.setAlbum(item.songList) }} />
-                                        <div className='album-name' ><NamePlayList playlist={item} /></div>
+                                    <div className={`section-customize`} key={item.id}>
+                                        <div
+                                            className='carousel__image'
+                                            style={{
+                                                width: '150px',
+                                                height: '150px',
+                                                backgroundImage: `url("${item.thumbnail}")`,
+                                                backgroundPosition: 'center center',
+                                                backgroundSize: 'cover',
+                                                backgroundRepeat: 'no-repeat',
+                                            }}
+                                            onClick={() => { this.setAlbum(item.songList) }}
+                                        >
+                                        </div>
+                                        <div className='album-name'>
+                                            <NamePlayList playlist={item} />
+                                        </div>
                                     </div>
-                                )
+                                );
                             })}
-                            <div className='section-customize'>
-                                <div className='bg-image section-carousel' />
-                                <div>Anh 2</div>
-                            </div>
-                            <div className='section-customize'>
-                                <div className='bg-image section-carousel' />
-                                <div>Anh 3</div>
-                            </div>
-                            <div className='section-customize'>
-                                <div className='bg-image section-carousel' />
-                                <div>Anh 4</div>
-                            </div>
-                            <div className='section-customize'>
-                                <div className='bg-image section-carousel' />
-                                <div>Anh 5</div>
-                            </div>
-                            <div className='section-customize'>
-                                <div className='bg-image section-carousel' />
-                                <div>Anh 6</div>
-                            </div>
                         </Slider>
                     </div>
-
                 </div>
             </div>
-
-        )
+        );
     }
 }
 

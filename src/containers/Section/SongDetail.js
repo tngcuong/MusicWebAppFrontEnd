@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 import { withRouter } from 'react-router';
@@ -15,6 +15,9 @@ import LikePlayList from '../Partial/LikePlayList';
 import FollowBtn from '../Partial/FollowBtn';
 import { getRandomColor, totalTime, calcuDate } from '../../components/HOC/RandomColor';
 import Comment from './Comment';
+import { toast } from 'react-toastify';
+import NameUser from '../Partial/NameUser';
+import NameSong from '../Partial/NameSong';
 
 import "./SongDetail.scss";
 
@@ -32,6 +35,7 @@ class SongDetail extends Component {
     }
 
     componentDidMount() {
+        this.props.showPlayer(true)
         this.props.getDetailSong(this.props.match.params.id)
     }
 
@@ -45,8 +49,6 @@ class SongDetail extends Component {
                 totalTime: totalTime(this.props.detailSong.songList),
                 createAt: calcuDate(this.props.detailSong.createAt)
             }, () => {
-                console.log(this.state, "a");
-
                 this.props.getAlbumByUserId(this.state.detailSong?.createById)
                 this.props.getSongByUserId(this.state.detailSong?.userId, 1, 3)
             })
@@ -57,11 +59,46 @@ class SongDetail extends Component {
                 userAlbums: [...this.props.userAlbums]
             })
         }
+
+        if (this.props.match.params.id != preProps.match.params.id) {
+            this.props.getDetailSong(this.props.match.params.id)
+        }
     }
+
+    handleViewAll = (id) => {
+        this.props.history.push(`/profile/${id}`)
+    }
+
+    handleAddSongToCurrentPlaylist = () => {
+        const { currentAlbum, intl } = this.props
+        const { detailSong } = this.state
+        if (currentAlbum.some(song => song.id === detailSong.id)) {
+            toast.info(intl.formatMessage(
+                { id: 'song-detail.add-already' }
+            ));
+        } else {
+            this.props.addSongToCurrentPlaylist(detailSong);
+            toast.success(intl.formatMessage(
+                { id: 'song-detail.add-success' }
+            ));
+        }
+
+    }
+
+    playSong = async () => {
+        let { isPlaying, currentSong } = this.props;
+        const { detailSong } = this.state
+        if (JSON.stringify(this.props.currentSong) !== JSON.stringify(detailSong)) {
+            this.props.setCurrentSong(detailSong);
+        } else {
+            this.props.playSong(!isPlaying);
+        }
+    };
 
     render() {
         let { detailSong } = this.state
-        let { songDes } = this.props
+
+        let { songDes, intl, currentSong } = this.props
         return (
             <>
                 <HomeHeader isShowBanner={false} />
@@ -77,9 +114,9 @@ class SongDetail extends Component {
 
                             <div className='album-info-up'>
                                 <div className='play'>{
-                                    this.props.isPlaying == false ?
-                                        <i className="fas fa-play-circle"></i> :
-                                        <i className="fas fa-pause-circle"></i>
+                                    this.props.isPlaying == true && currentSong.id == detailSong.id ?
+                                        <i className="fas fa-pause-circle" onClick={() => { this.playSong() }}></i> :
+                                        <i className="fas fa-play-circle" onClick={() => { this.playSong() }}></i>
                                 }</div>
                                 <div className='title-artist'>
                                     <div className='title'>&ensp;{detailSong.name}</div>
@@ -124,11 +161,22 @@ class SongDetail extends Component {
                                 ></LikeSong>
                                 <div><CountLiked idSong={this.props.match.params.id}></CountLiked></div>
                             </div>
-
-                            <a className='download' href={detailSong.source} >
+                            <div className='add'
+                                style={{
+                                    backgroundImage: `url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZD0iTTAgMGgyMHYyMEgweiIvPgogICAgICAgIDxwYXRoIGZpbGw9InJnYigzNCwgMzQsIDM0KSIgZmlsbC1ydWxlPSJub256ZXJvIiBkPSJNNCA5aDEwdjJINFY5em0wIDRoMTB2Mkg0di0yem0wLThoOHYySDRWNXptMTAtNGw0IDMtNCAzVjF6Ii8+CiAgICA8L2c+Cjwvc3ZnPgo=")`,
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'contain'
+                                }}
+                                onClick={() => { this.handleAddSongToCurrentPlaylist() }}
+                            >
+                            </div>
+                            <a className='download' href={detailSong.source} download>
                                 <i className="far fa-arrow-alt-circle-down"></i>
                             </a>
+
                         </div>
+
                     </div>
                     <div className='content'>
                         <div className='left-content'>
@@ -141,7 +189,7 @@ class SongDetail extends Component {
 
                             </div>
                             <div className='album-info-name'>
-                                {detailSong.user && detailSong.user.name}
+                                {detailSong.user && <NameUser user={detailSong.user} />}
                             </div>
                             <div className='album-info-quantity'>
                             </div>
@@ -159,9 +207,9 @@ class SongDetail extends Component {
                                 <div className='liked-song-stat'>
                                     <a className='link-liked-song'>
                                         <div>
-                                            <span>Another song by this artist</span>
+                                            <span> {intl.formatMessage({ id: 'song-detail.another-song' })}</span>
                                         </div>
-                                        <span className='view-all'>View All</span>
+                                        <span className='view-all' onClick={() => { this.handleViewAll(detailSong.user.id) }}>{intl.formatMessage({ id: 'song-detail.view-all' })}</span>
                                     </a>
                                 </div>
                                 <div className='list'>
@@ -180,8 +228,8 @@ class SongDetail extends Component {
                                                     </div>
                                                     <div className='details'>
                                                         <div className='name'>
-                                                            <p className='artist-name'>{item.user?.name}</p>
-                                                            <p className='song-name'>{item.name}</p>
+                                                            <p className='artist-name'>{item.user?.name && <NameUser user={item.user} />}</p>
+                                                            <p className='song-name'>{item.name && <NameSong song={item} />}</p>
                                                         </div>
                                                         <div className='count-like'>
                                                             <i className="fas fa-heart"></i>
@@ -205,10 +253,12 @@ class SongDetail extends Component {
 
 const mapStateToProps = state => {
     return {
-        isPlaying: state.album.isPlaying,
+        isPlaying: state.song.isPlaying,
         currentUser: state.user.currentUser,
         detailSong: state.song.detailSong,
-        songDes: state.song.songDes
+        songDes: state.song.songDes,
+        currentAlbum: state.album.currentAlbum,
+        currentSong: state.song.currentSong,
     };
 };
 
@@ -220,7 +270,9 @@ const mapDispatchToProps = dispatch => {
         setCurrentSong: (song) => dispatch(actions.getCurrentSong(song)),
         playSong: (flag) => dispatch(actions.playMusic(flag)),
         getDetailSong: (id) => dispatch(actions.getSongByIdStart(id)),
-        getSongByUserId: (id, pageIndex, pageSize) => dispatch(actions.getSongDesByUserIdStart(id, pageIndex, pageSize))
+        getSongByUserId: (id, pageIndex, pageSize) => dispatch(actions.getSongDesByUserIdStart(id, pageIndex, pageSize)),
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
+        addSongToCurrentPlaylist: (song) => dispatch(actions.AddSongToCurrentPlaylist(song)),
     };
 };
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SongDetail));
+export default injectIntl(withRouter(connect(mapStateToProps, mapDispatchToProps)(SongDetail)));

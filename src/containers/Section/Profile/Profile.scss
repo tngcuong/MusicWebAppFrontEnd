@@ -24,6 +24,7 @@
             display: flex;
 
             .profile-avatar {
+                cursor         : pointer !important;
                 width          : 200px;
                 height         : 200px;
                 border-radius  : 50%;
@@ -36,7 +37,7 @@
                     width     : 130px;
                     height    : 26px;
                     position  : absolute;
-                    cursor    : pointer;
+                    cursor    : pointer !important;
                     bottom    : 13px;
                     text-align: center;
 

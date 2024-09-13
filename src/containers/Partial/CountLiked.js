@@ -20,6 +20,10 @@ class CountLiked extends Component {
         if (this.props.isLiked === !prevProps.isLiked) {
             await this.countLiked()
         }
+
+        if (this.props.idSong != prevProps.idSong) {
+            await this.countLiked()
+        }
     }
 
     countLiked = async () => {
@@ -42,7 +46,7 @@ class CountLiked extends Component {
         const { countLiked } = this.state;
         return (
             <div>
-                    <p>{countLiked}</p>
+                <p>{countLiked}</p>
 
             </div>
         );

@@ -5,6 +5,7 @@ import Loader from '../../../../components/Loader';
 import * as actions from '../../../../store/actions';
 import moment from 'moment';
 import "./commentManage.scss";
+import Paging from '../../../../components/Paging/Paging';
 
 class CommentManage extends Component {
     constructor(props) {
@@ -28,6 +29,13 @@ class CommentManage extends Component {
             this.loadComments();
         }
     }
+
+    handleChangePage = async (pageIndex) => {
+        await this.setState({
+            currentPage: pageIndex
+        });
+        this.props.getSongStart(this.state.currentPage, this.state.pageSize);
+    };
 
     loadComments = () => {
         const { selectedCommentType, currentPage, pageSize } = this.state;
@@ -92,7 +100,20 @@ class CommentManage extends Component {
                             {commentsToDisplay && commentsToDisplay.map((item, index) => (
                                 <tr key={item.id} className='comment-content'>
                                     <td>{index + 1}</td>
-                                    <td><img style={{ height: 20 }} src={item.user.avatar} alt="comment avatar" /></td>
+                                    <td style={{ width: "10%", textAlign: "center" }}>
+                                        <div
+                                            style={{
+                                                width: "50px",
+                                                height: "50px",
+                                                backgroundImage: `url(${item.user.avatar})`,
+                                                backgroundSize: "cover",
+                                                backgroundPosition: "center",
+                                                backgroundColor: "#f0f0f0",
+                                                display: "inline-block"
+                                            }}
+                                        >
+                                        </div>
+                                    </td>
                                     <td>{item.user.name}</td>
                                     <td>{moment(item.createAt).format("DD/MM/YYYY h:MM:ss")}</td>
                                     <td>{item.content}</td>
@@ -122,6 +143,13 @@ class CommentManage extends Component {
                             ))}
                         </tbody>
                     </table>
+                    {commentsToDisplay.length > 0 && <Paging
+                        pageIndex={this.state.currentPage}
+                        pageSize={this.state.pageSize}
+                        pageCount={this.props.pageCount}
+                        changePage={this.handleChangePage}
+                    ></Paging>
+                    }
                 </div>
             </div>
         );
@@ -133,7 +161,8 @@ const mapStateToProps = state => {
         isLoading: state.comment.isLoading,
         approvedComment: state.comment.approvedComment,
         unApprovedComment: state.comment.unApprovedComment,
-        isReload: state.comment.isReload
+        isReload: state.comment.isReload,
+        pageCount: state.comment.pageCount
     };
 };
 

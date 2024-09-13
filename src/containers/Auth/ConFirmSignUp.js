@@ -109,8 +109,8 @@ class ConFirmSignUp extends Component {
                                 </div>
                                 <div className="card-2">
                                     <div className="content d-flex justify-content-center align-items-center">
-                                        <span>Didn't get the code</span>
-                                        <a href="#" className="text-decoration-none ms-3">Resend(1/3)</a>
+                                        {/* <span>Didn't get the code</span>
+                                        <a href="#" className="text-decoration-none ms-3">Resend(1/3)</a> */}
                                     </div>
                                 </div>
                             </div>

@@ -85,7 +85,8 @@
         "cancel": "Thoát",
         "upload-img": "Tải ảnh lên",
         "createAt": "Tạo lúc",
-        "creator": "Người tạo"
+        "creator": "Người tạo",
+        "approve": "Duyệt"
     },
     "manage-user": {
         "add-title": "Thêm mới người dùng",

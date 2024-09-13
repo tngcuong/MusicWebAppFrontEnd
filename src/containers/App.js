@@ -83,11 +83,11 @@ class App extends Component {
                                         <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
                                         <Route path={path.SIGNUP} component={userIsNotAuthenticated(SingUp)} />
                                         <Route path={path.SYSTEM} component={userIsAuthenticated(userIsAdmin(System))} />
-                                        <Route path={path.HOMEPAGE} component={userIsNotAdmin(HomePage)} />
-                                        <Route path={path.DETAIL_ALBUM} component={userIsNotAdmin(AlbumMusic)} />
+                                        <Route path={path.HOMEPAGE} component={HomePage} />
+                                        <Route path={path.DETAIL_ALBUM} component={(AlbumMusic)} />
                                         <Route path={path.PROFILE} component={userIsNotAdmin(Profile)} />
                                         <Route path={path.SEARCH} component={userIsNotAdmin(Search)} />
-                                        <Route path={path.DETAIL_SONG} component={userIsNotAdmin(SongDetail)} />
+                                        <Route path={path.DETAIL_SONG} component={(SongDetail)} />
                                     </Switch>
                                 </CustomScrollbars>
                             </div>

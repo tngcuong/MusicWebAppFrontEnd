@@ -45,6 +45,7 @@ class AddSongToPlayList extends Component {
         this.setState({
             searchText: this.props.match.params.s
         })
+        this.props.showPlayer(true)
     }
 
     handleChangePage = (id) => {
@@ -149,7 +150,8 @@ const mapDispatchToProps = dispatch => {
         updatePlayList: (data) => dispatch(actions.AddSongToAlbumStart(data)),
         searchSongByName: (name) => dispatch(actions.SearchSongByNameStart(name)),
         searchPeopleByName: (name) => dispatch(actions.SearchPeopleByNameStart(name)),
-        searchAlbumByName: (name) => dispatch(actions.SearchAlbumByNameStart(name))
+        searchAlbumByName: (name) => dispatch(actions.SearchAlbumByNameStart(name)),
+        showPlayer: (flag) => dispatch(actions.showPlayer(flag)),
     };
 };
 
