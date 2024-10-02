@@ -8,11 +8,29 @@ const initialState = {
     registerSuccess: false,
     verify: false,
     isApiFailded: false,
-    role: ""
+    role: "",
+    reqChangePassword: false,
 }
 
 const appReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.CHANGE_PASSWORD_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case actionTypes.CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                reqChangePassword: true
+            }
+        case actionTypes.CHANGE_PASSWORD_FAIL:
+            state.isLoading = false
+            toast.error(action.data)
+            return {
+                ...state,
+            }
         case actionTypes.ACCOUNT_LOGIN_START:
             return {
                 ...state,

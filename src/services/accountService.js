@@ -63,10 +63,20 @@ const updateProfile = (infoUpdate) => {
 
 const getRoleByCurrentUser = () => {
     const token = JSON.parse(localStorage.getItem("persist:account"))
-    return axios.get(`/api/Role/GetRoleNameByCurrentUser`,{
+    return axios.get(`/api/Role/GetRoleNameByCurrentUser`, {
         "headers": {
             "Authorization": `bearer ${token.accountInfo.replace(/"/g, '')}`,
         }
+    })
+}
+
+const changePassword = (data) => {
+    return axios.post('api/Account/ChangePassword', data, {
+    })
+}
+
+const changeVerify = (data) => {
+    return axios.post('api/Account/VerifyChange', data, {
     })
 }
 
@@ -78,5 +88,7 @@ export {
     updateAvatar,
     updateCoverAvatar,
     updateProfile,
-    getRoleByCurrentUser
+    getRoleByCurrentUser,
+    changePassword,
+    changeVerify
 } 

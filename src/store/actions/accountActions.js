@@ -7,9 +7,41 @@ import {
     updateAvatar,
     updateCoverAvatar,
     updateProfile,
-    getRoleByCurrentUser
+    getRoleByCurrentUser,
+    changePassword
 } from "../../services/accountService";
 import { toast } from 'react-toastify';
+
+export const changePasswordSuccess = (data) => ({
+    type: actionTypes.CHANGE_PASSWORD_SUCCESS,
+    data: data
+})
+
+export const changePasswordFail = (error) => ({
+    type: actionTypes.CHANGE_PASSWORD_FAIL,
+    data: error
+})
+
+export const changePasswordStart = (dataa) => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({ type: actionTypes.CHANGE_PASSWORD_START })
+            let data = await changePassword(dataa)
+            console.log(data, "roless");
+            if (data && data.errorCode === 200) {
+                dispatch(changePasswordSuccess(data.content))
+            } else {
+                dispatch(changePasswordFail())
+            }
+        } catch (error) {
+            console.log(error.response);
+            if (error && error.response && error.response.data) {
+                dispatch(changePasswordFail(error.response.data.message))
+            }
+        }
+    }
+}
+
 
 export const accountLoginSuccess = (accountInfo) => ({
     type: actionTypes.ACCOUNT_LOGIN_SUCCESS,
@@ -63,7 +95,7 @@ export const accountLoginStart = (userName, password) => {
             console.log(data);
             if (data && data.errorCode === 200) {
                 await dispatch(accountLoginSuccess(data.content.token))
-                
+
             } else {
                 dispatch(accountLoginFail(data.error))
             }

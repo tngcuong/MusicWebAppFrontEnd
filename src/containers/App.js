@@ -28,6 +28,7 @@ import Profile from './Section/Profile/Profile.js';
 import Search from './Search/Search.js';
 import SongDetail from './Section/SongDetail.js';
 import { isEmpty } from '../components/HOC/RandomColor.js';
+import PasswordReset from "../containers/Auth/ResetPassword.js"
 
 class App extends Component {
     interval;
@@ -88,6 +89,7 @@ class App extends Component {
                                         <Route path={path.PROFILE} component={userIsNotAdmin(Profile)} />
                                         <Route path={path.SEARCH} component={userIsNotAdmin(Search)} />
                                         <Route path={path.DETAIL_SONG} component={(SongDetail)} />
+                                        <Route path={path.RESET_PASSWORD} component={(PasswordReset)} />
                                     </Switch>
                                 </CustomScrollbars>
                             </div>

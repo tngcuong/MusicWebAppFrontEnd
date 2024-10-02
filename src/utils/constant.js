@@ -9,6 +9,7 @@ export const path = {
     PROFILE: '/profile/:profile',
     SEARCH: '/search/:s?',
     DETAIL_SONG: '/details-song/:id',
+    RESET_PASSWORD:'/reset-password'
 };
 
 export const LANGUAGES = {

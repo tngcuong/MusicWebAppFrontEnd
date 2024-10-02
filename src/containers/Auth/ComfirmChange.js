@@ -3,19 +3,17 @@ import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import * as actions from "../../store/actions";
-
-import './ConFirmSignUp.scss';
+import { changeVerify } from "../../services/accountService";
+import './ComfirmChange.scss';
 import { FormattedMessage } from 'react-intl';
 import { handleLogin } from '../../services/accountService';
+import { toast } from 'react-toastify';
 
-class ConFirmSignUp extends Component {
+class ComfirmChange extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            username: '',
-            password: '',
-            errMessage: '',
             otpId: "",
             arrInput: ['', '', '', '', '', '']
         }
@@ -24,8 +22,6 @@ class ConFirmSignUp extends Component {
     componentDidMount() {
         this.setState({
             email: this.props.data.email,
-            username: this.props.data.username,
-            password: this.props.data.password,
             otpId: this.props.data.otpId,
         })
     }
@@ -39,17 +35,23 @@ class ConFirmSignUp extends Component {
 
     };
 
-    handleSubmitValidate = () => {
+    handleSubmitValidate = async () => {
         if (this.state.arrInput.every(value => value.length === 1)) {
             const result = this.state.arrInput.join('');
-
-            this.props.verify({
-                "userName": this.state.username,
-                "password": this.state.password,
-                "email": this.state.email,
-                "otp":result,
-                "otpId":this.state.otpId
-            })
+            try {
+                let data = await changeVerify({
+                    "email": this.state.email,
+                    "otp": result,
+                    "otpId": this.state.otpId
+                })
+                if (data && data.errorCode === 200) {
+                    toast.success("New password has send to your email")
+                    this.toggle()
+                }
+            } catch (error) {
+                alert(error.response.data.message)
+            }
+            
         } else {
             alert('Please enter OTP in all fields');
         }
@@ -79,7 +81,7 @@ class ConFirmSignUp extends Component {
                                 <div className="card p-2 text-center">
                                     <h6>
                                         Please enter the one-time password <br />
-                                        to verify your account
+                                        to verify change your password
                                     </h6>
                                     <div>
                                         <span>A code has been sent to</span> <small>{this.state.email}</small>
@@ -117,7 +119,7 @@ class ConFirmSignUp extends Component {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={()=>{this.toggle()}} color="secondary" >Close</Button>
+                        <Button onClick={() => { this.toggle() }} color="secondary" >Close</Button>
                     </ModalFooter>
                 </Modal>
             </>
@@ -134,8 +136,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         navigate: (path) => dispatch(push(path)),
-        verify :(data) => dispatch(actions.verifyStart(data))
+        verify: (data) => dispatch(actions.verifyStart(data))
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConFirmSignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(ComfirmChange);
